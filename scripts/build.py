@@ -21,4 +21,4 @@ geosite_proxy.save("rule-sets/proxy.srs")
 geosite_cn: RuleSet = geosite.export(
     *[category for category in geosite.list() if re.match(r"(.*[-@])?cn$", category)]
 )
-geosite_proxy.save("rule-sets/cn.srs")
+geosite_cn.save("rule-sets/cn.srs")
