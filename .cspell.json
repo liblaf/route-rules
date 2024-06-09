@@ -1,0 +1,14 @@
+{
+  "words": [
+    "dtemp",
+    "emby",
+    "liblaf",
+    "pycache",
+    "pydantic",
+    "pyproject",
+    "taplo",
+    "venv"
+  ],
+  "ignorePaths": ["**/*-lock.*", "**/*.lock*", "**/.cspell.json"],
+  "allowCompoundWords": true
+}

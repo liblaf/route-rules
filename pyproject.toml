@@ -1,0 +1,31 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project]
+authors = [
+  { email = "30631553+liblaf@users.noreply.github.com", name = "liblaf" },
+]
+dependencies = [
+    "pydantic>=2.7.3",
+    "requests>=2.32.3",
+]
+description = "Add your description here"
+license = { text = "MIT" }
+name = "sing-box-rules"
+readme = "README.md"
+requires-python = ">= 3.12"
+version = "0.0.0"
+
+[project.scripts]
+"sing-box-rules" = "sbr:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sbr"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.rye]
+dev-dependencies = []
+managed = true
