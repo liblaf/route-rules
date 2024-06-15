@@ -17,6 +17,7 @@ cn: RuleSet = geosite.export(
 cn.save("rule-sets/cn.srs")
 
 ai: RuleSet = geosite.export("bing", "google", "openai", "perplexity")
+ai -= geosite.export("youtube")
 ai.save("rule-sets/ai.srs")
 
 emby: RuleSet = RuleSet.from_url(
