@@ -1,5 +1,6 @@
 SING_BOX ?= sing-box
 
+OUTPUTS += output/geosite/ads.srs
 OUTPUTS += output/geosite/cn.srs
 OUTPUTS += output/geosite/private.srs
 OUTPUTS += output/rule-set/ads.srs

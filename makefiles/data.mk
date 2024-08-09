@@ -3,6 +3,7 @@ DATA += data/blackmatrix7/ChinaMax.list
 DATA += data/blackmatrix7/Claude.list
 DATA += data/blackmatrix7/Copilot.list
 DATA += data/blackmatrix7/Developer.list
+DATA += data/blackmatrix7/Direct.list
 DATA += data/blackmatrix7/Download.list
 DATA += data/blackmatrix7/Gemini.list
 DATA += data/blackmatrix7/GlobalMedia.list

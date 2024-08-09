@@ -1,5 +1,20 @@
 # sing-box Rules
 
+| Name                | Download Link                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------- |
+| 📵 RuleSet:ADs      | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ads.srs)           |
+| 🔒 RuleSet:Private  | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/private.srs)   |
+| 🇨🇳 RuleSet:CN       | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/cn.srs)             |
+| 🤖 RuleSet:AI       | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ai.srs)             |
+| 📺 RuleSet:Media    | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/media.srs)       |
+| ☁️ RuleSet:Download | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/download.srs) |
+| 🍟 RuleSet:Emby     | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/emby.srs)         |
+| 📵 GeoSite:ADs      | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/ads.srs)             |
+| 🔒 GeoSite:Private  | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/private.srs)     |
+| 🇨🇳 GeoSite:CN       | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/cn.srs)          |
+
+- `GeoSite:*` does not contain `IP-CIDR` rules, useful for DNS Rule.
+
 ## Rules
 
 ### RuleSet
@@ -79,8 +94,9 @@
 - include:
   - [`NotSFC/Emby.json`](https://github.com/NotSFC/rulelist/blob/main/sing-box/Emby/Emby.json)
 
-### GeoSite
+## Acknowledgement
 
-#### 🔒 GeoSite:Private
-
-#### 🇨🇳 GeoSite:CN
+- [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)
+- [DustinWin/ruleset_geodata](https://github.com/DustinWin/ruleset_geodata)
+- [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)
+- [NotSFC/rulelist](https://github.com/NotSFC/rulelist)
