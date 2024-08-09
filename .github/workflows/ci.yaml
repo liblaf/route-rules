@@ -15,7 +15,12 @@ jobs:
       - name: Setup Rye
         uses: eifinger/setup-rye@v4
       - name: Install sing-box
-        run: bash <(curl -fsSL https://sing-box.app/deb-install.sh)
+        # run: bash <(curl -fsSL https://sing-box.app/deb-install.sh)
+        # TODO: upstream issue: <https://github.com/SagerNet/sing-box/issues/1940>
+        run: |-
+          gh release --repo "SagerNet/sing-box" download "v1.10.0-alpha.28" --pattern "sing-box-*-linux-amd64.tar.gz"
+          tar --extract --file sing-box-*-linux-amd64.tar.gz --verbose
+          install -D --no-target-directory --verbose sing-box-*-linux-amd64/sing-box ~/.local/bin/sing-box
       - name: Install Python Dependencies
         run: rye sync --no-lock
       - name: Build Rule Sets
