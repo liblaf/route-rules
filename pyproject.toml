@@ -6,10 +6,7 @@ requires = ["hatchling"]
 authors = [
   { email = "30631553+liblaf@users.noreply.github.com", name = "liblaf" },
 ]
-dependencies = [
-    "pydantic>=2.7.3",
-    "requests>=2.32.3",
-]
+dependencies = ["cachetools>=5.4.0", "httpx[socks]>=0.27.0", "pydantic>=2.7.3"]
 description = "Add your description here"
 license = { text = "MIT" }
 name = "sing-box-rules"
@@ -27,5 +24,5 @@ packages = ["src/sbr"]
 allow-direct-references = true
 
 [tool.rye]
-dev-dependencies = []
+dev-dependencies = ["icecream>=2.1.3"]
 managed = true

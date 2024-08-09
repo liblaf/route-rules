@@ -1,13 +1,17 @@
 {
   "words": [
+    "asyncio",
+    "bidi",
+    "commitizen",
     "dtemp",
     "eifinger",
     "emby",
+    "geoip",
+    "httpx",
     "liblaf",
     "pycache",
     "pydantic",
-    "pyproject",
-    "taplo",
+    "pydocstyle",
     "venv"
   ],
   "ignorePaths": ["**/*-lock.*", "**/*.lock*", "**/.cspell.json"],

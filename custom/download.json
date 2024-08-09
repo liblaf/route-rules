@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "process_name": ["curl", "wget", "xh", "xhs"]
+    }
+  ]
+}

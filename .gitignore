@@ -9,4 +9,6 @@ wheels/
 # venv
 .venv
 
+data/
+output/
 rule-sets/

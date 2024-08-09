@@ -1,0 +1,33 @@
+fix = true
+show-fixes = true
+target-version = "py311"
+
+[format]
+docstring-code-format = true
+
+[lint]
+ignore = [
+  "ANN",
+  "ARG",
+  "BLE",
+  "COM",
+  "D1",
+  "ERA",
+  "FIX",
+  "INP",
+  "ISC",
+  "N806",
+  "PLR09",
+  "PLR2004",
+  "S",
+  "T20",
+  "TD",
+]
+select = ["ALL"]
+
+[lint.flake8-import-conventions.extend-aliases]
+"asyncio.subprocess" = "asp"
+"subprocess" = "sp"
+
+[lint.pydocstyle]
+convention = "google"

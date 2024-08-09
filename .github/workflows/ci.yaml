@@ -19,14 +19,12 @@ jobs:
       - name: Install Python Dependencies
         run: rye sync --no-lock
       - name: Build Rule Sets
-        run: |-
-          mkdir --parents --verbose rule-sets
-          rye run python scripts/build.py
+        run: make --jobs
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: rule-sets
-          path: rule-sets
+          path: output
 
   deploy:
     name: Deploy
@@ -41,7 +39,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: rule-sets
-          path: rule-sets
+          path: output
       - name: Deploy to GitHub Branch
         uses: peaceiris/actions-gh-pages@v4
         with:
