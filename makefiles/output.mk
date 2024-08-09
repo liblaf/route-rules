@@ -11,7 +11,11 @@ OUTPUTS += output/rule-set/media.srs
 OUTPUTS += output/rule-set/private.srs
 
 .PHONY: output
-output: $(OUTPUTS) $(OUTPUTS:.srs=.json)
+output: output/README.md $(OUTPUTS) $(OUTPUTS:.srs=.json)
+
+output/README.md: scripts/summary.py $(OUTPUTS:.srs=.json)
+	python "$<" > "$@"
+	prettier --write --ignore-path "" "$@"
 
 output/rule-set/%.srs: output/rule-set/%.json
 	$(SING_BOX) rule-set compile "$<" --output "$@"

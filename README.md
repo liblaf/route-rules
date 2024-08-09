@@ -14,19 +14,18 @@
 | 🇨🇳 GeoSite:CN       | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/cn.srs)          |
 
 - `GeoSite:*` does not contain `IP-CIDR` rules, useful for DNS Rule.
+- See statistics [here](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md).
 
-## Rules
+## Rule Sets
 
-### RuleSet
-
-#### 📵 RuleSet:ADs
+### 📵 RuleSet:ADs
 
 - include:
   - [`blackmatrix7/Advertising.list`](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Advertising)
   - [`DustinWin/geosite-all.db`](https://github.com/DustinWin/ruleset_geodata): `ads`
   - [`MetaCubeX/geosite.db`](https://github.com/MetaCubeX/meta-rules-dat): `*-ads` | `*-ads-all` | `*@ads`
 
-#### 🔒 RuleSet:Private
+### 🔒 RuleSet:Private
 
 - include:
   - [`blackmatrix7/Lan.list`](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Lan)
@@ -37,7 +36,7 @@
 - exclude:
   - [📵 RuleSet:ADs](#-rulesetads)
 
-#### 🇨🇳 RuleSet:CN
+### 🇨🇳 RuleSet:CN
 
 - include:
   - [`blackmatrix7/ChinaMax.list`](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/ChinaMax)
@@ -51,7 +50,7 @@
   - [📵 RuleSet:ADs](#-rulesetads)
   - [🔒 RuleSet:Private](#-rulesetprivate)
 
-#### 🤖 RuleSet:AI
+### 🤖 RuleSet:AI
 
 - include:
   - [`blackmatrix7/Claude.list`](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Claude)
@@ -63,7 +62,7 @@
 - exclude:
   - [📵 RuleSet:ADs](#-rulesetads)
 
-#### 📺 RuleSet:Media
+### 📺 RuleSet:Media
 
 🟢 low latency, 🟢 high bandwidth
 
@@ -75,7 +74,7 @@
 - exclude:
   - [📵 RuleSet:ADs](#-rulesetads)
 
-#### ☁️ RuleSet:Download
+### ☁️ RuleSet:Download
 
 🔴 latency insensitive, 🟢 high bandwidth
 
@@ -89,7 +88,7 @@
   - [📵 RuleSet:ADs](#-rulesetads)
   - [🇨🇳 RuleSet:CN](#-rulesetcn)
 
-#### 🍟 RuleSet:Emby
+### 🍟 RuleSet:Emby
 
 - include:
   - [`NotSFC/Emby.json`](https://github.com/NotSFC/rulelist/blob/main/sing-box/Emby/Emby.json)
