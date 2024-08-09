@@ -25,6 +25,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
       - name: Install Python Dependencies
         run: rye sync --no-lock
+      - name: Install Prettier
+        run: npm install --global prettier
       - name: Build Rule Sets
         run: make --jobs
       - name: Upload Artifacts

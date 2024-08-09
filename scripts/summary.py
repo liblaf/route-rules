@@ -38,7 +38,9 @@ async def summary(name: str, filename: StrPath) -> str:
 
 async def main() -> None:
     print("# sing-box Rules")
-    print("Updated At:", datetime.datetime.now(datetime.UTC).isoformat())
+    print(
+        "Updated At:", datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d %H:%M:%S")
+    )
     for name, filename in RULE_SETS.items():
         print(await summary(name, filename))
 
