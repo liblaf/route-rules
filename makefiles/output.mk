@@ -14,21 +14,9 @@ OUTPUTS += output/rule-set/private.srs
 .PHONY: output
 output: output/README.md $(OUTPUTS) $(OUTPUTS:.srs=.json)
 
-output/README.md: scripts/summary.py $(OUTPUTS:.srs=.json)
-	python "$<" > "$@"
-	prettier --write --ignore-path "" "$@"
+output/README.md $(OUTPUTS:.srs=.json) &: scripts/build.py $(DATA)
+	python "$<"
+	prettier --write --ignore-path "" "output/README.md"
 
 output/%.srs: output/%.json
 	$(SING_BOX) rule-set compile "$<" --output "$@"
-
-output/rule-set/%.json: preset/%.py $(DATA)
-	python "$<"
-
-output/geosite/%.json: preset/geosite.py output/rule-set/%.json
-	python "$<" "$(word 2,$^)" "$@"
-
-output/rule-set/ai.json: output/rule-set/ads.json
-output/rule-set/cn.json: output/rule-set/ads.json output/rule-set/private.json
-output/rule-set/download.json: output/rule-set/ads.json output/rule-set/cn.json
-output/rule-set/media.json: output/rule-set/ads.json
-output/rule-set/private.json: output/rule-set/ads.json

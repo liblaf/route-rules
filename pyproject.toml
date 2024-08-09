@@ -6,7 +6,12 @@ requires = ["hatchling"]
 authors = [
   { email = "30631553+liblaf@users.noreply.github.com", name = "liblaf" },
 ]
-dependencies = ["cachetools>=5.4.0", "httpx[socks]>=0.27.0", "pydantic>=2.7.3"]
+dependencies = [
+  "aiocache>=0.12.2",
+  "cachetools>=5.4.0",
+  "httpx[socks]>=0.27.0",
+  "pydantic>=2.7.3",
+]
 description = "Add your description here"
 license = { text = "MIT" }
 name = "sing-box-rules"

@@ -10,6 +10,8 @@
 #   universal: false
 
 -e file:.
+aiocache==0.12.2
+    # via sing-box-rules
 annotated-types==0.7.0
     # via pydantic
 anyio==4.4.0

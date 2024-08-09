@@ -6,17 +6,26 @@
 | 🔒 RuleSet:Private  | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/private.srs)   |
 | 🇨🇳 RuleSet:CN       | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/cn.srs)             |
 | 🤖 RuleSet:AI       | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ai.srs)             |
-| 📺 RuleSet:Media    | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/media.srs)       |
-| ☁️ RuleSet:Download | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/download.srs) |
 | 🍟 RuleSet:Emby     | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/emby.srs)         |
+| ☁️ RuleSet:Download | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/download.srs) |
+| 📺 RuleSet:Media    | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/media.srs)       |
 | 📵 GeoSite:ADs      | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/ads.srs)             |
 | 🔒 GeoSite:Private  | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/private.srs)     |
 | 🇨🇳 GeoSite:CN       | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/cn.srs)          |
 
 - `GeoSite:*` does not contain `IP-CIDR` rules, useful for DNS Rule.
-- See statistics [here](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md).
+- [statistics](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md).
 
-## Rule Sets
+## Optimization
+
+[optimization results](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md).
+
+- remove duplicate rules
+- merge `DOMAIN` with `DOMAIN-SUFFIX`
+- merge between `DOMAIN-SUFFIX`
+- merge `DOMAIN` with `DOMAIN-KEYWORD`
+- merge `DOMAIN-SUFFIX` with `DOMAIN-KEYWORD`
+- merge `IP-CIDR`
 
 ### 📵 RuleSet:ADs
 
@@ -62,17 +71,10 @@
 - exclude:
   - [📵 RuleSet:ADs](#-rulesetads)
 
-### 📺 RuleSet:Media
-
-🟢 low latency, 🟢 high bandwidth
+### 🍟 RuleSet:Emby
 
 - include:
-  - [`blackmatrix7/GlobalMedia.list`](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/GlobalMedia)
-  - [`DustinWin/geosite-all.db`](https://github.com/DustinWin/ruleset_geodata): `youtube`
-  - [`MetaCubeX/geosite-lite.db`](https://github.com/MetaCubeX/meta-rules-dat): `proxymedia`, `youtube`
-  - [`MetaCubeX/geosite.db`](https://github.com/MetaCubeX/meta-rules-dat): `youtube`
-- exclude:
-  - [📵 RuleSet:ADs](#-rulesetads)
+  - [`NotSFC/Emby.json`](https://github.com/NotSFC/rulelist/blob/main/sing-box/Emby/Emby.json)
 
 ### ☁️ RuleSet:Download
 
@@ -88,10 +90,17 @@
   - [📵 RuleSet:ADs](#-rulesetads)
   - [🇨🇳 RuleSet:CN](#-rulesetcn)
 
-### 🍟 RuleSet:Emby
+### 📺 RuleSet:Media
+
+🟢 low latency, 🟢 high bandwidth
 
 - include:
-  - [`NotSFC/Emby.json`](https://github.com/NotSFC/rulelist/blob/main/sing-box/Emby/Emby.json)
+  - [`blackmatrix7/GlobalMedia.list`](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/GlobalMedia)
+  - [`DustinWin/geosite-all.db`](https://github.com/DustinWin/ruleset_geodata): `youtube`
+  - [`MetaCubeX/geosite-lite.db`](https://github.com/MetaCubeX/meta-rules-dat): `proxymedia`, `youtube`
+  - [`MetaCubeX/geosite.db`](https://github.com/MetaCubeX/meta-rules-dat): `youtube`
+- exclude:
+  - [📵 RuleSet:ADs](#-rulesetads)
 
 ## Acknowledgement
 

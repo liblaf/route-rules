@@ -1,11 +1,15 @@
 import asyncio
 
-from icecream import ic
+import aiocache
+
 from sbr import GeoSite, Rule
 from sbr.geoip import GeoIP
+from sbr.preset._ads import ads
+from sbr.preset._private import private
 
 
-async def main() -> None:
+@aiocache.cached()
+async def cn() -> Rule:
     rule = Rule()
     rule += await Rule.from_list_url("data/blackmatrix7/ChinaMax.list")
     rule += await Rule.from_list_url("data/blackmatrix7/Direct.list")
@@ -17,15 +21,15 @@ async def main() -> None:
     rule += await geoip.export("cn")
     geosite = await GeoSite.from_url("data/MetaCubeX/geosite.db")
     rule += await geosite.export("cn")
-    for category in geosite.categories:
-        if category.endswith(("-cn", "-cn", "@cn")) or "-ntp" in category:
-            print(category)
-            rule += await geosite.export(category)
-    rule -= await Rule.from_json_url("output/rule-set/ads.json")
-    rule -= await Rule.from_json_url("output/rule-set/private.json")
-    ic(rule)
-    rule.save("output/rule-set/cn.json")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    categories: list[str] = [
+        category
+        for category in geosite.categories
+        if category.endswith(("-cn", "-cn", "@cn")) or "-ntp" in category
+    ]
+    rule: Rule = sum(
+        await asyncio.gather(*[geosite.export(category) for category in categories]),
+        start=rule,
+    )
+    rule -= await ads()
+    rule -= await private()
+    return rule

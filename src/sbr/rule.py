@@ -1,11 +1,11 @@
 import json
 import os
 import pathlib
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Self
 
 import pydantic
 
-from sbr import utils
+from sbr import optim, utils
 from sbr.typing import StrPath
 
 StrSet = Annotated[set[str], pydantic.BeforeValidator(utils.as_list)]
@@ -102,6 +102,22 @@ class Rule(pydantic.BaseModel):
             ip_cidr=self.ip_cidr - other.ip_cidr,
             process_name=self.process_name - other.process_name,
         )
+
+    def optimize(self) -> Self:
+        self.domain, self.domain_suffix = optim.merge_domain_with_suffix(
+            self.domain, self.domain_suffix
+        )
+        self.domain_suffix = optim.merge_between_domain_suffix(self.domain_suffix)
+        self.domain, self.domain_keyword = optim.merge_domain_with_keyword(
+            self.domain, self.domain_keyword
+        )
+        self.domain_suffix, self.domain_keyword = (
+            optim.merge_domain_suffix_with_keyword(
+                self.domain_suffix, self.domain_keyword
+            )
+        )
+        self.ip_cidr = set(optim.merge_ip_cidr(self.ip_cidr))
+        return self
 
     def save(self, filename: str | os.PathLike[str]) -> None:
         filename = pathlib.Path(filename)

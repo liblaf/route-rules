@@ -1,10 +1,11 @@
-import asyncio
+import aiocache
 
-from icecream import ic
 from sbr import GeoSite, Rule
+from sbr.preset._ads import ads
 
 
-async def main() -> None:
+@aiocache.cached()
+async def ai() -> Rule:
     rule = Rule()
     rule += await Rule.from_list_url("data/blackmatrix7/Claude.list")
     rule += await Rule.from_list_url("data/blackmatrix7/Copilot.list")
@@ -14,10 +15,5 @@ async def main() -> None:
     rule += await geosite.export("ai")
     geosite = await GeoSite.from_url("data/MetaCubeX/geosite.db")
     rule += await geosite.export("openai")
-    rule -= await Rule.from_json_url("output/rule-set/ads.json")
-    ic(rule)
-    rule.save("output/rule-set/ai.json")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    rule -= await ads()
+    return rule
