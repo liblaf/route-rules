@@ -52,5 +52,5 @@ jobs:
         with:
           github_token: ${{ github.token }}
           publish_branch: rule-sets
-          publish_dir: rule-sets
+          publish_dir: output
           force_orphan: true
