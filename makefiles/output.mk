@@ -4,6 +4,7 @@ OUTPUTS += output/geosite/ads.srs
 OUTPUTS += output/geosite/cn.srs
 OUTPUTS += output/geosite/private.srs
 OUTPUTS += output/rule-set/ads.srs
+OUTPUTS += output/rule-set/ai.srs
 OUTPUTS += output/rule-set/cn.srs
 OUTPUTS += output/rule-set/download.srs
 OUTPUTS += output/rule-set/emby.srs
@@ -17,10 +18,7 @@ output/README.md: scripts/summary.py $(OUTPUTS:.srs=.json)
 	python "$<" > "$@"
 	prettier --write --ignore-path "" "$@"
 
-output/rule-set/%.srs: output/rule-set/%.json
-	$(SING_BOX) rule-set compile "$<" --output "$@"
-
-output/geosite/%.srs: output/geosite/%.json
+output/%.srs: output/%.json
 	$(SING_BOX) rule-set compile "$<" --output "$@"
 
 output/rule-set/%.json: preset/%.py $(DATA)

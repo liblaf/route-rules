@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 
 from sbr import Rule
 from sbr.typing import StrPath
@@ -37,6 +38,7 @@ async def summary(name: str, filename: StrPath) -> str:
 
 async def main() -> None:
     print("# sing-box Rules")
+    print("Updated At:", datetime.datetime.now(datetime.UTC).isoformat())
     for name, filename in RULE_SETS.items():
         print(await summary(name, filename))
 
