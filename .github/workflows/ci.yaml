@@ -21,6 +21,8 @@ jobs:
           gh release --repo "SagerNet/sing-box" download "v1.10.0-alpha.28" --pattern "sing-box-*-linux-amd64.tar.gz"
           tar --extract --file sing-box-*-linux-amd64.tar.gz --verbose
           install -D --no-target-directory --verbose sing-box-*-linux-amd64/sing-box ~/.local/bin/sing-box
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Install Python Dependencies
         run: rye sync --no-lock
       - name: Build Rule Sets
