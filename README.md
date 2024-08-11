@@ -62,6 +62,7 @@
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🔒 RuleSet: Private](#-ruleset-private)
+  - [🌐 RuleSet: Proxy](#-ruleset-proxy)
 
 ### 🌐 RuleSet: Proxy
 
@@ -72,7 +73,6 @@
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🔒 RuleSet: Private](#-ruleset-private)
-  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
 
 ### 🤖 RuleSet: AI
 
