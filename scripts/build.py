@@ -14,6 +14,7 @@ from sbr import Rule, preset
 class Config:
     fn: Callable[[], Coroutine[None, None, Rule]]
     geosite: bool = False
+    geoip: bool = False
     id: str
     name: str
 
@@ -21,11 +22,12 @@ class Config:
 RULE_SETS: list[Config] = [
     Config(id="ads", fn=preset.ads, name="📵 RuleSet: ADs", geosite=True),
     Config(id="private", fn=preset.private, name="🔒 RuleSet: Private", geosite=True),
-    Config(id="cn", fn=preset.cn, name="🇨🇳 RuleSet: CN", geosite=True),
+    Config(id="cn", fn=preset.cn, name="🇨🇳 RuleSet: CN", geosite=True, geoip=True),
     Config(id="ai", fn=preset.ai, name="🤖 RuleSet: AI"),
     Config(id="emby", fn=preset.emby, name="🍟 RuleSet: Emby"),
     Config(id="download", fn=preset.download, name="☁️ RuleSet: Download"),
     Config(id="media", fn=preset.media, name="📺 RuleSet: Media"),
+    Config(id="proxy", fn=preset.proxy, name="🌐 RuleSet: Proxy", geosite=True),
 ]
 
 
@@ -46,8 +48,12 @@ async def main() -> None:
             print_summary(cfg.name, raw, rule, fp)
             ic(cfg.name, rule)
             if cfg.geosite:
-                rule.ip_cidr.clear()
-                rule.save(f"output/geosite/{cfg.id}.json")
+                geosite: Rule = rule.model_copy(deep=True)
+                geosite.ip_cidr.clear()
+                geosite.save(f"output/geosite/{cfg.id}.json")
+            if cfg.geoip:
+                geoip = Rule(ip_cidr=rule.ip_cidr)
+                geoip.save(f"output/geoip/{cfg.id}.json")
 
 
 def print_summary(name: str, raw: Rule, rule: Rule, file: TextIO) -> None:

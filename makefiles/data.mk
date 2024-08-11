@@ -6,6 +6,7 @@ DATA += data/blackmatrix7/Developer.list
 DATA += data/blackmatrix7/Direct.list
 DATA += data/blackmatrix7/Download.list
 DATA += data/blackmatrix7/Gemini.list
+DATA += data/blackmatrix7/Global.list
 DATA += data/blackmatrix7/GlobalMedia.list
 DATA += data/blackmatrix7/Lan.list
 DATA += data/blackmatrix7/NTPService.list

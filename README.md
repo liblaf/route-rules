@@ -5,16 +5,20 @@
 | [📵 RuleSet: ADs](#-ruleset-ads)           | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ads.srs)           |
 | [🔒 RuleSet: Private](#-ruleset-private)   | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/private.srs)   |
 | [🇨🇳 RuleSet: CN](#-ruleset-cn)             | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/cn.srs)             |
+| [🌐 RuleSet: Proxy](#-ruleset-proxy)       | [rule-set/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/proxy.srs)       |
 | [🤖 RuleSet: AI](#-ruleset-ai)             | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ai.srs)             |
 | [🍟 RuleSet: Emby](#-ruleset-emby)         | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/emby.srs)         |
 | [☁️ RuleSet: Download](#-ruleset-download) | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/download.srs) |
 | [📺 RuleSet: Media](#-ruleset-media)       | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/media.srs)       |
 | [📵 GeoSite: ADs](#-ruleset-ads)           | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/ads.srs)             |
 | [🔒 GeoSite: Private](#-ruleset-private)   | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/private.srs)     |
-| [🇨🇳 GeoSite: CN](#-ruleset-cn)             | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/cn.srs)          |
+| [🇨🇳 GeoSite: CN](#-ruleset-cn)             | [geosite/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/cn.srs)               |
+| [🌐 GeoSite: Proxy](#-ruleset-proxy)       | [geosite/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/proxy.srs)         |
+| [🇨🇳 GeoIP: CN](#-ruleset-cn)               | [geoip/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geoip/cn.srs)                   |
 
-- `GeoSite: *` does not contain `IP-CIDR` rules, useful for DNS Rule.
 - [statistics](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md)
+- `GeoSite: *` does not contain `IP-CIDR` rules, useful for DNS Rule.
+- `GeoIP: *` does not contain `DOMAIN*` rules, useful for DNS Rule.
 
 ## Optimization
 
@@ -38,10 +42,11 @@
 
 - include:
   - [blackmatrix7/Lan.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Lan)
+  - [blackmatrix7/NTPService.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/NTPService)
   - [DustinWin/geoip-all.db](https://github.com/DustinWin/ruleset_geodata): `private`
   - [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `private`
   - [MetaCubeX/geoip.db](https://github.com/MetaCubeX/meta-rules-dat): `private`
-  - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `private`
+  - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `category-ntp*`, `private`
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
 
@@ -50,14 +55,24 @@
 - include:
   - [blackmatrix7/ChinaMax.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/ChinaMax)
   - [blackmatrix7/Direct.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Direct)
-  - [blackmatrix7/NTPService.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/NTPService)
   - [DustinWin/geoip-all.db](https://github.com/DustinWin/ruleset_geodata): `cn`
   - [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `cn`
   - [MetaCubeX/geoip.db](https://github.com/MetaCubeX/meta-rules-dat): `cn`
-  - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*-cn` | `*-ntp*` | `*@cn` | `cn`
+  - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*-cn` | `*@cn` | `cn`
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🔒 RuleSet: Private](#-ruleset-private)
+
+### 🌐 RuleSet: Proxy
+
+- include:
+  - [blackmatrix7/Global.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Global)
+  - [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `proxy`
+  - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*!cn*`
+- exclude:
+  - [📵 RuleSet: ADs](#-ruleset-ads)
+  - [🔒 RuleSet: Private](#-ruleset-private)
+  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
 
 ### 🤖 RuleSet: AI
 
@@ -101,6 +116,7 @@
   - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `youtube`
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
+  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
 
 ## Acknowledgement
 

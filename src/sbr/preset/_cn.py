@@ -24,7 +24,7 @@ async def cn() -> Rule:
     categories: list[str] = [
         category
         for category in geosite.categories
-        if category.endswith(("-cn", "-cn", "@cn")) or "-ntp" in category
+        if category.endswith(("-cn", "-cn", "@cn"))
     ]
     rule: Rule = sum(
         await asyncio.gather(*[geosite.export(category) for category in categories]),
