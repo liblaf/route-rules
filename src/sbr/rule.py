@@ -104,6 +104,8 @@ class Rule(pydantic.BaseModel):
         )
 
     def optimize(self) -> Self:
+        # TODO: remove this workaround
+        self.domain_suffix = {d.lstrip(".") for d in self.domain_suffix}
         self.domain, self.domain_suffix = optim.merge_domain_with_suffix(
             self.domain, self.domain_suffix
         )
