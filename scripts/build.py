@@ -43,9 +43,9 @@ async def main() -> None:
             raw: Rule = await cfg.fn()
             rule: Rule = raw.model_copy(deep=True)
             rule.optimize()
-            rule.save(f"output/rule-set/{cfg.id}.json")
-            raw.save(f"output/rule-set/{cfg.id}-raw.json")
             print_summary(cfg.name, raw, rule, fp)
+            rule.process_name.clear()  # TODO: split `PROCESS-NAME` to another file
+            rule.save(f"output/rule-set/{cfg.id}.json")
             ic(cfg.name, rule)
             if cfg.geosite:
                 geosite: Rule = rule.model_copy(deep=True)
