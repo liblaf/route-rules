@@ -23,11 +23,11 @@ RULE_SETS: list[Config] = [
     Config(id="ads", fn=preset.ads, name="📵 RuleSet: ADs", geosite=True),
     Config(id="private", fn=preset.private, name="🔒 RuleSet: Private", geosite=True),
     Config(id="cn", fn=preset.cn, name="🇨🇳 RuleSet: CN", geosite=True, geoip=True),
+    Config(id="proxy", fn=preset.proxy, name="🌐 RuleSet: Proxy", geosite=True),
     Config(id="ai", fn=preset.ai, name="🤖 RuleSet: AI"),
     Config(id="emby", fn=preset.emby, name="🍟 RuleSet: Emby"),
     Config(id="download", fn=preset.download, name="☁️ RuleSet: Download"),
     Config(id="media", fn=preset.media, name="📺 RuleSet: Media"),
-    Config(id="proxy", fn=preset.proxy, name="🌐 RuleSet: Proxy", geosite=True),
 ]
 
 
