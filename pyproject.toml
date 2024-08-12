@@ -29,5 +29,5 @@ packages = ["src/sbr"]
 allow-direct-references = true
 
 [tool.rye]
-dev-dependencies = ["icecream>=2.1.3"]
+dev-dependencies = ["icecream>=2.1.3", "marimo>=0.7.19"]
 managed = true

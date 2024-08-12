@@ -31,6 +31,119 @@
 - merge `DOMAIN-SUFFIX` with `DOMAIN-KEYWORD`
 - merge `IP-CIDR`
 
+## Example [sing-box] Config
+
+### DNS Rules
+
+```json
+{
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns:proxy",
+        "address": "https://cloudflare-dns.com/dns-query",
+        "address_resolver": "dns:bootstrap"
+      },
+      {
+        "tag": "dns:cn",
+        "address": "https://dns.alidns.com/dns-query",
+        "address_resolver": "dns:bootstrap"
+      },
+      { "tag": "dns:bootstrap", "address": "223.5.5.5", "detour": "DIRECT" },
+      { "tag": "dns:local", "address": "local" },
+      { "tag": "dns:reject", "address": "rcode://refused" }
+    ],
+    "rules": [
+      { "outbound": "any", "server": "dns:bootstrap" },
+      {
+        "rule_set": "geosite:ads",
+        "server": "dns:reject",
+        "disable_cache": true
+      },
+      { "rule_set": "geosite:private", "server": "dns:local" },
+      { "clash_mode": "direct", "server": "dns:cn" },
+      { "clash_mode": "global", "server": "dns:proxy" },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          { "rule_set": "geosite:proxy", "invert": true },
+          { "rule_set": "geosite:cn" }
+        ],
+        "server": "dns:cn"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          { "rule_set": "geosite:proxy", "invert": true },
+          { "rule_set": "geoip:cn" }
+        ],
+        "server": "dns:proxy",
+        "client_subnet": "101.6.6.6"
+      }
+    ],
+    "final": "dns:proxy",
+    "independent_cache": true
+  }
+}
+```
+
+### Route Rules
+
+```json
+{
+  "route": {
+    "rules": [
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [{ "protocol": "dns" }, { "port": 53 }],
+        "outbound": "dns"
+      },
+      { "rule_set": "rule-set:ads", "outbound": "REJECT" },
+      {
+        "ip_is_private": true,
+        "rule_set": "rule-set:private",
+        "outbound": "DIRECT"
+      },
+      { "clash_mode": "direct", "outbound": "DIRECT" },
+      { "clash_mode": "global", "outbound": "PROXY" },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          { "port": 853 },
+          { "network": "udp", "port": 443 },
+          { "protocol": "stun" }
+        ],
+        "outbound": "REJECT"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          { "rule_set": "rule-set:proxy", "invert": true },
+          { "rule_set": "rule-set:cn" }
+        ],
+        "outbound": "DIRECT"
+      },
+      { "rule_set": "rule-set:ai", "outbound": "🤖 AI" },
+      { "rule_set": "rule-set:emby", "outbound": "🍟 Emby" },
+      { "rule_set": "rule-set:download", "outbound": "☁️ Download" },
+      { "rule_set": "rule-set:media", "outbound": "📺 Media" }
+    ],
+    "final": "PROXY",
+    "auto_detect_interface": true
+  }
+}
+```
+
+## Data Sources
+
+> [!NOTE]
+> Exclusion is implemented as simple set difference, which does not mean the difference of rule sets. For example, [🇨🇳 RuleSet: CN](#-ruleset-cn) contains `DOMAIN,www.gstatic.com`, and [🌐 RuleSet: Proxy](#-ruleset-proxy) contains `DOMAIN-SUFFIX,gstatic.com`, then after set difference, [🌐 RuleSet: Proxy](#-ruleset-proxy) can still match `www.gstatic.com`.
+
 ### 📵 RuleSet: ADs
 
 - include:
@@ -63,7 +176,6 @@
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🔒 RuleSet: Private](#-ruleset-private)
-  - [🌐 RuleSet: Proxy](#-ruleset-proxy)
 
 ### 🌐 RuleSet: Proxy
 
@@ -74,6 +186,7 @@
 - exclude:
   - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🔒 RuleSet: Private](#-ruleset-private)
+  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
 
 ### 🤖 RuleSet: AI
 

@@ -4,6 +4,7 @@ import aiocache
 
 from sbr import GeoSite, Rule
 from sbr.preset._ads import ads
+from sbr.preset._cn import cn
 from sbr.preset._private import private
 
 
@@ -23,4 +24,5 @@ async def proxy() -> Rule:
     )
     rule -= await ads()
     rule -= await private()
+    rule -= await cn()
     return rule
