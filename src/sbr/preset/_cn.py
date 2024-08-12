@@ -6,7 +6,6 @@ from sbr import GeoSite, Rule
 from sbr.geoip import GeoIP
 from sbr.preset._ads import ads
 from sbr.preset._private import private
-from sbr.preset._proxy import proxy
 
 
 @aiocache.cached()
@@ -18,6 +17,7 @@ async def cn() -> Rule:
     rule += await geoip.export("cn")
     geosite: GeoSite = await GeoSite.from_url("data/DustinWin/geosite-all.db")
     rule += await geosite.export("cn")
+    rule += await Rule.from_json_url("custom/cn.json")
     geoip = await GeoIP.from_url("data/MetaCubeX/geoip.db")
     rule += await geoip.export("cn")
     geosite = await GeoSite.from_url("data/MetaCubeX/geosite.db")
@@ -33,5 +33,4 @@ async def cn() -> Rule:
     )
     rule -= await ads()
     rule -= await private()
-    rule -= await proxy()
     return rule
