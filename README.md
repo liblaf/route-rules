@@ -1,28 +1,28 @@
 # sing-box Rules
 
-| Name                                       | Download Link                                                                                         |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| [📵 RuleSet: ADs](#-ruleset-ads)           | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ads.srs)           |
-| [🔒 RuleSet: Private](#-ruleset-private)   | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/private.srs)   |
-| [🇨🇳 RuleSet: CN](#-ruleset-cn)             | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/cn.srs)             |
-| [🌐 RuleSet: Proxy](#-ruleset-proxy)       | [rule-set/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/proxy.srs)       |
-| [🤖 RuleSet: AI](#-ruleset-ai)             | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/ai.srs)             |
-| [🍟 RuleSet: Emby](#-ruleset-emby)         | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/emby.srs)         |
-| [☁️ RuleSet: Download](#-ruleset-download) | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/download.srs) |
-| [📺 RuleSet: Media](#-ruleset-media)       | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/rule-set/media.srs)       |
-| [📵 GeoSite: ADs](#-ruleset-ads)           | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/ads.srs)             |
-| [🔒 GeoSite: Private](#-ruleset-private)   | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/private.srs)     |
-| [🇨🇳 GeoSite: CN](#-ruleset-cn)             | [geosite/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/cn.srs)               |
-| [🌐 GeoSite: Proxy](#-ruleset-proxy)       | [geosite/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geosite/proxy.srs)         |
-| [🇨🇳 GeoIP: CN](#-ruleset-cn)               | [geoip/cn.srs](https://github.com/liblaf/sing-box-rules/raw/rule-sets/geoip/cn.srs)                   |
+| Name                                       | Download Link                                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [📵 RuleSet: ADs](#-ruleset-ads)           | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ads.srs)           |
+| [🔒 RuleSet: Private](#-ruleset-private)   | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/private.srs)   |
+| [🇨🇳 RuleSet: CN](#-ruleset-cn)             | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/cn.srs)             |
+| [🌐 RuleSet: Proxy](#-ruleset-proxy)       | [rule-set/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/proxy.srs)       |
+| [🤖 RuleSet: AI](#-ruleset-ai)             | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ai.srs)             |
+| [🍟 RuleSet: Emby](#-ruleset-emby)         | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/emby.srs)         |
+| [☁️ RuleSet: Download](#-ruleset-download) | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/download.srs) |
+| [📺 RuleSet: Media](#-ruleset-media)       | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/media.srs)       |
+| [📵 GeoSite: ADs](#-ruleset-ads)           | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/ads.srs)             |
+| [🔒 GeoSite: Private](#-ruleset-private)   | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/private.srs)     |
+| [🇨🇳 GeoSite: CN](#-ruleset-cn)             | [geosite/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/cn.srs)               |
+| [🌐 GeoSite: Proxy](#-ruleset-proxy)       | [geosite/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/proxy.srs)         |
+| [🇨🇳 GeoIP: CN](#-ruleset-cn)               | [geoip/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geoip/cn.srs)                   |
 
-- [statistics](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md)
+- [statistics](https://github.com/liblaf/sing-box-rules/blob/sing/README.md)
 - `GeoSite: *` does not contain `IP-CIDR` rules, useful for DNS Rule.
 - `GeoIP: *` does not contain `DOMAIN*` rules, useful for DNS Rule.
 
 ## Optimization
 
-[optimization results](https://github.com/liblaf/sing-box-rules/blob/rule-sets/README.md)
+[optimization results](https://github.com/liblaf/sing-box-rules/blob/sing/README.md)
 
 - remove duplicate rules
 - merge `DOMAIN` with `DOMAIN-SUFFIX`
@@ -31,7 +31,7 @@
 - merge `DOMAIN-SUFFIX` with `DOMAIN-KEYWORD`
 - merge `IP-CIDR`
 
-## Example [sing-box] Config
+## Example [sing-box](https://sing-box.sagernet.org) Config
 
 ### DNS Rules
 
@@ -44,34 +44,20 @@
         "address": "https://cloudflare-dns.com/dns-query",
         "address_resolver": "dns:bootstrap"
       },
-      {
-        "tag": "dns:cn",
-        "address": "https://dns.alidns.com/dns-query",
-        "address_resolver": "dns:bootstrap"
-      },
-      { "tag": "dns:bootstrap", "address": "223.5.5.5", "detour": "DIRECT" },
       { "tag": "dns:local", "address": "local" },
       { "tag": "dns:reject", "address": "rcode://refused" }
     ],
     "rules": [
-      { "outbound": "any", "server": "dns:bootstrap" },
+      { "outbound": "any", "server": "dns:local" },
       {
         "rule_set": "geosite:ads",
         "server": "dns:reject",
         "disable_cache": true
       },
       { "rule_set": "geosite:private", "server": "dns:local" },
-      { "clash_mode": "direct", "server": "dns:cn" },
+      { "clash_mode": "direct", "server": "dns:local" },
       { "clash_mode": "global", "server": "dns:proxy" },
-      {
-        "type": "logical",
-        "mode": "and",
-        "rules": [
-          { "rule_set": "geosite:proxy", "invert": true },
-          { "rule_set": "geosite:cn" }
-        ],
-        "server": "dns:cn"
-      },
+      { "rule_set": "geosite:cn", "server": "dns:local" },
       {
         "type": "logical",
         "mode": "and",
@@ -184,9 +170,9 @@
   - [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `proxy`
   - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*!cn*`
 - exclude:
+  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
   - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🔒 RuleSet: Private](#-ruleset-private)
-  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
 
 ### 🤖 RuleSet: AI
 
@@ -198,12 +184,18 @@
   - [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `ai`
   - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `openai`
 - exclude:
+  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
   - [📵 RuleSet: ADs](#-ruleset-ads)
+  - [🔒 RuleSet: Private](#-ruleset-private)
 
 ### 🍟 RuleSet: Emby
 
 - include:
   - [NotSFC/Emby.json](https://github.com/NotSFC/rulelist/blob/main/sing-box/Emby/Emby.json)
+- exclude:
+  - [🇨🇳 RuleSet: CN](#-ruleset-cn)
+  - [📵 RuleSet: ADs](#-ruleset-ads)
+  - [🔒 RuleSet: Private](#-ruleset-private)
 
 ### ☁️ RuleSet: Download
 
@@ -216,8 +208,9 @@
   - [liblaf/download.json](https://github.com/liblaf/sing-box-rules/blob/main/custom/download.json)
   - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `category-dev` | `onedrive`
 - exclude:
-  - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🇨🇳 RuleSet: CN](#-ruleset-cn)
+  - [📵 RuleSet: ADs](#-ruleset-ads)
+  - [🔒 RuleSet: Private](#-ruleset-private)
 
 ### 📺 RuleSet: Media
 
@@ -229,8 +222,9 @@
   - [MetaCubeX/geosite-lite.db](https://github.com/MetaCubeX/meta-rules-dat): `proxymedia`, `youtube`
   - [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `youtube`
 - exclude:
-  - [📵 RuleSet: ADs](#-ruleset-ads)
   - [🇨🇳 RuleSet: CN](#-ruleset-cn)
+  - [📵 RuleSet: ADs](#-ruleset-ads)
+  - [🔒 RuleSet: Private](#-ruleset-private)
 
 ## Acknowledgement
 

@@ -1,6 +1,6 @@
 fix = true
 show-fixes = true
-target-version = "py311"
+target-version = "py312"
 
 [format]
 docstring-code-format = true
@@ -16,9 +16,9 @@ ignore = [
   "FIX",
   "INP",
   "ISC",
-  "N806",
   "PLR09",
   "PLR2004",
+  "RET504",
   "S",
   "T20",
   "TD",
