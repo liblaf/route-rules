@@ -1,5 +1,8 @@
 # sing-box Rules
 
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/liblaf/sing-box-rules/docs.yaml?label=docs)](https://liblaf.github.io/sing-box-rules/)
+[![GitHub last commit (branch)](https://img.shields.io/github/last-commit/liblaf/sing-box-rules/sing?label=update)](https://github.com/liblaf/sing-box-rules/tree/sing)
+
 | Name                 | Download Link                                                                                    |
 | -------------------- | ------------------------------------------------------------------------------------------------ |
 | 🛑 RuleSet: ADs      | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ads.srs)           |

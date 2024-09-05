@@ -63,6 +63,7 @@ plugins:
         - tools/docs/gen-ref-pages.py
   - git-authors
   - git-committers:
+      enabled: !ENV [CI, false]
       repository: liblaf/sing-box-rules
       branch: main
   - literate-nav
