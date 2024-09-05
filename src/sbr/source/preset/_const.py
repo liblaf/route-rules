@@ -48,7 +48,7 @@ PRESETS: list[PresetConfig] = [
     ),
     PresetConfig(
         "proxy",
-        "🔗 Proxy",
+        "✈️ Proxy",
         [
             "blackmatrix7:Global",
             "DustinWin/geosite-all:proxy",
@@ -67,12 +67,6 @@ PRESETS: list[PresetConfig] = [
         ["preset:ads", "preset:cn", "preset:private"],
     ),
     PresetConfig(
-        "emby",
-        "🍟 Emby",
-        ["NotSFC:Emby"],
-        ["preset:ads", "preset:cn", "preset:private"],
-    ),
-    PresetConfig(
         "download",
         "☁️ Download",
         [
@@ -82,8 +76,14 @@ PRESETS: list[PresetConfig] = [
         ["preset:ads", "preset:cn", "preset:private"],
     ),
     PresetConfig(
+        "emby",
+        "🍟 Emby",
+        ["NotSFC:Emby"],
+        ["preset:ads", "preset:cn", "preset:private"],
+    ),
+    PresetConfig(
         "media",
-        "🎬 Media",
+        "📺 Media",
         [
             "blackmatrix7:GlobalMedia",
             "DustinWin/geosite-all:youtube",
