@@ -2,7 +2,7 @@
 
 !!! note
 
-    Exclusion is implemented as simple set difference, which does not mean the difference of rule sets. For example, [🇨🇳 CN](#-cn) contains `DOMAIN,www.gstatic.com`, and [✈️ Proxy](#-proxy) contains `DOMAIN-SUFFIX,gstatic.com`, then after set difference (`proxy -= cn`), [✈️ Proxy](#-proxy) can still match `www.gstatic.com`.
+    Exclusion is implemented as simple set difference, which does not mean the difference of rule sets. For example, [🇨🇳 CN](#cn) contains `DOMAIN,www.gstatic.com`, and [✈️ Proxy](#proxy) contains `DOMAIN-SUFFIX,gstatic.com`, then after set difference (`proxy -= cn`), [✈️ Proxy](#proxy) can still match `www.gstatic.com`.
 
 ## 🛑 ADs
 
@@ -21,7 +21,7 @@
     -   [MetaCubeX/geoip.db](https://github.com/MetaCubeX/meta-rules-dat): `private`
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `category-ntp*`, `private`
 -   exclude:
-    -   [🛑 ADs](#-ads)
+    -   [🛑 ADs](#ads)
 
 ## 🇨🇳 CN
 
@@ -34,8 +34,8 @@
     -   [MetaCubeX/geoip.db](https://github.com/MetaCubeX/meta-rules-dat): `cn`
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*-cn` | `*@cn` | `cn`
 -   exclude:
-    -   [🛑 ADs](#-ads)
-    -   [🔒 Private](#-private)
+    -   [🛑 ADs](#ads)
+    -   [🔒 Private](#private)
 
 ## ✈️ Proxy
 
@@ -44,9 +44,9 @@
     -   [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `proxy`
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*!cn*`
 -   exclude:
-    -   [🇨🇳 CN](#-cn)
-    -   [🛑 ADs](#-ads)
-    -   [🔒 Private](#-private)
+    -   [🇨🇳 CN](#cn)
+    -   [🛑 ADs](#ads)
+    -   [🔒 Private](#private)
 
 ## 🤖 AI
 
@@ -58,9 +58,9 @@
     -   [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `ai`
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `openai`
 -   exclude:
-    -   [🇨🇳 CN](#-cn)
-    -   [🛑 ADs](#-ads)
-    -   [🔒 Private](#-private)
+    -   [🇨🇳 CN](#cn)
+    -   [🛑 ADs](#ads)
+    -   [🔒 Private](#private)
 
 ## ☁️ Download
 
@@ -70,21 +70,20 @@
     -   [blackmatrix7/Developer.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Developer)
     -   [blackmatrix7/Download.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Download)
     -   [blackmatrix7/OneDrive.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/OneDrive)
-    -   [liblaf/download.json](https://github.com/liblaf/sing-box-rules/blob/main/custom/download.json)
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `category-dev` | `onedrive`
 -   exclude:
-    -   [🇨🇳 CN](#-cn)
-    -   [🛑 ADs](#-ads)
-    -   [🔒 Private](#-private)
+    -   [🇨🇳 CN](#cn)
+    -   [🛑 ADs](#ads)
+    -   [🔒 Private](#private)
 
 ## 🍟 Emby
 
 -   include:
     -   [NotSFC/Emby.json](https://github.com/NotSFC/rulelist/blob/main/sing-box/Emby/Emby.json)
 -   exclude:
-    -   [🇨🇳 CN](#-cn)
-    -   [🛑 ADs](#-ads)
-    -   [🔒 Private](#-private)
+    -   [🇨🇳 CN](#cn)
+    -   [🛑 ADs](#ads)
+    -   [🔒 Private](#private)
 
 ## 📺 Media
 
@@ -96,9 +95,9 @@
     -   [MetaCubeX/geosite-lite.db](https://github.com/MetaCubeX/meta-rules-dat): `proxymedia`, `youtube`
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `youtube`
 -   exclude:
-    -   [🇨🇳 CN](#-cn)
-    -   [🛑 ADs](#-ads)
-    -   [🔒 Private](#-private)
+    -   [🇨🇳 CN](#cn)
+    -   [🛑 ADs](#ads)
+    -   [🔒 Private](#private)
 
 ## Acknowledgement
 
