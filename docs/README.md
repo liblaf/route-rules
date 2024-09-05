@@ -2,6 +2,8 @@
 
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/liblaf/sing-box-rules/docs.yaml?label=docs)](https://liblaf.github.io/sing-box-rules/)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/liblaf/sing-box-rules/sing?label=update)](https://github.com/liblaf/sing-box-rules/tree/sing)
+[![GitHub repo size](https://img.shields.io/github/repo-size/liblaf/sing-box-rules)](https://github.com/liblaf/sing-box-rules)
+[![GitHub Repo stars](https://img.shields.io/github/stars/liblaf/sing-box-rules)](https://github.com/liblaf/sing-box-rules)
 
 | Name                 | Download Link                                                                                    |
 | -------------------- | ------------------------------------------------------------------------------------------------ |
