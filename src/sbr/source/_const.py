@@ -18,6 +18,11 @@ SOURCES: list[Source] = [
         "https://github.com/DustinWin/ruleset_geodata/releases/download/sing-box/geosite-all.db",
         "data/DustinWin/geosite-all/",
     ),
+    SingBoxRuleSet(
+        "liblaf",
+        "https://github.com/liblaf/sing-box-rules/raw/main/custom/${key}.json",
+        "data/liblaf",
+    ),
     GeoIP(
         "MetaCubeX/geoip",
         "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.db",

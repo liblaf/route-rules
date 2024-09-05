@@ -41,6 +41,7 @@ PRESETS: list[PresetConfig] = [
             "blackmatrix7:ChinaMax,Direct",
             "DustinWin/geoip-all:cn",
             "DustinWin/geosite-all:cn",
+            "liblaf:cn",
             "MetaCubeX/geoip:cn",
             "MetaCubeX/geosite:cn,*-cn,*@cn",
         ],
