@@ -25,6 +25,7 @@
 [optimization results](https://liblaf.github.io/sing-box-rules/stats/)
 
 -   remove duplicate rules
+-   remove unresolvable domains
 -   merge `DOMAIN` with `DOMAIN-SUFFIX`
 -   merge between `DOMAIN-SUFFIX`
 -   merge `DOMAIN` with `DOMAIN-KEYWORD`
