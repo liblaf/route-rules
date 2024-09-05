@@ -26,8 +26,20 @@ readme = "README.md"
 requires-python = ">= 3.12"
 version = "0.1.0"
 
-[project.scripts]
-"sing-box-rules" = "sbr:main"
+[project.optional-dependencies]
+docs = [
+  "mkdocs-embed-external-markdown>=3.0.2",
+  "mkdocs-gen-files>=0.5.0",
+  "mkdocs-git-authors-plugin>=0.9.0",
+  "mkdocs-git-committers-plugin-2>=2.3.0",
+  "mkdocs-git-revision-date-localized-plugin>=1.2.7",
+  "mkdocs-literate-nav>=0.6.1",
+  "mkdocs-material[imaging]>=9.5.34",
+  "mkdocs-section-index>=0.3.9",
+  "mkdocs>=1.6.1",
+  "mkdocstrings-python>=1.11.1",
+  "mkdocstrings>=0.26.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/sbr"]

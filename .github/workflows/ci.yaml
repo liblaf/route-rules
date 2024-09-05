@@ -25,7 +25,7 @@ jobs:
           source .venv/bin/activate
           python tools/build.py
           bash scripts/compile.sh
-          npx prettier --write output/README.md
+          npx prettier --write --ignore-path "" output/README.md
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -49,6 +49,7 @@ jobs:
       - name: Deploy to GitHub Branch
         uses: peaceiris/actions-gh-pages@v4
         with:
+          github_token: ${{ github.token }}
           publish_branch: sing
           publish_dir: sing
           force_orphan: true
