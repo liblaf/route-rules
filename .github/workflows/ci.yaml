@@ -23,7 +23,7 @@ jobs:
       - name: Build Rule Sets
         run: |-
           source .venv/bin/activate
-          python src/build.py
+          python tools/build.py
           bash scripts/compile.sh
           npx prettier --write output/README.md
       - name: Upload Artifacts
