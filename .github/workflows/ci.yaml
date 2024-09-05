@@ -47,9 +47,8 @@ jobs:
           name: sing
           path: sing
       - name: Deploy to GitHub Branch
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ github.token }}
-          publish_branch: sing
-          publish_dir: sing
-          force_orphan: true
+          folder: sing
+          branch: sing
+          single-commit: true
