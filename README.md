@@ -128,7 +128,7 @@
 ## Data Sources
 
 > [!NOTE]
-> Exclusion is implemented as simple set difference, which does not mean the difference of rule sets. For example, [🇨🇳 RuleSet: CN](#-ruleset-cn) contains `DOMAIN,www.gstatic.com`, and [🌐 RuleSet: Proxy](#-ruleset-proxy) contains `DOMAIN-SUFFIX,gstatic.com`, then after set difference, [🌐 RuleSet: Proxy](#-ruleset-proxy) can still match `www.gstatic.com`.
+> Exclusion is implemented as simple set difference, which does not mean the difference of rule sets. For example, [🇨🇳 RuleSet: CN](#-ruleset-cn) contains `DOMAIN,www.gstatic.com`, and [🌐 RuleSet: Proxy](#-ruleset-proxy) contains `DOMAIN-SUFFIX,gstatic.com`, then after set difference (`proxy -= cn`), [🌐 RuleSet: Proxy](#-ruleset-proxy) can still match `www.gstatic.com`.
 
 ### 📵 RuleSet: ADs
 

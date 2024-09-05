@@ -72,7 +72,7 @@ class Rule(BaseModel):
         self.ip_cidr = optim.merge_ip_cidr(self.ip_cidr)
 
     def save(self, path: StrPath) -> None:
-        sbr.RuleSet(version=2, rules=[self]).save(path)
+        sbr.RuleSet(version=1, rules=[self]).save(path)
 
     def summary(self) -> str:
         res: str = ""

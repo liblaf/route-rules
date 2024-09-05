@@ -24,6 +24,7 @@ jobs:
         run: |-
           source .venv/bin/activate
           python src/build.py
+          bash scripts/compile.sh
           npx prettier --write output/README.md
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
