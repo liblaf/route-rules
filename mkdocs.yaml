@@ -2,8 +2,10 @@
 
 site_name: sing-box Rules
 site_url: https://liblaf.github.io/sing-box-rules/
+repo_name: liblaf/sing-box-rules
 repo_url: https://github.com/liblaf/sing-box-rules
 site_author: liblaf
+edit_uri: edit/main/docs/
 
 theme:
   name: material
@@ -61,7 +63,6 @@ plugins:
   - gen-files:
       scripts:
         - tools/docs/gen-ref-pages.py
-  - git-authors
   - git-committers:
       enabled: !ENV [CI, false]
       repository: liblaf/sing-box-rules
