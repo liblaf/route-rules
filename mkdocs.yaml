@@ -27,7 +27,7 @@ theme:
     - navigation.instant.prefetch
     - navigation.instant.progress
     - navigation.path
-    - navigation.prune
+    # - navigation.prune
     # - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
@@ -89,7 +89,7 @@ plugins:
             - https://validators.readthedocs.io/en/stable/objects.inv
           options:
             # General
-            show_inheritance_diagram: true
+            show_source: false
             # Headings
             show_symbol_type_heading: true
             show_symbol_type_toc: true

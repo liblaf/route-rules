@@ -28,6 +28,7 @@ version = "0.1.0"
 
 [project.optional-dependencies]
 docs = [
+  "black>=24.8.0",
   "mkdocs-embed-external-markdown>=3.0.2",
   "mkdocs-gen-files>=0.5.0",
   "mkdocs-git-committers-plugin-2>=2.3.0",

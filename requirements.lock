@@ -18,6 +18,8 @@ anyio==4.4.0
 babel==2.16.0
     # via mkdocs-git-revision-date-localized-plugin
     # via mkdocs-material
+black==24.8.0
+    # via sing-box-rules
 boltons==24.0.0
     # via sing-box-rules
 cairocffi==1.7.1
@@ -33,6 +35,7 @@ cffi==1.17.1
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
+    # via black
     # via mkdocs
     # via mkdocstrings
 colorama==0.4.6
@@ -93,7 +96,6 @@ mergedeep==1.3.4
 mkdocs==1.6.1
     # via mkdocs-autorefs
     # via mkdocs-gen-files
-    # via mkdocs-git-authors-plugin
     # via mkdocs-git-committers-plugin-2
     # via mkdocs-git-revision-date-localized-plugin
     # via mkdocs-literate-nav
@@ -110,8 +112,6 @@ mkdocs-gen-files==0.5.0
     # via sing-box-rules
 mkdocs-get-deps==0.2.0
     # via mkdocs
-mkdocs-git-authors-plugin==0.9.0
-    # via sing-box-rules
 mkdocs-git-committers-plugin-2==2.3.0
     # via sing-box-rules
 mkdocs-git-revision-date-localized-plugin==1.2.7
@@ -129,17 +129,22 @@ mkdocstrings==0.26.0
     # via sing-box-rules
 mkdocstrings-python==1.11.1
     # via sing-box-rules
+mypy-extensions==1.0.0
+    # via black
 packaging==24.1
+    # via black
     # via lazy-loader
     # via mkdocs
 paginate==0.5.7
     # via mkdocs-material
 pathspec==0.12.1
+    # via black
     # via mkdocs
 pillow==10.4.0
     # via cairosvg
     # via mkdocs-material
 platformdirs==4.2.2
+    # via black
     # via mkdocs-get-deps
     # via mkdocstrings
 prettytable==3.11.0
