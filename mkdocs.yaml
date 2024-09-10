@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: sing-box Rules
-site_url: https://liblaf.github.io/sing-box-rules/
 repo_name: liblaf/sing-box-rules
 repo_url: https://github.com/liblaf/sing-box-rules
 site_author: liblaf
