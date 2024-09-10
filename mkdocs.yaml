@@ -62,6 +62,7 @@ plugins:
   # External plugins, schema provided by us
   - gen-files:
       scripts:
+        - tools/docs/gen-stats.py
         - tools/docs/gen-ref-pages.py
   - git-committers:
       enabled: !ENV [CI, false]
@@ -97,6 +98,7 @@ plugins:
             inherited_members: true
             filters:
               - "!^_[^_]"
+              - "!__all__"
             summary: true
             # Docstrings
             docstring_section_style: list
@@ -105,7 +107,6 @@ plugins:
             show_signature_annotations: true
             separate_signature: true
             signature_crossrefs: true
-  - external-markdown
 
 markdown_extensions:
   - admonition
@@ -114,3 +115,8 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+
+watch:
+  - docs/
+  - src/sbr/
+  - tools/docs/

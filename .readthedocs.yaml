@@ -1,0 +1,13 @@
+version: 2
+
+python:
+  install:
+    - requirements: requirements-dev.lock
+
+build:
+  os: ubuntu-lts-latest
+  tools:
+    python: "3.12"
+
+mkdocs:
+  configuration: mkdocs.yaml

@@ -10,7 +10,7 @@
 
 === "FakeIP, iOS"
 
-    ```json linenums="1" hl_lines="12 22 39-43"
+    ```json linenums="1" hl_lines="8 18 35-39"
     --8<-- "docs/_config/dns-fakeip.json"
     ```
 

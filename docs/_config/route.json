@@ -6,7 +6,7 @@
         "type": "logical",
         "mode": "or",
         "rules": [{ "protocol": "dns" }, { "port": 53 }],
-        "outbound": "dns"
+        "outbound": "out:dns"
       },
       {
         "type": "logical",
@@ -18,7 +18,6 @@
         ],
         "outbound": "REJECT"
       },
-      { "port": [80, 8080, 443, 8443], "invert": true, "outbound": "DIRECT" },
       { "rule_set": "rule-set:ads", "outbound": "REJECT" },
       {
         "ip_is_private": true,
