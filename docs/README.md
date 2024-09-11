@@ -1,26 +1,26 @@
 # sing-box Rules
 
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/liblaf/sing-box-rules/ci.yaml)](https://github.com/liblaf/sing-box-rules/actions/workflows/ci.yaml)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/liblaf/sing-box-rules/docs.yaml?label=docs)](https://liblaf.github.io/sing-box-rules/)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/liblaf/sing-box-rules/sing?label=update)](https://github.com/liblaf/sing-box-rules/tree/sing)
 [![GitHub repo size](https://img.shields.io/github/repo-size/liblaf/sing-box-rules)](https://github.com/liblaf/sing-box-rules)
 [![GitHub Repo stars](https://img.shields.io/github/stars/liblaf/sing-box-rules)](https://github.com/liblaf/sing-box-rules)
+[![Read the Docs](https://img.shields.io/readthedocs/sing-box-rules)](https://sing-box-rules.readthedocs.io)
 
-| Name                 | Download Link                                                                                    |
-| -------------------- | ------------------------------------------------------------------------------------------------ |
-| 🛑 RuleSet: ADs      | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ads.srs)           |
-| 🔒 RuleSet: Private  | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/private.srs)   |
-| 🇨🇳 RuleSet: CN       | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/cn.srs)             |
-| ✈️ RuleSet: Proxy    | [rule-set/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/proxy.srs)       |
-| 🤖 RuleSet: AI       | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ai.srs)             |
-| ☁️ RuleSet: Download | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/download.srs) |
-| 🍟 RuleSet: Emby     | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/emby.srs)         |
-| 📺 RuleSet: Media    | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/media.srs)       |
-| 🇨🇳 GeoIP: CN         | [geoip/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geoip/cn.srs)                   |
-| 🛑 GeoSite: ADs      | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/ads.srs)             |
-| 🔒 GeoSite: Private  | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/private.srs)     |
-| 🇨🇳 GeoSite: CN       | [geosite/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/cn.srs)               |
-| ✈️ GeoSite: Proxy    | [geosite/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/proxy.srs)         |
+| Name                 | GitHub                                                                                           | Cloudflare                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| 🛑 RuleSet: ADs      | [rule-set/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ads.srs)           | [rule-set/ads.srs](https://api.liblaf.me/rules/sing/rule-set/ads.srs)           |
+| 🔒 RuleSet: Private  | [rule-set/private.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/private.srs)   | [rule-set/private.srs](https://api.liblaf.me/rules/sing/rule-set/private.srs)   |
+| 🇨🇳 RuleSet: CN       | [rule-set/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/cn.srs)             | [rule-set/cn.srs](https://api.liblaf.me/rules/sing/rule-set/cn.srs)             |
+| ✈️ RuleSet: Proxy    | [rule-set/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/proxy.srs)       | [rule-set/proxy.srs](https://api.liblaf.me/rules/sing/rule-set/proxy.srs)       |
+| 🤖 RuleSet: AI       | [rule-set/ai.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/ai.srs)             | [rule-set/ai.srs](https://api.liblaf.me/rules/sing/rule-set/ai.srs)             |
+| ☁️ RuleSet: Download | [rule-set/download.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/download.srs) | [rule-set/download.srs](https://api.liblaf.me/rules/sing/rule-set/download.srs) |
+| 🍟 RuleSet: Emby     | [rule-set/emby.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/emby.srs)         | [rule-set/emby.srs](https://api.liblaf.me/rules/sing/rule-set/emby.srs)         |
+| 📺 RuleSet: Media    | [rule-set/media.srs](https://github.com/liblaf/sing-box-rules/raw/sing/rule-set/media.srs)       | [rule-set/media.srs](https://api.liblaf.me/rules/sing/rule-set/media.srs)       |
+| 🇨🇳 GeoIP: CN         | [geoip/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geoip/cn.srs)                   | [geoip/cn.srs](https://api.liblaf.me/rules/sing/geoip/cn.srs)                   |
+| 🛑 GeoSite: ADs      | [geosite/ads.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/ads.srs)             | [geosite/ads.srs](https://api.liblaf.me/rules/sing/geosite/ads.srs)             |
+| 🔒 GeoSite: Private  | [geosite/private.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/private.srs)     | [geosite/private.srs](https://api.liblaf.me/rules/sing/geosite/private.srs)     |
+| 🇨🇳 GeoSite: CN       | [geosite/cn.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/cn.srs)               | [geosite/cn.srs](https://api.liblaf.me/rules/sing/geosite/cn.srs)               |
+| ✈️ GeoSite: Proxy    | [geosite/proxy.srs](https://github.com/liblaf/sing-box-rules/raw/sing/geosite/proxy.srs)         | [geosite/proxy.srs](https://api.liblaf.me/rules/sing/geosite/proxy.srs)         |
 
 -   [statistics](https://liblaf.github.io/sing-box-rules/stats/)
 -   `GeoSite: *` does not contain `IP-CIDR` rules, useful for DNS Rule.
