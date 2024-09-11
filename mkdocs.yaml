@@ -1,6 +1,12 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: sing-box Rules
+site_url:
+  !ENV [
+    SITE_URL,
+    READTHEDOCS_CANONICAL_URL,
+    https://liblaf.github.io/sing-box-rules/,
+  ]
 repo_name: liblaf/sing-box-rules
 repo_url: https://github.com/liblaf/sing-box-rules
 site_author: liblaf
@@ -64,7 +70,7 @@ plugins:
         - tools/docs/gen-stats.py
         - tools/docs/gen-ref-pages.py
   - git-committers:
-      enabled: !ENV [CI, false]
+      enabled: !ENV [READTHEDOCS, CI, false]
       repository: liblaf/sing-box-rules
       branch: main
   - literate-nav

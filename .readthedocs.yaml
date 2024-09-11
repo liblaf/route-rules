@@ -8,6 +8,9 @@ build:
   os: ubuntu-lts-latest
   tools:
     python: "3.12"
+  jobs:
+    post_checkout:
+      - git fetch --unshallow || true
 
 mkdocs:
   configuration: mkdocs.yaml
