@@ -2,7 +2,12 @@
   "version": 1,
   "rules": [
     {
-      "domain_suffix": ["anaconda.org", "pythonhosted.org"]
+      "domain_suffix": [
+        "anaconda.org",
+        "gjm20.top",
+        "liblaf.me",
+        "pythonhosted.org"
+      ]
     }
   ]
 }
