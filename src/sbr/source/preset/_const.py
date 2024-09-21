@@ -71,8 +71,8 @@ PRESETS: list[PresetConfig] = [
         "download",
         "☁️ Download",
         [
-            "blackmatrix7:Developer,Download,OneDrive",
-            "MetaCubeX/geosite:category-dev,onedrive",
+            "blackmatrix7:Download,OneDrive",
+            "MetaCubeX/geosite:onedrive",
         ],
         ["preset:ads", "preset:cn", "preset:private"],
     ),

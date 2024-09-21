@@ -67,10 +67,9 @@
 🔴 latency insensitive, 🟢 high bandwidth
 
 -   include:
-    -   [blackmatrix7/Developer.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Developer)
     -   [blackmatrix7/Download.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Download)
     -   [blackmatrix7/OneDrive.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/OneDrive)
-    -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `category-dev` | `onedrive`
+    -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `onedrive`
 -   exclude:
     -   [🇨🇳 CN](#cn)
     -   [🛑 ADs](#ads)
