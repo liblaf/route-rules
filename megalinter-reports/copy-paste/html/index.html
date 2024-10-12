@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Copy/Paste Detector Report</title><link href="styles/tailwind.css" rel="stylesheet"><link href="styles/prism.css" rel="stylesheet"></head><body class="bg-gray-100"><header class="bg-white shadow py-4"><div class="container mx-auto px-4"><h1 class="text-3xl font-semibold text-gray-800">jscpd - copy/paste report</h1></div></header><main class="container mx-auto my-8 p-4 bg-white shadow rounded"><section class="mb-8" id="dashboard"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Dashboard</h2><div class="grid grid-cols-4 gap-4"><div class="bg-blue-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-blue-800 mb-2">Total Files</h3><span class="text-4xl font-bold text-blue-800">26</span></div><div class="bg-green-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-green-800 mb-2">Total Lines of Code</h3><span class="text-4xl font-bold text-green-800">906</span></div><div class="bg-yellow-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-yellow-800 mb-2">Number of Clones</h3><span class="text-4xl font-bold text-yellow-800">4</span></div><div class="bg-red-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-red-800 mb-2">Duplicated Lines</h3><span class="text-4xl font-bold text-red-800">60 (6.62%)</span></div></div></section><section class="mb-8" id="formats"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Formats with Duplications</h2><table class="w-full table-auto"><thead><tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"><th class="py-3 px-6 text-left">Format</th><th class="py-3 px-6 text-left">Files</th><th class="py-3 px-6 text-left">Lines</th><th class="py-3 px-6 text-left">Clones</th><th class="py-3 px-6 text-left">Duplicated Lines</th><th class="py-3 px-6 text-left">Duplicated Tokens</th></tr></thead><tbody><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#python-clones">python</a></td><td class="py-3 px-6">25</td><td class="py-3 px-6">899</td><td class="py-3 px-6">4</td><td class="py-3 px-6">60</td><td class="py-3 px-6">674</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#bash-clones">bash</a></td><td class="py-3 px-6">1</td><td class="py-3 px-6">7</td><td class="py-3 px-6">0</td><td class="py-3 px-6">0</td><td class="py-3 px-6">0</td></tr></tbody></table></section><section class="mb-8" id="txt-clones"><a name="python-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">python</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">src/sbr/source/_geoip.py (Line 12:6 - Line 25:11), src/sbr/source/_geosite.py (Line 12:8 - Line 25:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup0"><code class="language-python text-sm text-gray-800">(Source):
+    name: str
+    dpath: Path
+    url: str
+
+    def __init__(self, name: str, url: str, dpath: StrPath) -&gt; None:
+        super().__init__()
+        self.name = name
+        self.dpath = Path(dpath)
+        self.url = url
+
+    @property
+    def fpath(self) -&gt; Path:
+        return self.dpath / &quot;geoip.db&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">src/sbr/source/_geoip.py (Line 32:8 - Line 50:8), src/sbr/source/_geosite.py (Line 32:10 - Line 50:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup1"><code class="language-python text-sm text-gray-800">,
+            &quot;export&quot;,
+            key,
+            &quot;--output&quot;,
+            output,
+            &quot;--file&quot;,
+            self.fpath,
+        ]
+        proc: asp.Process = await asyncio.create_subprocess_exec(
+            *args, stdin=asp.DEVNULL
+        )
+        ret: int = await proc.wait()
+        if ret != 0:
+            raise sp.CalledProcessError(ret, args)
+        return Rule.from_file(output)
+
+    async def _keys_nocache(self) -&gt; list[str]:
+        await sbr.utils.download(self.url, self.fpath)
+        args: list[StrPath] = [&quot;sing-box&quot;, &quot;geoip&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">src/sbr/source/_geoip.py (Line 50:8 - Line 63:2), src/sbr/source/_geosite.py (Line 50:10 - Line 63:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup2"><code class="language-python text-sm text-gray-800">, &quot;list&quot;, &quot;--file&quot;, self.fpath]
+        proc: asp.Process = await asyncio.create_subprocess_exec(
+            *args, stdin=asp.DEVNULL, stdout=asp.PIPE
+        )
+        stdout: bytes
+        stdout, _ = await proc.communicate()
+        ret: int = await proc.wait()
+        if ret != 0:
+            raise sp.CalledProcessError(ret, args)
+        categories: dict[str, int] = {}
+        for line in stdout.decode().splitlines():
+            if m := re.match(r&quot;(?P&lt;name&gt;.*) \((?P&lt;count&gt;\d+)\)&quot;, line):
+                categories[m[&quot;name&quot;]] = int(m[&quot;count&quot;])
+        return list(categories.keys())</code></pre></div><div class="py-4"><p class="text-gray-600">src/sbr/source/_clash.py (Line 9:19 - Line 25:13), src/sbr/source/_singbox.py (Line 9:15 - Line 25:13)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup3"><code class="language-python text-sm text-gray-800">(Source):
+    name: str
+    dpath: Path
+    url: Template
+
+    def __init__(self, name: str, url: str | Template, dpath: StrPath) -&gt; None:
+        super().__init__()
+        self.name = name
+        if isinstance(url, str):
+            self.url = Template(url)
+        else:
+            self.url = url
+        self.dpath = Path(dpath)
+
+    async def _get_nocache(self, key: str) -&gt; Rule:
+        filepath: Path = await sbr.utils.download(
+            self.url.substitute({&quot;key&quot;: key}), self.dpath / f&quot;{key}.list&quot;</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="bash-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">bash</h2><div class="divide-y divide-gray-200 border-b-2"><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div></section><!-- Add more sections for other formats and clone groups as needed--></main><footer class="bg-white shadow mt-8 py-4"><div class="container mx-auto px-4 text-center"><p class="text-sm text-gray-600">This report is generated by jscpd, an open-source copy/paste detector.</p><p class="text-sm text-gray-600">jscpd is licensed under the MIT License.</p><a class="text-blue-500 text-sm" href="https://github.com/kucherenko/jscpd" target="_blank" rel="noopener noreferrer">View jscpd on GitHub</a></div></footer><script src="js/prism.js"></script><script>function toggleCodeBlock(codeBlockId, expandBtnId, collapseBtnId) {
+  const codeBlock = document.getElementById(codeBlockId);
+  const expandBtn = document.getElementById(expandBtnId);
+  const collapseBtn = document.getElementById(collapseBtnId);
+
+  codeBlock.classList.toggle('hidden');
+  expandBtn.classList.toggle('hidden');
+  collapseBtn.classList.toggle('hidden');
+}</script></body></html>

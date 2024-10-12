@@ -1,0 +1,510 @@
+{
+  "statistics": {
+    "detectionDate": "2024-10-12T11:56:38.496Z",
+    "formats": {
+      "python": {
+        "sources": {
+          "src/sbr/source/preset/_rule.py": {
+            "lines": 25,
+            "tokens": 254,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/preset/_preset.py": {
+            "lines": 20,
+            "tokens": 165,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/preset/_const.py": {
+            "lines": 109,
+            "tokens": 603,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_utils.py": {
+            "lines": 19,
+            "tokens": 224,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_remove_unresolvable.py": {
+            "lines": 4,
+            "tokens": 50,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_merge_suffix_with_keyword.py": {
+            "lines": 12,
+            "tokens": 132,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_merge_ip_cidr.py": {
+            "lines": 21,
+            "tokens": 198,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_merge_domain_with_suffix.py": {
+            "lines": 16,
+            "tokens": 169,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_merge_domain_with_keyword.py": {
+            "lines": 12,
+            "tokens": 131,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/optim/_merge_between_suffix.py": {
+            "lines": 10,
+            "tokens": 112,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/utils/_str.py": {
+            "lines": 13,
+            "tokens": 154,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/utils/_download.py": {
+            "lines": 100,
+            "tokens": 898,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/utils/_as.py": {
+            "lines": 6,
+            "tokens": 63,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/_singbox.py": {
+            "lines": 29,
+            "tokens": 275,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 16,
+            "duplicatedTokens": 190,
+            "percentage": 55.17,
+            "percentageTokens": 69.09,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/_geosite.py": {
+            "lines": 62,
+            "tokens": 630,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 44,
+            "duplicatedTokens": 484,
+            "percentage": 70.97,
+            "percentageTokens": 76.83,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/_geoip.py": {
+            "lines": 62,
+            "tokens": 630,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 44,
+            "duplicatedTokens": 484,
+            "percentage": 70.97,
+            "percentageTokens": 76.83,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/_const.py": {
+            "lines": 52,
+            "tokens": 266,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/_clash.py": {
+            "lines": 55,
+            "tokens": 523,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 16,
+            "duplicatedTokens": 190,
+            "percentage": 29.09,
+            "percentageTokens": 36.33,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/source/_abc.py": {
+            "lines": 36,
+            "tokens": 373,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/logging/_init.py": {
+            "lines": 36,
+            "tokens": 321,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/_rule_set.py": {
+            "lines": 22,
+            "tokens": 199,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/sbr/container/_rule.py": {
+            "lines": 83,
+            "tokens": 947,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "tools/docs/gen-stats.py": {
+            "lines": 9,
+            "tokens": 83,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "tools/docs/gen-ref-pages.py": {
+            "lines": 37,
+            "tokens": 451,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "tools/build.py": {
+            "lines": 49,
+            "tokens": 566,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 899,
+          "tokens": 8417,
+          "sources": 25,
+          "clones": 4,
+          "duplicatedLines": 60,
+          "duplicatedTokens": 674,
+          "percentage": 6.67,
+          "percentageTokens": 8.01,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "bash": {
+        "sources": {
+          "scripts/compile.sh": {
+            "lines": 7,
+            "tokens": 43,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 7,
+          "tokens": 43,
+          "sources": 1,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 906,
+      "tokens": 8460,
+      "sources": 26,
+      "clones": 4,
+      "duplicatedLines": 60,
+      "duplicatedTokens": 674,
+      "percentage": 6.62,
+      "percentageTokens": 7.97,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [
+    {
+      "format": "python",
+      "lines": 14,
+      "fragment": "(Source):\n    name: str\n    dpath: Path\n    url: str\n\n    def __init__(self, name: str, url: str, dpath: StrPath) -> None:\n        super().__init__()\n        self.name = name\n        self.dpath = Path(dpath)\n        self.url = url\n\n    @property\n    def fpath(self) -> Path:\n        return self.dpath / \"geoip.db\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sbr/source/_geoip.py",
+        "start": 12,
+        "end": 25,
+        "startLoc": {
+          "line": 12,
+          "column": 6,
+          "position": 65
+        },
+        "endLoc": {
+          "line": 25,
+          "column": 11,
+          "position": 188
+        }
+      },
+      "secondFile": {
+        "name": "src/sbr/source/_geosite.py",
+        "start": 12,
+        "end": 25,
+        "startLoc": {
+          "line": 12,
+          "column": 8,
+          "position": 65
+        },
+        "endLoc": {
+          "line": 25,
+          "column": 13,
+          "position": 188
+        }
+      }
+    },
+    {
+      "format": "python",
+      "lines": 19,
+      "fragment": ",\n            \"export\",\n            key,\n            \"--output\",\n            output,\n            \"--file\",\n            self.fpath,\n        ]\n        proc: asp.Process = await asyncio.create_subprocess_exec(\n            *args, stdin=asp.DEVNULL\n        )\n        ret: int = await proc.wait()\n        if ret != 0:\n            raise sp.CalledProcessError(ret, args)\n        return Rule.from_file(output)\n\n    async def _keys_nocache(self) -> list[str]:\n        await sbr.utils.download(self.url, self.fpath)\n        args: list[StrPath] = [\"sing-box\", \"geoip\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sbr/source/_geoip.py",
+        "start": 32,
+        "end": 50,
+        "startLoc": {
+          "line": 32,
+          "column": 8,
+          "position": 268
+        },
+        "endLoc": {
+          "line": 50,
+          "column": 8,
+          "position": 433
+        }
+      },
+      "secondFile": {
+        "name": "src/sbr/source/_geosite.py",
+        "start": 32,
+        "end": 50,
+        "startLoc": {
+          "line": 32,
+          "column": 10,
+          "position": 268
+        },
+        "endLoc": {
+          "line": 50,
+          "column": 10,
+          "position": 433
+        }
+      }
+    },
+    {
+      "format": "python",
+      "lines": 14,
+      "fragment": ", \"list\", \"--file\", self.fpath]\n        proc: asp.Process = await asyncio.create_subprocess_exec(\n            *args, stdin=asp.DEVNULL, stdout=asp.PIPE\n        )\n        stdout: bytes\n        stdout, _ = await proc.communicate()\n        ret: int = await proc.wait()\n        if ret != 0:\n            raise sp.CalledProcessError(ret, args)\n        categories: dict[str, int] = {}\n        for line in stdout.decode().splitlines():\n            if m := re.match(r\"(?P<name>.*) \\((?P<count>\\d+)\\)\", line):\n                categories[m[\"name\"]] = int(m[\"count\"])\n        return list(categories.keys())",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sbr/source/_geoip.py",
+        "start": 50,
+        "end": 63,
+        "startLoc": {
+          "line": 50,
+          "column": 8,
+          "position": 434
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 2,
+          "position": 630
+        }
+      },
+      "secondFile": {
+        "name": "src/sbr/source/_geosite.py",
+        "start": 50,
+        "end": 63,
+        "startLoc": {
+          "line": 50,
+          "column": 10,
+          "position": 434
+        },
+        "endLoc": {
+          "line": 63,
+          "column": 2,
+          "position": 630
+        }
+      }
+    },
+    {
+      "format": "python",
+      "lines": 17,
+      "fragment": "(Source):\n    name: str\n    dpath: Path\n    url: Template\n\n    def __init__(self, name: str, url: str | Template, dpath: StrPath) -> None:\n        super().__init__()\n        self.name = name\n        if isinstance(url, str):\n            self.url = Template(url)\n        else:\n            self.url = url\n        self.dpath = Path(dpath)\n\n    async def _get_nocache(self, key: str) -> Rule:\n        filepath: Path = await sbr.utils.download(\n            self.url.substitute({\"key\": key}), self.dpath / f\"{key}.list\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src/sbr/source/_clash.py",
+        "start": 9,
+        "end": 25,
+        "startLoc": {
+          "line": 9,
+          "column": 19,
+          "position": 47
+        },
+        "endLoc": {
+          "line": 25,
+          "column": 13,
+          "position": 237
+        }
+      },
+      "secondFile": {
+        "name": "src/sbr/source/_singbox.py",
+        "start": 9,
+        "end": 25,
+        "startLoc": {
+          "line": 9,
+          "column": 15,
+          "position": 47
+        },
+        "endLoc": {
+          "line": 25,
+          "column": 13,
+          "position": 237
+        }
+      }
+    }
+  ],
+  "filename": "/node-deps/node_modules/@jscpd/html-reporter/dist/templates/main.pug"
+}
