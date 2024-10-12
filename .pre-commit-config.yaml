@@ -12,20 +12,6 @@ repos:
         args:
           - --fix
       - id: ruff-format
-  - repo: https://github.com/cmhughes/latexindent.pl
-    rev: V3.24.4
-    hooks:
-      - id: latexindent-conda
-        files: \.(tex|sty|cls|bib)$
-        types:
-          - text
-        args:
-          - --overwriteIfDifferent
-          - --silent
-          - --local
-          - --cruft=/tmp/latexindent
-          - --modifylinebreaks
-          - --GCString
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.29.0
     hooks:
@@ -37,19 +23,6 @@ repos:
         files: \.(bash|sh|zsh)(\.tmpl)?$
         types:
           - text
-  - repo: https://github.com/liblaf/pre-commit-hooks
-    rev: dev
-    hooks:
-      - id: prettier
-        exclude: (.*-lock\..*)|(.*\.lock)$
-  - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v18.1.8
-    hooks:
-      - id: clang-format
-        types_or:
-          - c
-          - c++
-          - cuda
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
@@ -58,14 +31,12 @@ repos:
       - id: check-builtin-literals
       - id: check-case-conflict
       - id: check-docstring-first
-      - id: check-executables-have-shebangs
       - id: check-json
         exclude: tsconfig\.json$
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
       - id: check-vcs-permalinks
-      - id: check-xml
       - id: check-yaml
         args:
           - --unsafe
@@ -75,13 +46,10 @@ repos:
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
       - id: mixed-line-ending
-      - id: name-tests-test
       - id: trailing-whitespace
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.29.2
     hooks:
-      - id: check-dependabot
-      - id: check-github-actions
       - id: check-github-workflows
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.9.0-1
@@ -99,7 +67,6 @@ repos:
   - repo: https://github.com/sirosen/texthooks
     rev: 0.6.7
     hooks:
-      - id: alphabetize-codeowners
       - id: fix-ligatures
       - id: fix-spaces
       - id: forbid-bidi-controls
