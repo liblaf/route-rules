@@ -14,6 +14,7 @@ async def gen_optimization_summary(preset: Source) -> dict[str, Rule]:
     fpath: Path = Path("output/README.md")
     fpath.parent.mkdir(parents=True, exist_ok=True)
     rules: dict[str, Rule] = {}
+    # ASYNC230: Async functions should not open files with blocking methods like `open`
     async with await anyio.open_file(fpath, "w") as fp:
         await fp.write("# Route Rules\n")
         now: datetime.datetime = datetime.datetime.now(datetime.UTC)
