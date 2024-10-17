@@ -219,7 +219,7 @@ validators==0.34.0 \
 wcwidth==0.2.13 \
     --hash=sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5 \
     --hash=sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859
-websockets==12.0 \
+websockets==13.1 \
     --hash=sha256:81df9cbcbb6c260de1e007e58c011bfebe2dafc8435107b0537f393dd38c8b1b \
     --hash=sha256:5d873c7de42dea355d73f170be0f23788cf3fa9f7bed718fd2830eefedce01b4 \
     --hash=sha256:3f61726cae9f65b872502ff3c1496abc93ffbe31b278455c418492016e2afc8f \
