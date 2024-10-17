@@ -3,9 +3,11 @@
   "rules": [
     {
       "domain_suffix": [
+        "1panel.live",
         "anaconda.org",
         "gjm20.top",
         "liblaf.me",
+        "pypi.org",
         "pythonhosted.org"
       ]
     }

@@ -6,8 +6,6 @@ name: MegaLinter
 on:
   push:
   pull_request:
-    branches:
-      - main
 
 env:
   APPLY_FIXES: all
@@ -19,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  megalinter:
+  mega-linter:
     name: MegaLinter
     permissions:
       contents: write
@@ -42,8 +40,6 @@ jobs:
           # Common Variables
           MEGALINTER_CONFIG: .github/.mega-linter.yaml
           VALIDATE_ALL_CODEBASE: true
-          # Linters
-          PYTHON_PYRIGHT_DISABLE_ERRORS: true
           # Reporters
           TEXT_REPORTER: true
           GITHUB_COMMENT_REPORTER: true
@@ -70,14 +66,6 @@ jobs:
       - if: success() || failure()
         name: Add GitHub summary
         run: cat megalinter-reports/megalinter-report.md >> "$GITHUB_STEP_SUMMARY"
-      - name: Remove MegaLinter reports
-        run: >-
-          sudo rm --force --recursive
-          .checkov.yml
-          .devskim.json
-          kics.config
-          mega-linter.log
-          megalinter-reports/
       - id: cpr
         if: >-
           steps.ml.outputs.has_updated_sources == 1 &&
@@ -95,8 +83,8 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ github.token }}
-          commit-message: "chore(MegaLinter): apply linters automatic fixes"
-          title: "chore(MegaLinter): apply linters automatic fixes"
+          commit-message: "chore(mega-linter): apply linters automatic fixes"
+          title: "chore(mega-linter): apply linters automatic fixes"
           # TODO: add labels
       - if: >-
           steps.ml.outputs.has_updated_sources == 1 &&
@@ -145,12 +133,13 @@ jobs:
         name: Commit and push applied linter fixes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          commit_message: "chore(mega-linter): apply linters fixes"
           branch: >-
             ${{
               github.event.pull_request.head.ref ||
               github.head_ref ||
               github.ref
             }}
-          commit_message: "chore(MegaLinter): apply linters fixes"
+          add_options: --update
           commit_user_name: megalinter-bot
           commit_user_email: nicolas.vuillamy@ox.security

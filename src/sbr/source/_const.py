@@ -20,7 +20,7 @@ SOURCES: list[Source] = [
     ),
     SingBoxRuleSet(
         "liblaf",
-        "https://github.com/liblaf/sing-box-rules/raw/main/custom/${key}.json",
+        "https://github.com/liblaf/route-rules/raw/main/custom/${key}.json",
         "data/liblaf",
     ),
     GeoIP(

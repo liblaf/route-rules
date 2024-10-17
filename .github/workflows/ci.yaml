@@ -3,7 +3,10 @@ name: CI
 on:
   push:
   schedule:
-    - cron: 0 0 * * *
+    - cron: "0 0 * * *"
+
+env:
+  UV_INDEX_URL: https://pypi.org/simple
 
 jobs:
   build:
@@ -12,25 +15,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Rye
-        uses: eifinger/setup-rye@v4
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v3
       - name: Install sing-box
         run: bash <(curl -fsSL https://sing-box.app/deb-install.sh)
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Install Dependencies
-        run: rye sync --no-lock
+        run: uv sync --all-extras
       - name: Build Rule Sets
         run: |-
-          source .venv/bin/activate
-          python tools/build.py
+          uv run scripts/build.py
           bash scripts/compile.sh
           npx prettier --write --ignore-path "" output/README.md
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: sing
-          path: output
+          path: output/
 
   deploy:
     name: Deploy
@@ -45,7 +47,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: sing
-          path: sing
+          path: sing/
       - name: Deploy to GitHub Branch
         uses: peaceiris/actions-gh-pages@v4
         with:

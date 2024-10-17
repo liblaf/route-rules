@@ -9,6 +9,7 @@ build:
   tools:
     python: "3.12"
   jobs:
+    # ref: <https://docs.readthedocs.io/en/stable/build-customization.html#unshallow-git-clone>
     post_checkout:
       - git fetch --unshallow || true
 

@@ -30,7 +30,7 @@
     -   [blackmatrix7/Direct.list](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Direct)
     -   [DustinWin/geoip-all.db](https://github.com/DustinWin/ruleset_geodata): `cn`
     -   [DustinWin/geosite-all.db](https://github.com/DustinWin/ruleset_geodata): `cn`
-    -   [liblaf/cn.json](https://github.com/liblaf/sing-box-rules/blob/main/custom/cn.json)
+    -   [liblaf/cn.json](https://github.com/liblaf/route-rules/blob/main/custom/cn.json)
     -   [MetaCubeX/geoip.db](https://github.com/MetaCubeX/meta-rules-dat): `cn`
     -   [MetaCubeX/geosite.db](https://github.com/MetaCubeX/meta-rules-dat): `*-cn` | `*@cn` | `cn`
 -   exclude:

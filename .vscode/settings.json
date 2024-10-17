@@ -4,6 +4,7 @@
   },
   "files.exclude": {
     "**/__pycache__": true,
+    "**/.ruff_cache": true,
     "**/.venv": true
   },
   "python.analysis.diagnosticMode": "workspace",

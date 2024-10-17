@@ -15,7 +15,7 @@ async def gen_optimization_summary(preset: Source) -> dict[str, Rule]:
     fpath.parent.mkdir(parents=True, exist_ok=True)
     rules: dict[str, Rule] = {}
     async with await anyio.open_file(fpath, "w") as fp:
-        await fp.write("# sing-box Rules\n")
+        await fp.write("# Route Rules\n")
         now: datetime.datetime = datetime.datetime.now(datetime.UTC)
         await fp.write(f"Updated at: {now.isoformat()}\n")
         for cfg in PRESETS:

@@ -8,15 +8,15 @@ from ._singbox import SingBoxRuleSet
 from .preset import PRESETS, Preset, PresetConfig, get_rule
 
 __all__ = [
-    "preset",
-    "Source",
+    "PRESETS",
     "ClashClassicalText",
-    "get_source",
     "GeoIP",
     "GeoSite",
-    "SingBoxRuleSet",
-    "PRESETS",
     "Preset",
     "PresetConfig",
+    "SingBoxRuleSet",
+    "Source",
     "get_rule",
+    "get_source",
+    "preset",
 ]

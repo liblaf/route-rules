@@ -1,10 +1,12 @@
 {
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/packages/cspell-types/cspell.schema.json",
+  "version": "0.2",
+  "language": "en",
   "words": [
     "anyio",
     "asyncio",
     "cython",
     "dmypy",
-    "eifinger",
     "emby",
     "fakeip",
     "geoip",
@@ -19,6 +21,7 @@
     "mkdocs",
     "mkdocstrings",
     "mypy",
+    "numpy",
     "pipenv",
     "pybuilder",
     "pycache",
@@ -29,16 +32,29 @@
     "pymdownx",
     "pypa",
     "pypackages",
+    "pypi",
+    "pyplot",
     "pyrightconfig",
     "pytest",
     "pytype",
+    "pyvenv",
+    "pyvista",
     "rcode",
+    "sarif",
     "scrapy",
     "sdist",
+    "stefanzweifel",
+    "trimesh",
     "ubelt",
     "unshallow",
     "venv"
   ],
-  "ignorePaths": ["**/*-lock.*", "**/*.lock*", "**/.cspell.json"],
+  "ignorePaths": [
+    "**/.cspell.*",
+    "**/.git",
+    "**/.vscode",
+    "**/*-lock.*",
+    "**/*.lock*"
+  ],
   "allowCompoundWords": true
 }

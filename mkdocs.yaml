@@ -1,14 +1,13 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
-
-site_name: sing-box Rules
+site_name: Route Rules
 site_url:
   !ENV [
     SITE_URL,
     READTHEDOCS_CANONICAL_URL,
-    https://liblaf.github.io/sing-box-rules/,
+    https://liblaf.github.io/route-rules/,
   ]
-repo_name: liblaf/sing-box-rules
-repo_url: https://github.com/liblaf/sing-box-rules
+repo_name: liblaf/route-rules
+repo_url: https://github.com/liblaf/route-rules
 site_author: liblaf
 edit_uri: edit/main/docs/
 
@@ -67,11 +66,11 @@ plugins:
   # External plugins, schema provided by us
   - gen-files:
       scripts:
-        - tools/docs/gen-stats.py
-        - tools/docs/gen-ref-pages.py
+        - scripts/docs/gen-stats.py
+        - scripts/docs/gen-ref-pages.py
   - git-committers:
       enabled: !ENV [READTHEDOCS, CI, false]
-      repository: liblaf/sing-box-rules
+      repository: liblaf/route-rules
       branch: main
   - literate-nav
   - section-index
@@ -123,5 +122,5 @@ markdown_extensions:
 
 watch:
   - docs/
+  - scripts/docs/
   - src/sbr/
-  - tools/docs/
