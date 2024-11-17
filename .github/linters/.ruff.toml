@@ -19,6 +19,9 @@ ignore = [
   "D102",
   "D103",
   "D104",
+  "D105",
+  "D106",
+  "D107",
   "E501",
   "ERA001",
   "FIX002",
@@ -30,6 +33,9 @@ ignore = [
   "S603",
   "S607",
   "T201",
+  "TCH001",
+  "TCH002",
+  "TCH003",
   "TD002",
   "TD003",
   "TD004",
@@ -56,8 +62,28 @@ allow-star-arg-any = true
 "seaborn" = "sns"
 "subprocess" = "sp"
 "taichi" = "ti"
+"toolkit" = "tk"
+"toolkit.array" = "at"
+"toolkit.validation" = "tv"
+"toolkit.array.jax" = "tj"
+"toolkit.array.numpy" = "tn"
+"toolkit.array.torch" = "tt"
+"toolkit.typing" = "tp"
 "trimesh" = "tm"
 "trimesh.transformations" = "tf"
+
+[lint.flake8-type-checking]
+runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+  "pydantic_settings.BaseSettings",
+  "sqlalchemy.orm.DeclarativeBase",
+  "toolkit.BaseConfig",
+]
+runtime-evaluated-decorators = [
+  "attrs.define",
+  "pydantic.validate_call",
+  "toolkit.main",
+]
 
 [lint.pydocstyle]
 convention = "google"
