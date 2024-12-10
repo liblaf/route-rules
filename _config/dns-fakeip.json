@@ -1,0 +1,41 @@
+{
+  "$schema": "https://gist.github.com/artiga033/fea992d95ad44dc8d024b229223b1002/raw/83c676c1ec9f37af2bce0505da396b5444b30032/sing-box.schema.json",
+  "dns": {
+    "servers": [
+      { "tag": "dns:proxy", "address": "https://8.8.8.8/dns-query" },
+      { "tag": "dns:local", "address": "local", "detour": "DIRECT" },
+      { "tag": "dns:reject", "address": "rcode://refused" },
+      { "tag": "dns:fakeip", "address": "fakeip" }
+    ],
+    "rules": [
+      { "outbound": "any", "server": "dns:local" },
+      {
+        "rule_set": "geosite:ads",
+        "server": "dns:reject",
+        "disable_cache": true
+      },
+      { "rule_set": "geosite:private", "server": "dns:local" },
+      { "query_type": ["A", "AAAA"], "server": "dns:fakeip", "rewrite_ttl": 1 },
+      { "clash_mode": "direct", "server": "dns:local" },
+      { "clash_mode": "global", "server": "dns:proxy" },
+      { "rule_set": "geosite:cn", "server": "dns:local" },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          { "rule_set": "geosite:proxy", "invert": true },
+          { "rule_set": "geoip:cn" }
+        ],
+        "server": "dns:proxy",
+        "client_subnet": "101.6.6.6"
+      }
+    ],
+    "final": "dns:proxy",
+    "independent_cache": true,
+    "fakeip": {
+      "enabled": true,
+      "inet4_range": "198.18.0.0/15",
+      "inet6_range": "fc00::/18"
+    }
+  }
+}
