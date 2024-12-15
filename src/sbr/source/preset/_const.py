@@ -79,7 +79,7 @@ PRESETS: list[PresetConfig] = [
     PresetConfig(
         "emby",
         "🍟 Emby",
-        ["NotSFC:Emby"],
+        ["liblaf:emby", "NotSFC:Emby"],
         ["preset:ads", "preset:cn", "preset:private"],
     ),
     PresetConfig(
