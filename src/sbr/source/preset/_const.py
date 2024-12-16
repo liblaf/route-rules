@@ -45,7 +45,7 @@ PRESETS: list[PresetConfig] = [
             "MetaCubeX/geoip:cn",
             "MetaCubeX/geosite:cn,*-cn,*@cn",
         ],
-        ["preset:ads", "preset:private"],
+        ["liblaf:!cn", "preset:ads", "preset:private"],
     ),
     PresetConfig(
         "proxy",
