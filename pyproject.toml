@@ -43,5 +43,8 @@ readme = "docs/README.md"
 requires-python = ">=3.12"
 version = "0.0.0"
 
+[tool.check-wheel-contents]
+ignore = ["W002"]
+
 [tool.uv]
 default-groups = ["build", "dev", "docs"]
