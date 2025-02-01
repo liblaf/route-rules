@@ -7,19 +7,19 @@
 [![Read the Docs](https://img.shields.io/readthedocs/route-rules)](https://route-rules.readthedocs.io)
 
 | Name                 | GitHub                                                                                        | Cloudflare                                                                      |
-|----------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | 🛑 RuleSet: ADs      | [rule-set/ads.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/ads.srs)           | [rule-set/ads.srs](https://api.liblaf.me/rules/sing/rule-set/ads.srs)           |
 | 🔒 RuleSet: Private  | [rule-set/private.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/private.srs)   | [rule-set/private.srs](https://api.liblaf.me/rules/sing/rule-set/private.srs)   |
-| 🇨🇳 RuleSet: CN     | [rule-set/cn.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/cn.srs)             | [rule-set/cn.srs](https://api.liblaf.me/rules/sing/rule-set/cn.srs)             |
+| 🇨🇳 RuleSet: CN       | [rule-set/cn.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/cn.srs)             | [rule-set/cn.srs](https://api.liblaf.me/rules/sing/rule-set/cn.srs)             |
 | ✈️ RuleSet: Proxy    | [rule-set/proxy.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/proxy.srs)       | [rule-set/proxy.srs](https://api.liblaf.me/rules/sing/rule-set/proxy.srs)       |
 | 🤖 RuleSet: AI       | [rule-set/ai.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/ai.srs)             | [rule-set/ai.srs](https://api.liblaf.me/rules/sing/rule-set/ai.srs)             |
 | ☁️ RuleSet: Download | [rule-set/download.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/download.srs) | [rule-set/download.srs](https://api.liblaf.me/rules/sing/rule-set/download.srs) |
 | 🍟 RuleSet: Emby     | [rule-set/emby.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/emby.srs)         | [rule-set/emby.srs](https://api.liblaf.me/rules/sing/rule-set/emby.srs)         |
 | 📺 RuleSet: Media    | [rule-set/media.srs](https://github.com/liblaf/route-rules/raw/sing/rule-set/media.srs)       | [rule-set/media.srs](https://api.liblaf.me/rules/sing/rule-set/media.srs)       |
-| 🇨🇳 GeoIP: CN       | [geoip/cn.srs](https://github.com/liblaf/route-rules/raw/sing/geoip/cn.srs)                   | [geoip/cn.srs](https://api.liblaf.me/rules/sing/geoip/cn.srs)                   |
+| 🇨🇳 GeoIP: CN         | [geoip/cn.srs](https://github.com/liblaf/route-rules/raw/sing/geoip/cn.srs)                   | [geoip/cn.srs](https://api.liblaf.me/rules/sing/geoip/cn.srs)                   |
 | 🛑 GeoSite: ADs      | [geosite/ads.srs](https://github.com/liblaf/route-rules/raw/sing/geosite/ads.srs)             | [geosite/ads.srs](https://api.liblaf.me/rules/sing/geosite/ads.srs)             |
 | 🔒 GeoSite: Private  | [geosite/private.srs](https://github.com/liblaf/route-rules/raw/sing/geosite/private.srs)     | [geosite/private.srs](https://api.liblaf.me/rules/sing/geosite/private.srs)     |
-| 🇨🇳 GeoSite: CN     | [geosite/cn.srs](https://github.com/liblaf/route-rules/raw/sing/geosite/cn.srs)               | [geosite/cn.srs](https://api.liblaf.me/rules/sing/geosite/cn.srs)               |
+| 🇨🇳 GeoSite: CN       | [geosite/cn.srs](https://github.com/liblaf/route-rules/raw/sing/geosite/cn.srs)               | [geosite/cn.srs](https://api.liblaf.me/rules/sing/geosite/cn.srs)               |
 | ✈️ GeoSite: Proxy    | [geosite/proxy.srs](https://github.com/liblaf/route-rules/raw/sing/geosite/proxy.srs)         | [geosite/proxy.srs](https://api.liblaf.me/rules/sing/geosite/proxy.srs)         |
 
 - [statistics](https://liblaf.github.io/route-rules/stats/)
