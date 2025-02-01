@@ -1,5 +1,5 @@
-from sbr.source import ClashClassicalText, GeoIP, GeoSite, Preset, Source
-from sbr.source._singbox import SingBoxRuleSet
+from route_rules.source import ClashClassicalText, GeoIP, GeoSite, Preset, Source
+from route_rules.source._singbox import SingBoxRuleSet
 
 SOURCES: list[Source] = [
     Preset(),

@@ -5,11 +5,11 @@ from typing import Annotated, Any
 import pydantic
 from pydantic import BaseModel, ConfigDict
 
-import sbr
-from sbr.container import optim
-from sbr.typing import StrPath
+import route_rules as rr
+from route_rules.container import optim
+from route_rules.typing import StrPath
 
-Set = Annotated[set[str], pydantic.BeforeValidator(sbr.utils.as_set)]
+Set = Annotated[set[str], pydantic.BeforeValidator(rr.utils.as_set)]
 
 
 class Rule(BaseModel):
@@ -22,7 +22,7 @@ class Rule(BaseModel):
 
     @classmethod
     def from_file(cls, path: StrPath) -> "Rule":
-        rule_set: sbr.RuleSet = sbr.RuleSet.from_file(path)
+        rule_set: rr.RuleSet = rr.RuleSet.from_file(path)
         return Rule().union(*rule_set.rules)
 
     def __getitem__(self, key: str) -> set[str]:
@@ -72,7 +72,7 @@ class Rule(BaseModel):
         self.ip_cidr = optim.merge_ip_cidr(self.ip_cidr)
 
     def save(self, path: StrPath) -> None:
-        sbr.RuleSet(version=1, rules=[self]).save(path)
+        rr.RuleSet(version=1, rules=[self]).save(path)
 
     def summary(self) -> str:
         res: str = ""

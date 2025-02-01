@@ -3,7 +3,7 @@ import asyncio
 
 from boltons.cacheutils import LRU
 
-from sbr import Rule
+from route_rules import Rule
 
 
 class Source(abc.ABC):

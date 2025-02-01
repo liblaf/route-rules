@@ -7,8 +7,8 @@ import anyio
 import prettytable
 from prettytable import PrettyTable
 
-import sbr
-from sbr import PRESETS, Rule, Source
+import route_rules as rr
+from route_rules import PRESETS, Rule, Source
 
 
 async def gen_optimization_summary(preset: Source) -> dict[str, Rule]:
@@ -39,7 +39,7 @@ async def gen_optimization_summary(preset: Source) -> dict[str, Rule]:
 
 
 async def main() -> None:
-    preset: Source = sbr.get_source("preset")
+    preset: Source = rr.get_source("preset")
     rules: dict[str, Rule] = await gen_optimization_summary(preset)
     for k, r in rules.items():
         r.save(f"output/rule-set/{k}.json")
@@ -48,5 +48,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    sbr.logging.init()
+    rr.logging.init()
     asyncio.run(main())

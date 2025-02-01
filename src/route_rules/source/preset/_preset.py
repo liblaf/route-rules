@@ -1,7 +1,7 @@
 from typing import NamedTuple
 
-from sbr import Rule, Source
-from sbr.source.preset._const import PRESETS, get_preset
+from route_rules import Rule, Source
+from route_rules.source.preset._const import PRESETS, get_preset
 
 
 class PresetConfig(NamedTuple):

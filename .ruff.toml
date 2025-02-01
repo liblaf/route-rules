@@ -1,2 +1,5 @@
 #:schema https://json.schemastore.org/ruff.json
 extend = ".github/linters/.ruff.toml"
+
+[lint.flake8-import-conventions.extend-aliases]
+"route_rules" = "rr"

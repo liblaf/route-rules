@@ -1,9 +1,9 @@
 from pathlib import Path
 from string import Template
 
-import sbr
-from sbr import Rule, Source
-from sbr.typing import StrPath
+import route_rules as rr
+from route_rules import Rule, Source
+from route_rules.typing import StrPath
 
 
 class ClashClassicalText(Source):
@@ -21,7 +21,7 @@ class ClashClassicalText(Source):
         self.dpath = Path(dpath)
 
     async def _get_nocache(self, key: str) -> Rule:
-        filepath: Path = await sbr.utils.download(
+        filepath: Path = await rr.utils.download(
             self.url.substitute({"key": key}), self.dpath / f"{key}.list"
         )
         return ClashClassicalText.from_file(filepath)
@@ -33,8 +33,8 @@ class ClashClassicalText(Source):
     def from_file(fpath: StrPath) -> Rule:
         text: str = Path(fpath).read_text()
         rule: Rule = Rule()
-        for line in sbr.utils.strip_comments(text):
-            words: list[str] = sbr.utils.split_strip(line)
+        for line in rr.utils.strip_comments(text):
+            words: list[str] = rr.utils.split_strip(line)
             match words[0]:
                 case "DOMAIN":
                     rule.domain.add(words[1])

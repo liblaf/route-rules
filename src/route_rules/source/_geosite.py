@@ -4,12 +4,12 @@ import re
 import subprocess as sp
 from pathlib import Path
 
-import sbr
-from sbr import Rule, Source
-from sbr.typing import StrPath
+import route_rules as rr
+from route_rules import Rule, Source
+from route_rules.typing import StrPath
 
 
-class GeoIP(Source):
+class GeoSite(Source):
     name: str
     dpath: Path
     url: str
@@ -22,14 +22,14 @@ class GeoIP(Source):
 
     @property
     def fpath(self) -> Path:
-        return self.dpath / "geoip.db"
+        return self.dpath / "geosite.db"
 
     async def _get_nocache(self, key: str) -> Rule:
-        await sbr.utils.download(self.url, self.fpath)
+        await rr.utils.download(self.url, self.fpath)
         output: Path = self.dpath / f"{key}.json"
         args: list[StrPath] = [
             "sing-box",
-            "geoip",
+            "geosite",
             "export",
             key,
             "--output",
@@ -46,8 +46,8 @@ class GeoIP(Source):
         return Rule.from_file(output)
 
     async def _keys_nocache(self) -> list[str]:
-        await sbr.utils.download(self.url, self.fpath)
-        args: list[StrPath] = ["sing-box", "geoip", "list", "--file", self.fpath]
+        await rr.utils.download(self.url, self.fpath)
+        args: list[StrPath] = ["sing-box", "geosite", "list", "--file", self.fpath]
         proc: asp.Process = await asyncio.create_subprocess_exec(
             *args, stdin=asp.DEVNULL, stdout=asp.PIPE
         )

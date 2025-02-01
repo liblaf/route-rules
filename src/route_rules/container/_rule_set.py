@@ -3,13 +3,13 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-import sbr
-from sbr.typing import StrPath
+import route_rules as rr
+from route_rules.typing import StrPath
 
 
 class RuleSet(BaseModel):
     version: Literal[1, 2]
-    rules: list[sbr.Rule]
+    rules: list[rr.Rule]
 
     @classmethod
     def from_file(cls, path: StrPath) -> "RuleSet":

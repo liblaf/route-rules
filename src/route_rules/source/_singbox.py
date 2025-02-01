@@ -1,9 +1,9 @@
 from pathlib import Path
 from string import Template
 
-import sbr
-from sbr import Rule, Source
-from sbr.typing import StrPath
+import route_rules as rr
+from route_rules import Rule, Source
+from route_rules.typing import StrPath
 
 
 class SingBoxRuleSet(Source):
@@ -21,7 +21,7 @@ class SingBoxRuleSet(Source):
         self.dpath = Path(dpath)
 
     async def _get_nocache(self, key: str) -> Rule:
-        filepath: Path = await sbr.utils.download(
+        filepath: Path = await rr.utils.download(
             self.url.substitute({"key": key}), self.dpath / f"{key}.json"
         )
         return Rule.from_file(filepath)

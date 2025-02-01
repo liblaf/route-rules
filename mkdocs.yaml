@@ -6,9 +6,10 @@ site_url:
     READTHEDOCS_CANONICAL_URL,
     https://liblaf.github.io/route-rules/,
   ]
+site_author: liblaf
+site_description: TODO
 repo_name: liblaf/route-rules
 repo_url: https://github.com/liblaf/route-rules
-site_author: liblaf
 edit_uri: edit/main/docs/
 
 theme:
@@ -46,21 +47,21 @@ theme:
     - media: "(prefers-color-scheme)"
       toggle:
         icon: material/brightness-auto
-        name: system preference
+        name: System Preference
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
         icon: material/brightness-7
-        name: light mode
+        name: Light Mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
         icon: material/brightness-4
-        name: dark mode
+        name: Dark Mode
 
 plugins:
   # Built-in plugins
-  # - optimize
+  # - optimize # sponsors only
   - search
   - social
   # External plugins, schema provided by us
@@ -94,7 +95,6 @@ plugins:
             - https://validators.readthedocs.io/en/stable/objects.inv
           options:
             # General
-            show_source: false
             # Headings
             show_symbol_type_heading: true
             show_symbol_type_toc: true
@@ -119,8 +119,9 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - mdx_truly_sane_lists
 
 watch:
   - docs/
   - scripts/docs/
-  - src/sbr/
+  - src/

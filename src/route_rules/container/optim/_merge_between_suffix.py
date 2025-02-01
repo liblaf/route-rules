@@ -1,4 +1,4 @@
-import sbr.container.optim._utils as u
+import route_rules.container.optim._utils as u
 
 
 def merge_between_suffix(domain_suffix: set[str]) -> set[str]:

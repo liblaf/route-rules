@@ -9,7 +9,7 @@ import humanize
 import ubelt as ub
 from loguru import logger
 
-from sbr.typing import StrPath
+from route_rules.typing import StrPath
 
 
 @functools.cache

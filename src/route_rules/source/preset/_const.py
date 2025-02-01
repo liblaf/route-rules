@@ -1,7 +1,7 @@
 from typing import NamedTuple
 
-import sbr
-from sbr.container import Rule
+import route_rules as rr
+from route_rules.container import Rule
 
 
 class PresetConfig(NamedTuple):
@@ -104,7 +104,7 @@ async def get_preset(_id: str, *, exclude: bool = True) -> Rule:
 
 
 async def _get_preset(cfg: PresetConfig, *, exclude: bool = True) -> Rule:
-    rule: Rule = await sbr.get_rule(*cfg.include)
+    rule: Rule = await rr.get_rule(*cfg.include)
     if exclude:
-        rule -= await sbr.get_rule(*cfg.exclude)
+        rule -= await rr.get_rule(*cfg.exclude)
     return rule
