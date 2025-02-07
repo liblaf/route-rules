@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/liblaf/route-rules/compare/v0.1.0...v0.1.1) (2025-02-07)
+
+
+### ⬆️ Dependencies
+
+* **deps:** update astral-sh/setup-uv action to v5 ([#20](https://github.com/liblaf/route-rules/issues/20)) ([5a4917a](https://github.com/liblaf/route-rules/commit/5a4917affcb937b6bd4bd31260a47b491dee17fb))
+
 ## [0.1.0] - 2025-02-02
 
 ### 💥 BREAKING CHANGES
