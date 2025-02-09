@@ -5,12 +5,21 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+CODE="import lazy_loader as lazy
+
+__getattr__, __dir__, __all__ = lazy.attach_stub(__name__, __file__)"
+N_LINES=$(echo "$CODE" | wc --lines)
+
 git_root=$(git rev-parse --show-toplevel)
 readarray -t files < <(fd --fixed-strings --type file '__init__.pyi' "$git_root")
 for file in "${files[@]}"; do
-  cat > "$(dirname "$file")/__init__.py" <<- EOF
-import lazy_loader as lazy
-
-__getattr__, __dir__, __all__ = lazy.attach_stub(__name__, __file__)
-EOF
+  file="${file/%".pyi"/".py"}"
+  if [[ ! -f $file ]]; then
+    echo "$CODE" > "$file"
+    continue
+  fi
+  last_lines=$(tail --lines="$N_LINES" "$file")
+  if ! diff <(echo "$last_lines") <(echo "$CODE") &> /dev/null; then
+    echo "$CODE" >> "$file"
+  fi
 done
