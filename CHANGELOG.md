@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0] - 2025-02-02
+## [0.1.0] - 2025-02-04
 
 ### 💥 BREAKING CHANGES
 
@@ -74,6 +74,7 @@
 
 ### ❤️ New Contributors
 
+- @github-actions[bot] made their first contribution in [#21](https://github.com/liblaf/route-rules/pull/21)
 - @liblaf made their first contribution
 - @renovate[bot] made their first contribution in [#19](https://github.com/liblaf/route-rules/pull/19)
 - @liblaf-bot[bot] made their first contribution
