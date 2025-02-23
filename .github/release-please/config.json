@@ -89,8 +89,6 @@
   "include-component-in-tag": false,
   "initial-version": "0.0.0",
   "packages": {
-    ".": {
-      
-    }
+    ".": {}
   }
 }
