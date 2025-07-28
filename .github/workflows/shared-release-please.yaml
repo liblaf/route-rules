@@ -62,7 +62,7 @@ jobs:
           args: --tag "${{ steps.tag.outputs.tag }}"
           output: CHANGELOG.md
       - name: Commit
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "chore(docs): update CHANGELOG.md"
           file_pattern: CHANGELOG.md

@@ -33,7 +33,7 @@ jobs:
       - name: Remove MegaLinter Reports
         run: sudo rm --force --recursive "mega-linter.log" "megalinter-reports/"
       - name: Auto Commit
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "chore(mega-linter): apply linters fixes"
           add_options: --update
