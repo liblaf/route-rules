@@ -21,10 +21,8 @@ jobs:
         run: npm install --global prettier
       - name: Install mise
         uses: jdx/mise-action@v3
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v6
-      - name: Install Dependencies
-        run: uv sync
+      - name: Setup Python
+        uses: liblaf/actions-ts/setup-python@dist
       - name: Build
         run: mise run build
       - name: Upload Artifacts
