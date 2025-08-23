@@ -14,7 +14,6 @@ ignorePaths:
 ignoreRandomStrings: true
 useGitignore: true
 words:
-  - anyio
   - arithmatex
   - cython
   - cytoolz
@@ -26,11 +25,12 @@ words:
   - geoip
   - getattr
   - gstatic
+  - httpx
   - hynek
   - inlinehilite
+  - ipcidr
   - ipynb
   - ipython
-  - levelno
   - liblaf
   - linenums
   - mihomo
@@ -66,7 +66,6 @@ words:
   - sdist
   - tombi
   - trimesh
-  - ubelt
   - unshallow
   - venv
   - virtualenv
