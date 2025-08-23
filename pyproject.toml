@@ -1,27 +1,28 @@
-[build-system]
-build-backend = "hatchling.build"
-requires = ["hatchling"]
-
-[dependency-groups]
-build = ["build>=1.2.2.post1", "check-wheel-contents>=0.6.1", "twine>=6.1.0"]
-dev = ["icecream>=2.1.3", "marimo>=0.9.10"]
-docs = [
-  "black>=25.1.0",
-  "mdx-truly-sane-lists>=1.3",
-  "mkdocs-embed-external-markdown>=3.0.2",
-  "mkdocs-gen-files>=0.5.0",
-  "mkdocs-git-committers-plugin-2>=2.5.0",
-  "mkdocs-git-revision-date-localized-plugin>=1.2.7",
-  "mkdocs-literate-nav>=0.6.1",
-  "mkdocs-material[imaging]>=9.6.1",
-  "mkdocs-section-index>=0.3.9",
-  "mkdocs>=1.6.1",
-  "mkdocstrings[python]>=0.26.0",
-]
+#:schema https://json.schemastore.org/pyproject.json
+# ref: <https://packaging.python.org/en/latest/specifications/pyproject-toml/>
 
 [project]
+name = "route-rules"
+description = "TODO"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
 authors = [
-  { email = "30631553+liblaf@users.noreply.github.com", name = "liblaf" },
+  { name = "liblaf", email = "30631553+liblaf@users.noreply.github.com" },
+]
+keywords = []
+classifiers = [
+  # ref: <https://pypi.org/classifiers/>
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
 ]
 dependencies = [
   "anyio>=4.4.0",
@@ -29,6 +30,8 @@ dependencies = [
   "httpx[socks]>=0.27.2",
   "humanize>=4.10.0",
   "lazy-loader>=0.4",
+  "lazy-loader>=0.4,<0.5",
+  "loguru>=0.7,<0.8",
   "loguru>=0.7.2",
   "prettytable>=3.14.0",
   "pydantic>=2.8.2",
@@ -36,15 +39,68 @@ dependencies = [
   "ubelt>=1.3.6",
   "validators>=0.34.0",
 ]
-description = "Add your description here"
-license = "MIT"
-name = "route-rules"
-readme = "docs/README.md"
-requires-python = ">=3.12"
-version = "0.1.1"
+dynamic = ["version"]
+
+[project.urls]
+"Changelog" = "https://github.com/liblaf/route-rules/blob/main/CHANGELOG.md"
+"Documentation" = "https://liblaf.github.io/route-rules/"
+"Funding" = "https://github.com/liblaf/route-rules?sponsor=1"
+"Homepage" = "https://github.com/liblaf/route-rules"
+"Issue Tracker" = "https://github.com/liblaf/route-rules/issues"
+"Release Notes" = "https://github.com/liblaf/route-rules/releases"
+"Source Code" = "https://github.com/liblaf/route-rules"
+
+[dependency-groups]
+build = ["check-wheel-contents>=0.6,<0.7", "hatch>=1,<2", "twine>=6,<7"]
+dev = ["icecream>=2,<3"]
+docs = ["liblaf-mkdocs-preset>=0.1,<0.2", "mkdocs>=1,<2"]
+test = [
+  "hypothesis>=6,<7",
+  "pytest-codspeed>=4,<5",
+  "pytest-cov>=6,<7",
+  "pytest-randomly>=3,<4",
+  "pytest-xdist>=3,<4",
+  "pytest>=8,<9",
+]
+
+[build-system]
+requires = ["hatch-vcs", "hatchling"]
+build-backend = "hatchling.build"
 
 [tool.check-wheel-contents]
 ignore = ["W002"]
 
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/route_rules/_version.py"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/route_rules"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.pyright]
+exclude = ["**/.*", "**/__pycache__", "**/marimo", "**/node_modules"]
+extends = ".config/linters/pyrightconfig.json"
+
+[tool.pytest.ini_options]
+addopts = [
+  "--hypothesis-show-statistics",
+  "--showlocals",
+  "--strict-config",
+  "--strict-markers",
+]
+testpaths = ["benches", "tests"]
+
+[tool.ruff]
+extend = ".config/linters/.ruff.toml"
+
 [tool.uv]
-default-groups = ["build", "dev", "docs"]
+default-groups = "all"

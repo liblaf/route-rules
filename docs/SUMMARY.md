@@ -1,5 +1,0 @@
-- [Home](README.md)
-- [Config](config.md)
-- [Sources](sources.md)
-- [Statistics](stats.md)
-- [API Reference](api/)
