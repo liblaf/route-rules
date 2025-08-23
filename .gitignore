@@ -174,3 +174,19 @@ poetry.toml
 # pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+# hatch-vcs
+_version.py
+
+# pytest
+junit.xml
+
+# pytest-benchmark
+.benchmarks/
+
+# pytest-codspeed
+.codspeed/
+
+*.log
+*.log.*
+playground/

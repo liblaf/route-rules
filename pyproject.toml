@@ -26,11 +26,14 @@ classifiers = [
 ]
 dependencies = [
   "anyio>=4.4.0",
+  "autoregistry>=1.1.2",
   "boltons>=24.0.0",
-  "httpx[socks]>=0.27.2",
+  "cytoolz>=1,<2",
+  "hishel>=0.1,<0.2",
+  "httpx>=0.28.1",
   "humanize>=4.10.0",
-  "lazy-loader>=0.4",
   "lazy-loader>=0.4,<0.5",
+  "liblaf-grapes>=2.0.0",
   "loguru>=0.7,<0.8",
   "loguru>=0.7.2",
   "prettytable>=3.14.0",

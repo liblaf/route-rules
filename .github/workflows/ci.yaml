@@ -2,11 +2,13 @@ name: CI
 
 on:
   push:
+    branches-ignore:
+      - assets**
+      - dist**
+      - gh-pages
   schedule:
-    - cron: "0 0 * * *"
-
-env:
-  UV_INDEX_URL: https://pypi.org/simple
+    - cron: "0 0 * * *" # Runs at 00:00
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,24 +17,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install Prettier
+        run: npm install --global prettier
+      - name: Install mise
+        uses: jdx/mise-action@v3
       - name: Setup uv
-        uses: astral-sh/setup-uv@v5
-      - name: Install sing-box
-        run: bash <(curl -fsSL https://sing-box.app/deb-install.sh)
-        env:
-          GH_TOKEN: ${{ github.token }}
+        uses: astral-sh/setup-uv@v6
       - name: Install Dependencies
-        run: uv sync --all-extras
-      - name: Build Rule Sets
-        run: |-
-          uv run scripts/build.py
-          bash scripts/compile.sh
-          npx prettier --write --ignore-path "" output/README.md
+        run: uv sync
+      - name: Build
+        run: mise run build
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: sing
-          path: output/
+          name: dist
+          path: dist
 
   deploy:
     name: Deploy
@@ -46,12 +45,11 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: sing
-          path: sing/
-      - name: Deploy to GitHub Branch
-        uses: peaceiris/actions-gh-pages@v4
+          name: dist
+          path: dist
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ github.token }}
-          publish_branch: sing
-          publish_dir: sing
-          force_orphan: true
+          folder: dist
+          branch: dist
+          single-commit: true

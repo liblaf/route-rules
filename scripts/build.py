@@ -1,52 +1,60 @@
-#!/usr/bin/env python
 import asyncio
 import datetime
 from pathlib import Path
+from typing import TextIO
 
-import anyio
 import prettytable
-from prettytable import PrettyTable
+from liblaf import grapes
 
 import route_rules as rr
-from route_rules import PRESETS, Rule, Source
+
+DIST_DIR: Path = Path("dist")
+HEADER: str = """\
+# Route Rules
+
+Last Updated At: {now}
+"""
 
 
-async def gen_optimization_summary(preset: Source) -> dict[str, Rule]:
-    fpath: Path = Path("output/README.md")
-    fpath.parent.mkdir(parents=True, exist_ok=True)
-    rules: dict[str, Rule] = {}
-    # ASYNC230: Async functions should not open files with blocking methods like `open`
-    async with await anyio.open_file(fpath, "w") as fp:
-        await fp.write("# Route Rules\n")
-        now: datetime.datetime = datetime.datetime.now(datetime.UTC)
-        await fp.write(f"Updated at: {now.isoformat()}\n")
-        for cfg in PRESETS:
-            rule_raw: Rule = await preset.get(cfg.id)
-            rule_opt: Rule = rule_raw.model_copy(deep=True)
-            rule_opt.optimize()
-            rules[cfg.id] = rule_opt
-            table: PrettyTable = PrettyTable(["Type", "Count (Raw)", "Count (Opt)"])
-            table.align.update({"Type": "l", "Count (Raw)": "r", "Count (Opt)": "r"})
-            for k, v in rule_raw:
-                name: str = k.upper().replace("_", "-")
-                table.add_row([name, len(v), len(rule_opt[k])])
-            table.add_row(["TOTAL", len(rule_raw), len(rule_opt)])
-            await fp.write(f"## {cfg.name}\n")
-            table.set_style(prettytable.MARKDOWN)
-            await fp.write(table.get_string())
-            await fp.write("\n")
-    return rules
+def save_target(target: rr.Target, rule_set: rr.RuleSet) -> None:
+    rr.ProviderMihomo.save(
+        DIST_DIR / f"mihomo/domain/yaml/{target.slug}.yaml",
+        rule_set=rule_set,
+        behavior=rr.Behavior.DOMAIN,
+        format=rr.Format.YAML,
+    )
+
+
+async def safe_statistics(
+    target: rr.Target, rule_set: rr.RuleSet, file: TextIO
+) -> None:
+    table: prettytable.PrettyTable = rr.Statistics.compare(
+        await target.statistics(), rule_set.statistics
+    )
+    file.write(f"## {target.name}\n")
+    file.write(table.get_string())
+    file.write("\n")
 
 
 async def main() -> None:
-    preset: Source = rr.get_source("preset")
-    rules: dict[str, Rule] = await gen_optimization_summary(preset)
-    for k, r in rules.items():
-        r.save(f"output/rule-set/{k}.json")
-        r.geoip().save(f"output/geoip/{k}.json")
-        r.geosite().save(f"output/geosite/{k}.json")
+    grapes.logging.init()
+    targets: list[rr.Target] = [
+        rr.Target(
+            name="🇨🇳 CN",
+            providers=["MetaCubeX/geosite:cn", "MetaCubeX/geosite:geolocation-cn"],
+        ),
+        rr.Target(name="🎯 Local", providers=["MetaCubeX/geosite:private"]),
+        rr.Target(name="🚀 Proxy", providers=["MetaCubeX/geosite:geolocation-!cn"]),
+    ]
+    DIST_DIR.mkdir(parents=True, exist_ok=True)
+    with (DIST_DIR / "README.md").open("w") as fp:
+        now: datetime.datetime = datetime.datetime.now().astimezone()
+        fp.write(HEADER.format(now=now.isoformat(timespec="seconds")))
+        for target in targets:
+            rule_set: rr.RuleSet = await target.build()
+            await safe_statistics(target, rule_set, file=fp)
+            save_target(target, rule_set)
 
 
 if __name__ == "__main__":
-    rr.logging.init()
     asyncio.run(main())

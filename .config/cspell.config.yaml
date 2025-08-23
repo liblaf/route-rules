@@ -17,6 +17,7 @@ words:
   - anyio
   - arithmatex
   - cython
+  - cytoolz
   - direnv
   - dmypy
   - emby
@@ -25,7 +26,6 @@ words:
   - geoip
   - getattr
   - gstatic
-  - httpx
   - hynek
   - inlinehilite
   - ipynb
@@ -33,6 +33,7 @@ words:
   - levelno
   - liblaf
   - linenums
+  - mihomo
   - misakaf
   - mkdocs
   - mkdocstrings
