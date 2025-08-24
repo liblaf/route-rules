@@ -25,6 +25,8 @@ jobs:
           gunzip mihomo-linux-amd64-v3-go123-v*.gz
           install -D mihomo-* "$HOME/.local/bin/mihomo"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Test Mihomo
         run: mihomo -v
       - name: Install mise
