@@ -5,6 +5,7 @@ from typing import TextIO
 
 import prettytable
 from liblaf import grapes
+from loguru import logger
 
 import route_rules as rr
 
@@ -38,13 +39,72 @@ async def safe_statistics(
 
 async def main() -> None:
     grapes.logging.init()
+    logger.disable("httpx")
     targets: list[rr.Target] = [
         rr.Target(
-            name="🇨🇳 CN",
-            providers=["MetaCubeX/geosite:cn", "MetaCubeX/geosite:geolocation-cn"],
+            name="🤖 AI",
+            providers=[
+                "dler-io:AI Suite",
+                "MetaCubeX/geosite:category-ai-!cn",
+                "SukkaW/classical:non_ip/ai",
+            ],
         ),
-        rr.Target(name="🎯 Local", providers=["MetaCubeX/geosite:private"]),
-        rr.Target(name="🚀 Proxy", providers=["MetaCubeX/geosite:geolocation-!cn"]),
+        rr.Target(
+            name="🎯 Direct",
+            providers=[
+                "blackmatrix7:Direct",
+                "dler-io:Special",
+                "SukkaW/classical:non_ip/direct",
+            ],
+        ),
+        rr.Target(
+            name="📍 Domestic",
+            providers=[
+                "blackmatrix7:ChinaMax",
+                "dler-io:Domestic",
+                "dler-io:Domestic IPs",
+                "MetaCubeX/geosite:cn",
+                "MetaCubeX/geosite:geolocation-cn",
+                "SukkaW/classical:ip/domestic",
+                "SukkaW/classical:non_ip/domestic",
+            ],
+        ),
+        rr.Target(
+            name="📥 Download",
+            providers=[
+                "SukkaW/classical:non_ip/cdn",
+                "SukkaW/classical:non_ip/download",
+                "SukkaW/domain:domainset/cdn",
+                "SukkaW/domain:domainset/download",
+            ],
+        ),
+        rr.Target(
+            name="🌐 Global",
+            providers=[
+                "blackmatrix7:Global",
+                "dler-io:Proxy",
+                "MetaCubeX/geosite:geolocation-!cn",
+                "SukkaW/classical:non_ip/global",
+            ],
+        ),
+        rr.Target(
+            name="♾️ Local",
+            providers=[
+                "blackmatrix7:Lan",
+                "dler-io:LAN",
+                "MetaCubeX/geosite:private",
+                "SukkaW/classical:ip/lan",
+                "SukkaW/classical:non_ip/lan",
+            ],
+        ),
+        rr.Target(
+            name="📺 Stream",
+            providers=[
+                "blackmatrix7:GlobalMedia",
+                "SukkaW/classical:ip/stream",
+                "SukkaW/classical:non_ip/stream",
+            ],
+        ),
     ]
     DIST_DIR.mkdir(parents=True, exist_ok=True)
     with (DIST_DIR / "README.md").open("w") as fp:

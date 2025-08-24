@@ -18,6 +18,7 @@ words:
   - cython
   - cytoolz
   - direnv
+  - dler
   - dmypy
   - emby
   - fakeip
@@ -64,6 +65,7 @@ words:
   - rcode
   - scrapy
   - sdist
+  - sukka
   - tombi
   - trimesh
   - unshallow

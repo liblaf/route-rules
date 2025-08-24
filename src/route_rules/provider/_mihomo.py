@@ -1,5 +1,6 @@
 import enum
 import os
+import re
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Any, override
@@ -53,6 +54,17 @@ def _parse_domain(payload: Iterable[str]) -> RuleSet:
     return rule_set
 
 
+@_behavior_parsers(name=Behavior.CLASSICAL)
+def _parse_classical(payload: Iterable[str]) -> RuleSet:
+    rule_set = RuleSet()
+    for line in payload:
+        typ: str
+        value: str
+        typ, value = line.split(",", 1)
+        rule_set.add(typ, value)
+    return rule_set
+
+
 @_format_parsers(name=Format.YAML)
 def _parse_yaml(text: str) -> list[str]:
     data: Any = msgspec.yaml.decode(text)
@@ -61,7 +73,8 @@ def _parse_yaml(text: str) -> list[str]:
 
 @_format_parsers(name=Format.TEXT)
 def _parse_text(text: str) -> list[str]:
-    return text.splitlines()
+    text = re.sub(r"#.*$", "", text, flags=re.MULTILINE)
+    return [stripped for line in text.splitlines() if (stripped := line.strip())]
 
 
 @attrs.define

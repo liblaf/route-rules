@@ -1,3 +1,4 @@
+import collections
 from typing import Self
 
 import attrs
@@ -13,36 +14,48 @@ class RuleSet:
         1. <https://wiki.metacubex.one/en/config/rules/>
     """
 
-    domain: set[str] = attrs.field(factory=set)
-    domain_suffix: set[str] = attrs.field(factory=set)
-    domain_keyword: set[str] = attrs.field(factory=set)
-    domain_wildcard: set[str] = attrs.field(factory=set)
+    data: dict[str, set[str]] = attrs.field(
+        factory=lambda: collections.defaultdict(set)
+    )
 
-    def __or__(self, value: Self, /) -> Self:
-        fields: dict[str, set[str]] = {}
-        for field in attrs.fields(type(self)):
-            field: attrs.Attribute
-            fields[field.name] = getattr(self, field.name) | getattr(value, field.name)
-        return type(self)(**fields)
+    def __or__(self, other: Self, /) -> Self:
+        data: dict[str, set[str]] = {}
+        for typ in self.data.keys() | other.data.keys():
+            data[typ] = self.data.get(typ, set()) | other.data.get(typ, set())
+        return type(self)(data=data)
+
+    @property
+    def domain(self) -> set[str]:
+        return self.data["DOMAIN"]
+
+    @property
+    def domain_suffix(self) -> set[str]:
+        return self.data["DOMAIN-SUFFIX"]
+
+    @property
+    def statistics(self) -> Statistics:
+        stats: Statistics = Statistics()
+        for typ, values in self.data.items():
+            stats[typ] = len(values)
+        return stats
+
+    @property
+    def total(self) -> int:
+        return sum(len(v) for v in self.data.values())
+
+    def add(self, typ: str, value: str) -> None:
+        self.data[typ].add(value)
 
     def optimize(self) -> Self:
         # TODO: implement
         return self
 
-    @property
-    def statistics(self) -> Statistics:
-        stats: Statistics = Statistics()
-        for field in attrs.fields(type(self)):
-            field: attrs.Attribute
-            name: str = field.name.replace("_", "-").upper()
-            stats[name] = len(getattr(self, field.name))
-        return stats
-
     def union(self, *others: Self) -> Self:
-        fields: dict[str, set[str]] = {}
-        for field in attrs.fields(type(self)):
-            field: attrs.Attribute
-            fields[field.name] = getattr(self, field.name).union(
-                *(getattr(other, field.name) for other in others)
+        data: dict[str, set[str]] = {}
+        for typ in set(self.data.keys()).union(
+            *(other.data.keys() for other in others)
+        ):
+            data[typ] = self.data.get(typ, set()).union(
+                *(other.data.get(typ, set()) for other in others)
             )
-        return type(self)(**fields)
+        return type(self)(data=data)

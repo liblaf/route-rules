@@ -19,11 +19,35 @@ class ProviderFactoryRegistry:
         self: Self = cls()
         self.register(
             ProviderMihomoFactory(
+                "blackmatrix7",
+                "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/{name}/{name}.list",
+                behavior=Behavior.CLASSICAL,
+                format=Format.TEXT,
+            ),
+            ProviderMihomoFactory(
+                "dler-io",
+                "https://cdn.jsdelivr.net/gh/dler-io/Rules/Clash/Provider/{name}.yaml",
+                behavior=Behavior.CLASSICAL,
+                format=Format.YAML,
+            ),
+            ProviderMihomoFactory(
                 "MetaCubeX/geosite",
                 "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/{name}.yaml",
                 behavior=Behavior.DOMAIN,
                 format=Format.YAML,
-            )
+            ),
+            ProviderMihomoFactory(
+                "SukkaW/classical",
+                "https://ruleset.skk.moe/Clash/{name}.txt",
+                behavior=Behavior.CLASSICAL,
+                format=Format.TEXT,
+            ),
+            ProviderMihomoFactory(
+                "SukkaW/domain",
+                "https://ruleset.skk.moe/Clash/{name}.txt",
+                behavior=Behavior.DOMAIN,
+                format=Format.TEXT,
+            ),
         )
         return self
 
@@ -35,5 +59,6 @@ class ProviderFactoryRegistry:
         provider: Provider = factory.create(rule_set_name)
         return await provider.load()
 
-    def register(self, factory: ProviderFactory) -> None:
-        self.registry[factory.name] = factory
+    def register(self, *factories: ProviderFactory) -> None:
+        for factory in factories:
+            self.registry[factory.name] = factory
