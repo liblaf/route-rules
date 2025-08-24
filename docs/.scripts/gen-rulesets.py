@@ -8,14 +8,15 @@ editor: FilesEditor = FilesEditor.current()
 
 
 def main() -> None:
+    dist_url: str = "https://raw.githubusercontent.com/liblaf/route-rules/mihomo"
     with hishel.CacheClient(follow_redirects=True) as client:
         response: httpx.Response = client.get(
-            "https://raw.githubusercontent.com/liblaf/route-rules/dist/meta.json"
+            f"{dist_url}/meta.json"
         ).raise_for_status()
         meta: rr.Meta = rr.Meta.json_decode(response.text)
     for recipe in meta.recipes:
         with editor.open(f"rulesets/{recipe.slug}.md", "w") as fp:
-            url: str = f"https://raw.githubusercontent.com/liblaf/route-rules/dist/docs/{recipe.slug}.md"
+            url: str = f"{dist_url}/docs/{recipe.slug}.md"
             fp.write(f'{{ include-markdown "{url}" }}\n')
 
 

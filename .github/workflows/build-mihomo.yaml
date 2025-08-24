@@ -1,4 +1,4 @@
-name: CI
+name: Build Mihomo
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: mihomo
           path: dist
 
   deploy:
@@ -55,13 +55,13 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v5
         with:
-          name: dist
+          name: mihomo
           path: dist
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
-          branch: dist
+          branch: mihomo
           single-commit: true
 
   docs:

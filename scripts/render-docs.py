@@ -3,12 +3,13 @@ from pathlib import Path
 
 import attrs
 import prettytable
+from liblaf import grapes
 
 import route_rules as rr
 
 CDN: list[tuple[str, str]] = [
-    ("GitHub", "https://raw.githubusercontent.com/liblaf/route-rules/dist/{path}"),
-    ("jsDeliver", "https://cdn.jsdelivr.net/gh/liblaf/route-rules@dist/{path}"),
+    ("GitHub", "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/{path}"),
+    ("jsDeliver", "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/{path}"),
 ]
 
 
@@ -18,6 +19,12 @@ class Renderer:
     docs_dir: Path = attrs.field(default=Path("dist/docs"))
 
     def render(self) -> None:
+        self.docs_dir.mkdir(parents=True, exist_ok=True)
+        with (self.docs_dir / "README.md").open("w") as fp:
+            fp.write("# Rule Sets\n")
+            for recipe in self.meta.recipes:
+                fp.write(f"- [{recipe.name}](./{recipe.slug}.md)\n")
+
         for recipe in self.meta.recipes:
             self.render_recipe(recipe)
 
@@ -82,6 +89,7 @@ class Renderer:
 
 
 def main() -> None:
+    grapes.logging.init()
     meta: rr.Meta = rr.Meta.json_decode(Path("dist/meta.json").read_bytes())
     renderer = Renderer(meta=meta)
     renderer.render()
