@@ -1,60 +1,87 @@
+import collections
 import datetime
 import os
 from pathlib import Path
 from typing import Self
 
-import anyio
 import attrs
-import prettytable
 
-from route_rules.provider import Behavior, Format, ProviderFactoryRegistry
+from route_rules.core import RuleSet
+from route_rules.export import ExporterMihomo
+from route_rules.provider import Behavior, Format
 
-from ._schema import Config
-from ._target import PrettyTarget
+from ._config import Config
+from ._meta import ArtifactMeta, Meta, ProviderMeta, RecipeMeta, RecipeStatistics
+from ._recipe import RecipeWrapper
 
-BEHAVIOR_FORMAT: list[tuple[Behavior, Format]] = [
-    (Behavior.DOMAIN, Format.MRS),
-    (Behavior.IPCIDR, Format.MRS),
-    (Behavior.DOMAIN, Format.YAML),
-    (Behavior.IPCIDR, Format.YAML),
-    (Behavior.CLASSICAL, Format.YAML),
-    (Behavior.DOMAIN, Format.TEXT),
-    (Behavior.IPCIDR, Format.TEXT),
-    (Behavior.CLASSICAL, Format.TEXT),
-]
+
+def _default_exporters() -> list[ExporterMihomo]:
+    return [
+        ExporterMihomo(behavior=Behavior.DOMAIN, format=Format.MRS),
+        ExporterMihomo(behavior=Behavior.DOMAIN, format=Format.TEXT),
+        ExporterMihomo(behavior=Behavior.IPCIDR, format=Format.MRS),
+        ExporterMihomo(behavior=Behavior.IPCIDR, format=Format.TEXT),
+        ExporterMihomo(behavior=Behavior.CLASSICAL, format=Format.TEXT),
+    ]
 
 
 @attrs.define
 class Builder:
     dist_dir: Path = attrs.field(default=Path("dist"))
-    targets: list[PrettyTarget] = attrs.field(factory=list)
+    exporters: list[ExporterMihomo] = attrs.field(factory=_default_exporters)
+    recipes: list[RecipeWrapper] = attrs.field(factory=list)
 
     @classmethod
     def load(cls, file: str | os.PathLike[str]) -> Self:
         config: Config = Config.load(file)
-        factories: ProviderFactoryRegistry = ProviderFactoryRegistry.presets()
-        return cls(
-            targets=[
-                PrettyTarget(
-                    name=t.name, providers=t.providers, slug=slug, factories=factories
-                )
-                for slug, t in config.targets.items()
-            ]
-        )
+        self: Self = cls()
+        for recipe_config in config.recipes:
+            self.recipes.append(RecipeWrapper.from_config(recipe_config))
+        return self
 
     async def build(self) -> None:
-        self.dist_dir.mkdir(parents=True, exist_ok=True)
-        report: Path = self.dist_dir / "README.md"
-        async with await anyio.open_file(report, "w") as fp:
-            await fp.write("# Route Rules\n")
-            await fp.write("<!-- body-start -->\n")
-            now: datetime.datetime = datetime.datetime.now().astimezone()
-            await fp.write(f"\nLast Updated At: {now.isoformat(timespec='seconds')}\n")
-            for target in self.targets:
-                await fp.write(f"\n## {target.name}\n")
-                for behavior, format in BEHAVIOR_FORMAT:  # noqa: A001
-                    await target.save(self.dist_dir, behavior=behavior, format=format)
-                links: prettytable.PrettyTable = await target.pretty_links()
-                await fp.write(f"\n{links.get_string()}\n")
-                statistics: prettytable.PrettyTable = await target.pretty_statistics()
-                await fp.write(f"\n{statistics.get_string()}\n")
+        meta = Meta(build_time=datetime.datetime.now().astimezone())
+        for recipe in self.recipes:
+            meta.recipes.append(await self.build_recipe(recipe))
+        (self.dist_dir / "meta.json").write_bytes(meta.json_encode())
+
+    async def build_recipe(self, recipe: RecipeWrapper) -> RecipeMeta:
+        ruleset: RuleSet = await recipe.build()
+        meta = RecipeMeta(
+            name=recipe.name,
+            slug=recipe.slug,
+            statistics=await self._build_statistics(recipe, ruleset),
+        )
+        for provider in recipe.providers:
+            meta.providers.append(
+                ProviderMeta(
+                    name=provider,
+                    download_url=recipe.registry.download_url(provider),
+                    preview_url=recipe.registry.preview_url(provider),
+                )
+            )
+        for exporter in self.exporters:
+            path: Path = exporter.export_path(recipe.slug)
+            size: int = exporter.export(self.dist_dir / path, ruleset)
+            if size == 0:
+                continue
+            meta.artifacts.append(
+                ArtifactMeta(
+                    behavior=exporter.behavior,
+                    format=exporter.format,
+                    path=path,
+                    size=size,
+                )
+            )
+        return meta
+
+    async def _build_statistics(
+        self, recipe: RecipeWrapper, ruleset: RuleSet
+    ) -> RecipeStatistics:
+        outputs: dict[str, int] = {typ: len(values) for typ, values in ruleset.items()}
+        inputs: dict[str, int] = collections.defaultdict(lambda: 0)
+        for provider in recipe.providers:
+            ruleset: RuleSet = await recipe.registry.load(provider)
+            for typ, values in ruleset.items():
+                inputs[typ] += len(values)
+        return RecipeStatistics(inputs=inputs, outputs=outputs)

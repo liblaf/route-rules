@@ -4,4 +4,5 @@ set -o nounset
 set -o pipefail
 
 python 'scripts/build.py'
-prettier --write --ignore-path '' 'dist/*.md'
+python 'scripts/render-docs.py'
+prettier --write --ignore-path '' 'dist/**/*.md'

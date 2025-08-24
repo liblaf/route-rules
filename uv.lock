@@ -94,6 +94,27 @@ wheels = [
 ]
 
 [[package]]
+name = "cachetools"
+version = "6.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/89/817ad5d0411f136c484d535952aef74af9b25e0d99e90cdffbe121e6d628/cachetools-6.1.0.tar.gz", hash = "sha256:b4c4f404392848db3ce7aac34950d17be4d864da4b8b66911008e430bc544587", size = 30714, upload-time = "2025-06-16T18:51:03.07Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/00/f0/2ef431fe4141f5e334759d73e81120492b23b2824336883a91ac04ba710b/cachetools-6.1.0-py3-none-any.whl", hash = "sha256:1c7bb3cf9193deaf3508b7c5f2a79986c13ea38965c5adcff1f84519cf39163e", size = 11189, upload-time = "2025-06-16T18:51:01.514Z" },
+]
+
+[[package]]
+name = "cachetools-async"
+version = "0.0.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cachetools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/59/6d/01404fffea95b33d186a4d921b141918c0daf3ff74b6a715c0ac2de8f42e/cachetools_async-0.0.5.tar.gz", hash = "sha256:e99ec8f3a78e82b4f524e78f01d15b8746531481d862ac4f2d8af2a686e1c571", size = 24837, upload-time = "2025-06-09T08:11:28.925Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/fa/136f97313ab298286725fc8004d44f5fc352ea416c2b874b7a91e83df66a/cachetools_async-0.0.5-py3-none-any.whl", hash = "sha256:8f690c8bc291718a652395832e90afa797195c838e98d6a9e530dc1de66fbc34", size = 4750, upload-time = "2025-06-09T08:11:27.871Z" },
+]
+
+[[package]]
 name = "cairocffi"
 version = "1.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -726,15 +747,15 @@ wheels = [
 
 [[package]]
 name = "hypothesis"
-version = "6.138.2"
+version = "6.138.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
     { name = "sortedcontainers" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7d/6d/68b8f1468da10dab5e903f6278cdfe88e05631a23009b2d9bf75b23e63f1/hypothesis-6.138.2.tar.gz", hash = "sha256:82e3b2ac709ee3edda4aba2f4b11becfe764f51d104fcdb3e9f95aff1ac81595", size = 463153, upload-time = "2025-08-16T01:17:27.426Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/28/9aa38d1cf2b00d385926fd44318d2b49948c060969ab29e82e8bb654b16c/hypothesis-6.138.3.tar.gz", hash = "sha256:9bffd1382b99e67c46512dac45ec013bae4b39d3d0ef98f0d87535f06d8efc9e", size = 463165, upload-time = "2025-08-24T07:29:16.34Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a1/ab/012b126e5be088b8de28a6f7eed2cf71b7c009233d9cd3f730419fda22ae/hypothesis-6.138.2-py3-none-any.whl", hash = "sha256:2886c5e7569437781d1dc42973021f70f7facb7e410249dcb899b0edb249e5b8", size = 530048, upload-time = "2025-08-16T01:17:23.672Z" },
+    { url = "https://files.pythonhosted.org/packages/20/60/7db4d683d27b24a6dfd8f82ef28332d20b0d99a976ae696569622383c900/hypothesis-6.138.3-py3-none-any.whl", hash = "sha256:19291d3ba478527155c34704b038a21ba86b2f31d36673446f981a67f705b3f4", size = 530081, upload-time = "2025-08-24T07:29:12.862Z" },
 ]
 
 [[package]]
@@ -1097,6 +1118,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/47/0c/c9826f35b99c67fa3a7cddfa094c1a6c43fafde558c309c6e4403e5b37dc/mkdocs_autorefs-1.4.2.tar.gz", hash = "sha256:e2ebe1abd2b67d597ed19378c0fff84d73d1dbce411fce7a7cc6f161888b6749", size = 54961, upload-time = "2025-05-20T13:09:09.886Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/87/dc/fc063b78f4b769d1956319351704e23ebeba1e9e1d6a41b4b602325fd7e4/mkdocs_autorefs-1.4.2-py3-none-any.whl", hash = "sha256:83d6d777b66ec3c372a1aad4ae0cf77c243ba5bcda5bf0c6b8a2c5e7a3d89f13", size = 24969, upload-time = "2025-05-20T13:09:08.237Z" },
+]
+
+[[package]]
+name = "mkdocs-gen-files"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mkdocs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/48/85/2d634462fd59136197d3126ca431ffb666f412e3db38fd5ce3a60566303e/mkdocs_gen_files-0.5.0.tar.gz", hash = "sha256:4c7cf256b5d67062a788f6b1d035e157fc1a9498c2399be9af5257d4ff4d19bc", size = 7539, upload-time = "2023-04-27T19:48:04.894Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e7/0f/1e55b3fd490ad2cecb6e7b31892d27cb9fc4218ec1dab780440ba8579e74/mkdocs_gen_files-0.5.0-py3-none-any.whl", hash = "sha256:7ac060096f3f40bd19039e7277dd3050be9a453c8ac578645844d4d91d7978ea", size = 8380, upload-time = "2023-04-27T19:48:07.059Z" },
 ]
 
 [[package]]
@@ -1618,6 +1651,18 @@ wheels = [
 ]
 
 [[package]]
+name = "python-slugify"
+version = "8.0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "text-unidecode" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/87/c7/5e1547c44e31da50a460df93af11a535ace568ef89d7a811069ead340c4a/python-slugify-8.0.4.tar.gz", hash = "sha256:59202371d1d05b54a9e7720c5e038f928f45daaffe41dd10822f3907b937c856", size = 10921, upload-time = "2024-02-08T18:32:45.488Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a4/62/02da182e544a51a5c3ccf4b03ab79df279f9c60c5e82d5e8bec7ca26ac11/python_slugify-8.0.4-py2.py3-none-any.whl", hash = "sha256:276540b79961052b66b7d116620b36518847f52d5fd9e3a70164fc8c50faa6b8", size = 10051, upload-time = "2024-02-08T18:32:43.911Z" },
+]
+
+[[package]]
 name = "pytz"
 version = "2025.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1742,6 +1787,8 @@ source = { editable = "." }
 dependencies = [
     { name = "anyio" },
     { name = "autoregistry" },
+    { name = "cachetools" },
+    { name = "cachetools-async" },
     { name = "cytoolz" },
     { name = "hishel" },
     { name = "httpx", extra = ["socks"] },
@@ -1749,6 +1796,7 @@ dependencies = [
     { name = "liblaf-grapes" },
     { name = "loguru" },
     { name = "prettytable" },
+    { name = "python-slugify" },
     { name = "validators" },
 ]
 
@@ -1764,6 +1812,7 @@ dev = [
 docs = [
     { name = "liblaf-mkdocs-preset" },
     { name = "mkdocs" },
+    { name = "mkdocs-gen-files" },
 ]
 test = [
     { name = "hypothesis" },
@@ -1776,8 +1825,10 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "anyio", specifier = ">=4.10.0" },
+    { name = "anyio", specifier = ">=4,<5" },
     { name = "autoregistry", specifier = ">=1,<3" },
+    { name = "cachetools", specifier = ">=6,<7" },
+    { name = "cachetools-async", specifier = ">=0.0.5,<0.0.6" },
     { name = "cytoolz", specifier = ">=1,<2" },
     { name = "hishel", specifier = ">=0.1,<0.2" },
     { name = "httpx", extras = ["socks"], specifier = ">=0.28,<0.29" },
@@ -1785,6 +1836,7 @@ requires-dist = [
     { name = "liblaf-grapes", specifier = ">=2,<3" },
     { name = "loguru", specifier = ">=0.7,<0.8" },
     { name = "prettytable", specifier = ">=3,<4" },
+    { name = "python-slugify", specifier = ">=8.0.4" },
     { name = "validators", specifier = ">=0.35,<0.36" },
 ]
 
@@ -1798,6 +1850,7 @@ dev = [{ name = "icecream", specifier = ">=2,<3" }]
 docs = [
     { name = "liblaf-mkdocs-preset", specifier = ">=0.1,<0.2" },
     { name = "mkdocs", specifier = ">=1,<2" },
+    { name = "mkdocs-gen-files", specifier = ">=0.5.0" },
 ]
 test = [
     { name = "hypothesis", specifier = ">=6,<7" },
@@ -1912,6 +1965,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/19/13/2940fafc136048ec99c932bf0077613f1ae4693a313705162982335fe5fb/sortedcontainers_stubs-2.4.3.tar.gz", hash = "sha256:ba172daceda4bd617d2f6ffd24582261a494da92705409651967faa40ebc75dd", size = 6186, upload-time = "2025-04-23T07:42:00.238Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/87/3e/b0fbd7621e6430d33d234ad5e2dc9b0d4df575518f4790a2af934e1029ea/sortedcontainers_stubs-2.4.3-py3-none-any.whl", hash = "sha256:4496109dfa6645e4b675f57fbc7e42ec4d1bed2c74aab7fa379e0795e49fe406", size = 8816, upload-time = "2025-04-23T07:41:58.625Z" },
+]
+
+[[package]]
+name = "text-unidecode"
+version = "1.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ab/e2/e9a00f0ccb71718418230718b3d900e71a5d16e701a3dae079a21e9cd8f8/text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93", size = 76885, upload-time = "2019-08-30T21:36:45.405Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/a5/c0b6468d3824fe3fde30dbb5e1f687b291608f9473681bbf7dabbf5a87d7/text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8", size = 78154, upload-time = "2019-08-30T21:37:03.543Z" },
 ]
 
 [[package]]

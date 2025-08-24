@@ -36,27 +36,27 @@ def decode(data: str | bytes, behavior: Behavior, format: Format) -> RuleSet:  #
 
 def _decode_domain(payload: Iterable[str]) -> RuleSet:
     # ref: <https://wiki.metacubex.one/en/handbook/syntax/#domain-wildcards>
-    rule_set = RuleSet()
+    ruleset = RuleSet()
     for line in payload:
         if line.startswith("*."):
             logger.warning("Unsupported: Domain Wildcard `*`.", once=True)
         elif line.startswith("+."):
-            rule_set.domain_suffix.add(line[2:])
+            ruleset.domain_suffix.add(line[2:])
         elif line.startswith("."):
             logger.warning("Unsupported: Domain Wildcard `.`.", once=True)
         else:
-            rule_set.domain.add(line)
-    return rule_set
+            ruleset.domain.add(line)
+    return ruleset
 
 
 def _decode_classical(payload: Iterable[str]) -> RuleSet:
-    rule_set = RuleSet()
+    ruleset = RuleSet()
     for line in payload:
         typ: str
         value: str
         typ, value, *_ = line.split(",", maxsplit=2)
-        rule_set.add(typ, value)
-    return rule_set
+        ruleset.add(typ, value)
+    return ruleset
 
 
 def _decode_yaml(data: str | bytes) -> list[str]:

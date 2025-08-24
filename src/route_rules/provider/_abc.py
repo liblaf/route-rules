@@ -1,32 +1,36 @@
 import abc
+import urllib.parse
 
 import attrs
+import cachetools
 
 from route_rules.core import RuleSet
 
 
+def _default_preview_url_template(self: "Provider") -> str:
+    return self.download_url_template
+
+
 @attrs.define
 class Provider(abc.ABC):
-    _cache: RuleSet | None = attrs.field(default=None, kw_only=True)
-
-    async def load(self) -> RuleSet:
-        if self._cache is None:
-            self._cache = await self._load()
-        return self._cache
-
-    @abc.abstractmethod
-    async def _load(self) -> RuleSet: ...
-
-
-@attrs.define
-class ProviderFactory(abc.ABC):
     name: str = attrs.field()
-    _cache: dict[str, RuleSet] = attrs.field(factory=dict, kw_only=True)
+    download_url_template: str = attrs.field()
+    preview_url_template: str = attrs.field(
+        default=attrs.Factory(_default_preview_url_template, takes_self=True),
+    )
+
+    _cache: cachetools.Cache = attrs.field(
+        factory=lambda: cachetools.LRUCache(maxsize=65536), kw_only=True
+    )
+
+    def download_url(self, name: str) -> str:
+        name = urllib.parse.quote(name)
+        return self.download_url_template.format(name=name)
 
     @abc.abstractmethod
-    def create(self, name: str, /) -> Provider: ...
+    async def load(self, name: str) -> RuleSet:
+        raise NotImplementedError
 
-    async def load(self, name: str, /) -> RuleSet:
-        if name not in self._cache:
-            self._cache[name] = await self.create(name).load()
-        return self._cache[name]
+    def preview_url(self, name: str) -> str:
+        name = urllib.parse.quote(name)
+        return self.preview_url_template.format(name=name)

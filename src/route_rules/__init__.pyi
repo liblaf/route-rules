@@ -1,29 +1,38 @@
 from . import core, gen, provider, utils
-from .core import RuleSet, Statistics, Target
-from .gen import Builder, Config, PrettyTarget
+from .core import Recipe, RuleSet
+from .gen import (
+    ArtifactMeta,
+    Builder,
+    Config,
+    Meta,
+    ProviderMeta,
+    RecipeMeta,
+    RecipeWrapper,
+)
 from .provider import (
     Behavior,
     Format,
     Provider,
-    ProviderFactoryRegistry,
     ProviderMihomo,
-    ProviderMihomoFactory,
+    ProviderRegistry,
 )
 from .utils import download
 
 __all__ = [
+    "ArtifactMeta",
     "Behavior",
     "Builder",
     "Config",
     "Format",
-    "PrettyTarget",
+    "Meta",
     "Provider",
-    "ProviderFactoryRegistry",
+    "ProviderMeta",
     "ProviderMihomo",
-    "ProviderMihomoFactory",
+    "ProviderRegistry",
+    "Recipe",
+    "RecipeMeta",
+    "RecipeWrapper",
     "RuleSet",
-    "Statistics",
-    "Target",
     "core",
     "download",
     "gen",

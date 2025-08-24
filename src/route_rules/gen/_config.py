@@ -6,13 +6,13 @@ import msgspec
 import pydantic
 
 
-class Target(pydantic.BaseModel):
+class RecipeConfig(pydantic.BaseModel):
     name: str
     providers: list[str]
 
 
 class Config(pydantic.BaseModel):
-    targets: dict[str, Target]
+    recipes: list[RecipeConfig]
 
     @classmethod
     def load(cls, file: str | os.PathLike[str]) -> Self:

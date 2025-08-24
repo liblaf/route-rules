@@ -1,4 +1,4 @@
-from ._cache import async_cached_method
 from ._download import download
+from ._slugify import default_slug
 
-__all__ = ["async_cached_method", "download"]
+__all__ = ["default_slug", "download"]

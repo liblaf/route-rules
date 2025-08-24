@@ -25,8 +25,10 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "anyio>=4.10.0",
+  "anyio>=4,<5",
   "autoregistry>=1,<3",
+  "cachetools-async>=0.0.5,<0.0.6",
+  "cachetools>=6,<7",
   "cytoolz>=1,<2",
   "hishel>=0.1,<0.2",
   "httpx[socks]>=0.28,<0.29",
@@ -34,6 +36,7 @@ dependencies = [
   "liblaf-grapes>=2,<3",
   "loguru>=0.7,<0.8",
   "prettytable>=3,<4",
+  "python-slugify>=8.0.4",
   "validators>=0.35,<0.36",
 ]
 dynamic = ["version"]
@@ -50,7 +53,11 @@ dynamic = ["version"]
 [dependency-groups]
 build = ["check-wheel-contents>=0.6,<0.7", "hatch>=1,<2", "twine>=6,<7"]
 dev = ["icecream>=2,<3"]
-docs = ["liblaf-mkdocs-preset>=0.1,<0.2", "mkdocs>=1,<2"]
+docs = [
+  "liblaf-mkdocs-preset>=0.1,<0.2",
+  "mkdocs-gen-files>=0.5,<0.6",
+  "mkdocs>=1,<2",
+]
 test = [
   "hypothesis>=6,<7",
   "pytest-codspeed>=4,<5",

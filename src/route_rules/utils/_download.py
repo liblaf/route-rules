@@ -2,7 +2,7 @@ import hishel
 import httpx
 from loguru import logger
 
-storage = hishel.AsyncFileStorage(ttl=86400)
+storage = hishel.AsyncFileStorage(ttl=86400)  # seconds
 client = hishel.AsyncCacheClient(follow_redirects=True, storage=storage)
 
 
