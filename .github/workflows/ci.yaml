@@ -19,6 +19,14 @@ jobs:
         uses: actions/checkout@v5
       - name: Install Prettier
         run: npm install --global prettier
+      - name: Install Mihomo
+        run: |-
+          gh release --repo 'MetaCubeX/mihomo' download --pattern 'mihomo-linux-amd64-v3-go123-v*.gz'
+          gunzip mihomo-linux-amd64-v3-go123-v*.gz
+          install -D mihomo-* "$HOME/.local/bin/mihomo"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Test Mihomo
+        run: mihomo -v
       - name: Install mise
         uses: jdx/mise-action@v3
       - name: Setup Python

@@ -6,7 +6,7 @@ import attrs
 from route_rules.core import RuleSet
 
 from ._abc import Provider, ProviderFactory
-from ._mihomo import Behavior, Format, ProviderMihomoFactory
+from .mihomo import Behavior, Format, ProviderMihomoFactory
 
 
 @attrs.define

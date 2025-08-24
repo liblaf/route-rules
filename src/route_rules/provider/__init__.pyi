@@ -1,6 +1,7 @@
+from . import mihomo
 from ._abc import Provider
-from ._mihomo import Behavior, Format, ProviderMihomo, ProviderMihomoFactory
 from ._registry import ProviderFactoryRegistry
+from .mihomo import Behavior, Format, ProviderMihomo, ProviderMihomoFactory
 
 __all__ = [
     "Behavior",
@@ -9,4 +10,5 @@ __all__ = [
     "ProviderFactoryRegistry",
     "ProviderMihomo",
     "ProviderMihomoFactory",
+    "mihomo",
 ]

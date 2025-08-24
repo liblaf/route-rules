@@ -11,26 +11,36 @@ import route_rules as rr
 
 DIST_DIR: Path = Path("dist")
 HEADER: str = """\
-# Route Rules
+# Statistics
 
 Last Updated At: {now}
 """
 
 
-def save_target(target: rr.Target, rule_set: rr.RuleSet) -> None:
+def save_target(target: rr.Target, ruleset: rr.RuleSet) -> None:
     rr.ProviderMihomo.save(
         DIST_DIR / f"mihomo/domain/yaml/{target.slug}.yaml",
-        rule_set=rule_set,
+        ruleset=ruleset,
         behavior=rr.Behavior.DOMAIN,
         format=rr.Format.YAML,
     )
+    rr.ProviderMihomo.save(
+        DIST_DIR / f"mihomo/domain/text/{target.slug}.list",
+        ruleset=ruleset,
+        behavior=rr.Behavior.DOMAIN,
+        format=rr.Format.TEXT,
+    )
+    rr.ProviderMihomo.save(
+        DIST_DIR / f"mihomo/domain/mrs/{target.slug}.mrs",
+        ruleset=ruleset,
+        behavior=rr.Behavior.DOMAIN,
+        format=rr.Format.MRS,
+    )
 
 
-async def safe_statistics(
-    target: rr.Target, rule_set: rr.RuleSet, file: TextIO
-) -> None:
+async def save_statistics(target: rr.Target, ruleset: rr.RuleSet, file: TextIO) -> None:
     table: prettytable.PrettyTable = rr.Statistics.compare(
-        await target.statistics(), rule_set.statistics
+        await target.statistics(), ruleset.statistics
     )
     file.write(f"## {target.name}\n")
     file.write(table.get_string())
@@ -111,9 +121,9 @@ async def main() -> None:
         now: datetime.datetime = datetime.datetime.now().astimezone()
         fp.write(HEADER.format(now=now.isoformat(timespec="seconds")))
         for target in targets:
-            rule_set: rr.RuleSet = await target.build()
-            await safe_statistics(target, rule_set, file=fp)
-            save_target(target, rule_set)
+            ruleset: rr.RuleSet = await target.build()
+            await save_statistics(target, ruleset, file=fp)
+            save_target(target, ruleset)
 
 
 if __name__ == "__main__":
