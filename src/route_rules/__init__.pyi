@@ -1,5 +1,6 @@
-from . import core, provider, utils
+from . import core, gen, provider, utils
 from .core import RuleSet, Statistics, Target
+from .gen import Builder, Config, PrettyTarget
 from .provider import (
     Behavior,
     Format,
@@ -12,7 +13,10 @@ from .utils import download
 
 __all__ = [
     "Behavior",
+    "Builder",
+    "Config",
     "Format",
+    "PrettyTarget",
     "Provider",
     "ProviderFactoryRegistry",
     "ProviderMihomo",
@@ -22,6 +26,7 @@ __all__ = [
     "Target",
     "core",
     "download",
+    "gen",
     "provider",
     "utils",
 ]

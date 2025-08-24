@@ -1740,6 +1740,7 @@ wheels = [
 name = "route-rules"
 source = { editable = "." }
 dependencies = [
+    { name = "anyio" },
     { name = "autoregistry" },
     { name = "cytoolz" },
     { name = "hishel" },
@@ -1775,6 +1776,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "anyio", specifier = ">=4.10.0" },
     { name = "autoregistry", specifier = ">=1,<3" },
     { name = "cytoolz", specifier = ">=1,<2" },
     { name = "hishel", specifier = ">=0.1,<0.2" },

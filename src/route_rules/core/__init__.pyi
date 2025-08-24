@@ -1,4 +1,4 @@
-from ._rule_set import RuleSet
+from ._ruleset import RuleSet
 from ._statistics import Statistics
 from ._target import Target
 

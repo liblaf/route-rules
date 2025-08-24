@@ -1,0 +1,57 @@
+targets:
+  ai:
+    name: 🤖 AI
+    providers:
+      - dler-io:AI Suite
+      - MetaCubeX/geosite:category-ai-!cn
+      - SukkaW/classical:non_ip/ai
+
+  direct:
+    name: 🎯 Direct
+    providers:
+      - blackmatrix7:Direct
+      - dler-io:Special
+      - SukkaW/classical:non_ip/direct
+
+  domestic:
+    name: 📍 Domestic
+    providers:
+      - blackmatrix7:ChinaMax
+      - dler-io:Domestic
+      - dler-io:Domestic IPs
+      - MetaCubeX/geosite:cn
+      - MetaCubeX/geosite:geolocation-cn
+      - SukkaW/classical:ip/domestic
+      - SukkaW/classical:non_ip/domestic
+
+  download:
+    name: 📥 Download
+    providers:
+      - SukkaW/classical:non_ip/cdn
+      - SukkaW/classical:non_ip/download
+      - SukkaW/domain:domainset/cdn
+      - SukkaW/domain:domainset/download
+
+  global:
+    name: 🌐 Global
+    providers:
+      - blackmatrix7:Global
+      - dler-io:Proxy
+      - MetaCubeX/geosite:geolocation-!cn
+      - SukkaW/classical:non_ip/global
+
+  local:
+    name: ♾️ Local
+    providers:
+      - blackmatrix7:Lan
+      - dler-io:LAN
+      - MetaCubeX/geosite:private
+      - SukkaW/classical:ip/lan
+      - SukkaW/classical:non_ip/lan
+
+  stream:
+    name: 📺 Stream
+    providers:
+      - blackmatrix7:GlobalMedia
+      - SukkaW/classical:ip/stream
+      - SukkaW/classical:non_ip/stream

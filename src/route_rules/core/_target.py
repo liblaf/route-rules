@@ -5,7 +5,7 @@ import attrs
 
 from route_rules.provider import ProviderFactoryRegistry
 
-from ._rule_set import RuleSet
+from ._ruleset import RuleSet
 from ._statistics import Statistics
 
 
@@ -23,21 +23,24 @@ class Target:
     factories: ProviderFactoryRegistry = attrs.field(
         factory=ProviderFactoryRegistry.presets, kw_only=True
     )
-
-    def __attrs_post_init__(self) -> None:
-        if not self.name:
-            self.name = self.slug
+    _cache: RuleSet | None = attrs.field(default=None, kw_only=True)
 
     async def build(self) -> RuleSet:
-        rule_set: RuleSet = RuleSet.union(
-            *(await asyncio.gather(*(self.factories.load(p) for p in self.providers)))
-        )
-        rule_set = rule_set.optimize()
-        return rule_set
+        if self._cache is None:
+            ruleset: RuleSet = RuleSet.union(
+                *(
+                    await asyncio.gather(
+                        *(self.factories.load(p) for p in self.providers)
+                    )
+                )
+            )
+            ruleset = ruleset.optimize()
+            self._cache = ruleset
+        return self._cache
 
     async def statistics(self) -> Statistics:
         statistics: Statistics = Statistics()
         for provider in self.providers:
-            rule_set: RuleSet = await self.factories.load(provider)
-            statistics += rule_set.statistics
+            ruleset: RuleSet = await self.factories.load(provider)
+            statistics += ruleset.statistics
         return statistics

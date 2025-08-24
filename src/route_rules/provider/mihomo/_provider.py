@@ -29,17 +29,18 @@ class ProviderMihomo(Provider):
         *,
         behavior: Behavior,
         format: Format = Format.YAML,  # noqa: A002
-    ) -> None:
+    ) -> int:
         data: bytes = encode(ruleset, behavior=behavior, format=format)
         if not data:
             logger.warning("Empty Rule: {}", file)
-            return
+            return 0
         file = Path(file)
         file.parent.mkdir(parents=True, exist_ok=True)
         file.write_bytes(data)
+        return len(data)
 
     @override
-    async def load(self) -> RuleSet:
+    async def _load(self) -> RuleSet:
         response: httpx.Response = await utils.download(self.url)
         return decode(response.text, self.behavior, self.format)
 
