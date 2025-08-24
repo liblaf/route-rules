@@ -53,3 +53,26 @@ jobs:
           folder: dist
           branch: dist
           single-commit: true
+
+  docs:
+    name: Docs
+    permissions:
+      contents: write
+      pages: write
+    needs:
+      - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: liblaf/actions/setup-python@main
+      - name: Deploy
+        run: mkdocs gh-deploy --force --no-history
+      - name: Setup GitHub Pages
+        uses: liblaf/actions/setup-pages@main
+        with:
+          token: ${{ secrets.GH_PAT || github.token }}
+        continue-on-error: true

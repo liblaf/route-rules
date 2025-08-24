@@ -107,7 +107,7 @@ async def main() -> None:
         ),
     ]
     DIST_DIR.mkdir(parents=True, exist_ok=True)
-    with (DIST_DIR / "README.md").open("w") as fp:
+    with (DIST_DIR / "statistics.md").open("w") as fp:
         now: datetime.datetime = datetime.datetime.now().astimezone()
         fp.write(HEADER.format(now=now.isoformat(timespec="seconds")))
         for target in targets:
