@@ -16,7 +16,6 @@ CDN: list[tuple[str, str]] = [
 class Renderer:
     meta: rr.Meta = attrs.field()
     docs_dir: Path = attrs.field(default=Path("dist/docs"))
-    site_docs_dir: Path = attrs.field(default=Path("docs/rulesets"))
 
     def render(self) -> None:
         for recipe in self.meta.recipes:
@@ -38,11 +37,6 @@ class Renderer:
             fp.write("## Sources\n")
             providers: prettytable.PrettyTable = self.render_providers(recipe)
             fp.write(providers.get_string() + "\n")
-        self.site_docs_dir.mkdir(parents=True, exist_ok=True)
-        url: str = (
-            f"https://raw.githubusercontent.com/liblaf/route-rules/dist/docs/{filename}"
-        )
-        (self.site_docs_dir / filename).write_text(f'{{% include-markdown "{url}" %}}')
 
     def render_links(self, recipe: rr.RecipeMeta) -> prettytable.PrettyTable:
         field_names: list[str] = ["Name"]

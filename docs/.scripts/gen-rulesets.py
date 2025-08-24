@@ -10,7 +10,7 @@ editor: FilesEditor = FilesEditor.current()
 def main() -> None:
     with hishel.CacheClient(follow_redirects=True) as client:
         response: httpx.Response = client.get(
-            "file:///dist/meta.json"
+            "https://raw.githubusercontent.com/liblaf/route-rules/dist/meta.json"
         ).raise_for_status()
         meta: rr.Meta = rr.Meta.json_decode(response.text)
     for recipe in meta.recipes:
