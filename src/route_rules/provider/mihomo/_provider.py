@@ -4,6 +4,7 @@ from typing import override
 
 import attrs
 import httpx
+from loguru import logger
 
 from route_rules import utils
 from route_rules.core import RuleSet
@@ -30,6 +31,9 @@ class ProviderMihomo(Provider):
         format: Format = Format.YAML,  # noqa: A002
     ) -> None:
         data: bytes = encode(ruleset, behavior=behavior, format=format)
+        if not data:
+            logger.warning("Empty Rule: {}", file)
+            return
         file = Path(file)
         file.parent.mkdir(parents=True, exist_ok=True)
         file.write_bytes(data)

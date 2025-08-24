@@ -19,7 +19,7 @@ class RuleSet:
     )
 
     def __or__(self, other: Self, /) -> Self:
-        data: dict[str, set[str]] = {}
+        data: dict[str, set[str]] = collections.defaultdict(set)
         for typ in self.data.keys() | other.data.keys():
             data[typ] = self.data.get(typ, set()) | other.data.get(typ, set())
         return type(self)(data=data)
@@ -33,6 +33,10 @@ class RuleSet:
         return self.data["DOMAIN-SUFFIX"]
 
     @property
+    def ip_cidr(self) -> set[str]:
+        return self.data["IP-CIDR"]
+
+    @property
     def statistics(self) -> Statistics:
         stats: Statistics = Statistics()
         for typ, values in self.data.items():
@@ -44,6 +48,8 @@ class RuleSet:
         return sum(len(v) for v in self.data.values())
 
     def add(self, typ: str, value: str) -> None:
+        if typ == "IP-CIDR6":
+            typ = "IP-CIDR"
         self.data[typ].add(value)
 
     def optimize(self) -> Self:
@@ -51,7 +57,7 @@ class RuleSet:
         return self
 
     def union(self, *others: Self) -> Self:
-        data: dict[str, set[str]] = {}
+        data: dict[str, set[str]] = collections.defaultdict(set)
         for typ in set(self.data.keys()).union(
             *(other.data.keys() for other in others)
         ):

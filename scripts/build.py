@@ -36,6 +36,24 @@ def save_target(target: rr.Target, ruleset: rr.RuleSet) -> None:
         behavior=rr.Behavior.DOMAIN,
         format=rr.Format.MRS,
     )
+    rr.ProviderMihomo.save(
+        DIST_DIR / f"mihomo/ipcidr/yaml/{target.slug}.yaml",
+        ruleset=ruleset,
+        behavior=rr.Behavior.IPCIDR,
+        format=rr.Format.YAML,
+    )
+    rr.ProviderMihomo.save(
+        DIST_DIR / f"mihomo/ipcidr/text/{target.slug}.list",
+        ruleset=ruleset,
+        behavior=rr.Behavior.IPCIDR,
+        format=rr.Format.TEXT,
+    )
+    rr.ProviderMihomo.save(
+        DIST_DIR / f"mihomo/ipcidr/mrs/{target.slug}.mrs",
+        ruleset=ruleset,
+        behavior=rr.Behavior.IPCIDR,
+        format=rr.Format.MRS,
+    )
 
 
 async def save_statistics(target: rr.Target, ruleset: rr.RuleSet, file: TextIO) -> None:

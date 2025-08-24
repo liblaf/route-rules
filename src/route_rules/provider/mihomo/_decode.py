@@ -54,7 +54,7 @@ def _decode_classical(payload: Iterable[str]) -> RuleSet:
     for line in payload:
         typ: str
         value: str
-        typ, value = line.split(",", 1)
+        typ, value, *_ = line.split(",", maxsplit=2)
         rule_set.add(typ, value)
     return rule_set
 

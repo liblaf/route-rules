@@ -22,6 +22,8 @@ def encode(ruleset: RuleSet, behavior: Behavior, format: Format) -> bytes:  # no
     match behavior:
         case Behavior.DOMAIN:
             payload = _encode_domain(ruleset)
+        case Behavior.IPCIDR:
+            payload = _encode_ipcidr(ruleset)
         case Behavior.CLASSICAL:
             payload = _encode_classical(ruleset)
         case _:
@@ -43,20 +45,30 @@ def _encode_domain(ruleset: RuleSet) -> Generator[str]:
         yield f"+.{domain}"
 
 
+def _encode_ipcidr(ruleset: RuleSet) -> set[str]:
+    return ruleset.ip_cidr
+
+
 def _encode_classical(ruleset: RuleSet) -> Generator[str]:
     for typ, value in ruleset.data.items():
         yield f"{typ},{value}"
 
 
 def _encode_yaml(payload: Iterable[str]) -> bytes:
+    if not payload:
+        return b""
     return msgspec.yaml.encode({"payload": list(payload)})
 
 
 def _encode_text(payload: Iterable[str]) -> str:
+    if not payload:
+        return ""
     return "\n".join(payload)
 
 
 def _encode_mrs(payload: Iterable[str], behavior: Behavior) -> bytes:
+    if not payload:
+        return b""
     with tempfile.TemporaryDirectory() as tmpdir_str:
         tmpdir = Path(tmpdir_str)
         yaml_file: Path = tmpdir / "rule-set.yaml"
