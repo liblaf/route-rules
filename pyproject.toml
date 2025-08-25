@@ -36,7 +36,7 @@ dependencies = [
   "liblaf-grapes>=2,<3",
   "loguru>=0.7,<0.8",
   "prettytable>=3,<4",
-  "python-slugify>=8.0.4",
+  "python-slugify>=8,<9",
   "validators>=0.35,<0.36",
 ]
 dynamic = ["version"]
@@ -54,7 +54,7 @@ dynamic = ["version"]
 build = ["check-wheel-contents>=0.6,<0.7", "hatch>=1,<2", "twine>=6,<7"]
 dev = ["icecream>=2,<3"]
 docs = [
-  "liblaf-mkdocs-preset>=0.1,<0.2",
+  "liblaf-mkdocs-preset>=0.2,<0.3",
   "mkdocs-gen-files>=0.5,<0.6",
   "mkdocs>=1,<2",
 ]
