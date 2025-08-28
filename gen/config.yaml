@@ -49,3 +49,8 @@ recipes:
       - blackmatrix7:GlobalMedia
       - SukkaW/classical:ip/stream
       - SukkaW/classical:non_ip/stream
+
+  - name: ✈️ Telegram
+    providers:
+      - SukkaW/classical:ip/telegram
+      - SukkaW/classical:non_ip/telegram
