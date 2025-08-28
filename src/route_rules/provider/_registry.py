@@ -33,6 +33,13 @@ class ProviderRegistry:
                 format=Format.YAML,
             ),
             ProviderMihomo(
+                "liblaf",
+                "https://raw.githubusercontent.com/liblaf/route-rules/main/rules/{name}.list",
+                "https://github.com/liblaf/route-rules/blob/main/rules/{name}.list",
+                behavior=Behavior.DOMAIN,
+                format=Format.TEXT,
+            ),
+            ProviderMihomo(
                 "MetaCubeX/geosite",
                 "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/{name}.yaml",
                 "https://github.com/MetaCubeX/meta-rules-dat/blob/meta/geo/geosite/{name}.yaml",

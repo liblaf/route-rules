@@ -9,6 +9,7 @@ recipes:
     providers:
       - blackmatrix7:Direct
       - dler-io:Special
+      - liblaf:direct
       - SukkaW/classical:non_ip/direct
 
   - name: 📍 Domestic
