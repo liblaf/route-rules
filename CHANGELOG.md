@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.2.0](https://github.com/liblaf/route-rules/compare/v0.1.1..v0.2.0) - 2025-08-31
+
+### 💥 BREAKING CHANGES
+
+- **provider:** add Mihomo provider with multi-format rule-set support - ([80a1659](https://github.com/liblaf/route-rules/commit/80a16596d1985e3331b0acb5b245b88bd8b05a3e))
+- refactor build system to be configuration-driven - ([be09179](https://github.com/liblaf/route-rules/commit/be091797107f487461dbdac43ce2bc652ad18ff6))
+- generate multiple rule sets from various providers - ([0d0f2cc](https://github.com/liblaf/route-rules/commit/0d0f2cc11e7e7dfdde0e6a27f5d5eb827b76e564))
+
+### ✨ Features
+
+- **config:** add Telegram rule set recipe - ([2e09a8a](https://github.com/liblaf/route-rules/commit/2e09a8aa8d71459b46b425456a71577174180b39))
+- **provider:** add liblaf provider for custom direct list - ([d4ea2b2](https://github.com/liblaf/route-rules/commit/d4ea2b2312164a4807a5c5820a3a12042912886c))
+- Add IPCIDR rule set generation and improve robustness - ([8cc0984](https://github.com/liblaf/route-rules/commit/8cc0984d396462b8f08c165e17bfdd4147955604))
+
+### 🐛 Bug Fixes
+
+- **rules:** add direct rules for gjm20.top and liblaf.me domains - ([3038ac2](https://github.com/liblaf/route-rules/commit/3038ac276091391f2228a489172170d06ba6d5d9))
+
+### 📝 Documentation
+
+- add comprehensive documentation structure and examples - ([c44121f](https://github.com/liblaf/route-rules/commit/c44121f706e3c84c45ee67f750a53bca207aeacb))
+- update documentation generation to use remote sources - ([cc59acb](https://github.com/liblaf/route-rules/commit/cc59acb339396984f6a5427e1c87f414f95ff6f0))
+- add GitHub Pages deployment for documentation - ([a69a0f3](https://github.com/liblaf/route-rules/commit/a69a0f381bfd3b96505b5a3bb3c37db4bcacf4a9))
+
+### ♻ Code Refactoring
+
+- restructure core components and enhance documentation generation - ([c83298e](https://github.com/liblaf/route-rules/commit/c83298ecfaf0dab75924e3285d5d75ab19aad718))
+- restructure project with provider pattern and new core modules - ([6363c57](https://github.com/liblaf/route-rules/commit/6363c575cbef242ff834b2db6652292d77e60cfe))
+
+### 🔧 Continuous Integration
+
+- **deploy:** add checkout step to deploy job - ([0202fa7](https://github.com/liblaf/route-rules/commit/0202fa736903a7d8606b51aa019887bbef938a18))
+- **workflow:** upgrade GitHub Actions to v5 - ([3616f2e](https://github.com/liblaf/route-rules/commit/3616f2e29ea10583730e57a74ed134ef8c35b287))
+- add mihomo build and deployment workflow - ([7f7de47](https://github.com/liblaf/route-rules/commit/7f7de47d46f8d1ef28217c719f14c9d81edf2507))
+- add GitHub token to Mihomo download step - ([a16e8e7](https://github.com/liblaf/route-rules/commit/a16e8e7aa18ea6e195ae0d12439498897ec33767))
+- replace uv setup with custom Python setup action - ([b60c867](https://github.com/liblaf/route-rules/commit/b60c867c5b8835543f56209ecf6075f4fe092f52))
+
+### ❤️ New Contributors
+
+- [@liblaf-bot[bot]](https://github.com/apps/liblaf-bot) made their first contribution
+- [@liblaf](https://github.com/liblaf) made their first contribution
+
 ## [0.1.0] - 2025-02-04
 
 ### 💥 BREAKING CHANGES
@@ -74,8 +116,8 @@
 
 ### ❤️ New Contributors
 
-- @github-actions[bot] made their first contribution in [#21](https://github.com/liblaf/route-rules/pull/21)
-- @liblaf made their first contribution
-- @renovate[bot] made their first contribution in [#19](https://github.com/liblaf/route-rules/pull/19)
-- @liblaf-bot[bot] made their first contribution
-- @pre-commit-ci[bot] made their first contribution in [#3](https://github.com/liblaf/route-rules/pull/3)
+- [@github-actions[bot]](https://github.com/apps/github-actions) made their first contribution in [#21](https://github.com/liblaf/route-rules/pull/21)
+- [@liblaf](https://github.com/liblaf) made their first contribution
+- [@renovate[bot]](https://github.com/apps/renovate) made their first contribution in [#19](https://github.com/liblaf/route-rules/pull/19)
+- [@liblaf-bot[bot]](https://github.com/apps/liblaf-bot) made their first contribution
+- [@pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci) made their first contribution in [#3](https://github.com/liblaf/route-rules/pull/3)
