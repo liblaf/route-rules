@@ -4,10 +4,9 @@ import attrs
 import cachetools
 import cachetools_async as cta
 
-from route_rules import utils
-from route_rules.provider import ProviderRegistry
-
-from ._ruleset import RuleSet
+from . import utils
+from .core import RuleSet
+from .provider import ProviderRegistry
 
 
 @attrs.define

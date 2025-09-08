@@ -2,7 +2,7 @@ from typing import Self
 
 import attrs
 
-from route_rules.core import Recipe
+from route_rules._recipe import Recipe
 
 from ._config import RecipeConfig
 

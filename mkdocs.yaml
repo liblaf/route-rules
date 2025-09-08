@@ -1,6 +1,6 @@
 INHERIT: .config/copier/mkdocs.yaml
 site_name: Route Rules
-site_description: TODO
+site_description:
 
 plugins:
   gen-files:

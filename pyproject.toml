@@ -3,7 +3,7 @@
 
 [project]
 name = "route-rules"
-description = "TODO"
+description = ""
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
@@ -58,14 +58,7 @@ docs = [
   "mkdocs-gen-files>=0.5,<0.6",
   "mkdocs>=1,<2",
 ]
-test = [
-  "hypothesis>=6,<7",
-  "pytest-codspeed>=4,<5",
-  "pytest-cov>=6,<7",
-  "pytest-randomly>=3,<4",
-  "pytest-xdist>=3,<4",
-  "pytest>=8,<9",
-]
+test = ["liblaf-pytest-preset>=0.1,<0.2", "pytest>=8,<9"]
 
 [build-system]
 requires = ["hatch-vcs", "hatchling"]
@@ -96,12 +89,14 @@ extends = ".config/linters/pyrightconfig.json"
 
 [tool.pytest.ini_options]
 addopts = [
+  "--doctest-modules",
   "--hypothesis-show-statistics",
   "--showlocals",
   "--strict-config",
   "--strict-markers",
+  "--suppress-no-test-exit-code",
 ]
-testpaths = ["benches", "tests"]
+testpaths = ["benches", "src", "tests"]
 
 [tool.ruff]
 extend = ".config/linters/.ruff.toml"

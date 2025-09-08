@@ -1,5 +1,6 @@
 from . import core, gen, provider, utils
-from .core import Recipe, RuleSet
+from ._recipe import Recipe
+from .core import RuleSet
 from .gen import (
     ArtifactMeta,
     Builder,
