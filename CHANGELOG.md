@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.1](https://github.com/liblaf/route-rules/compare/v0.2.0..v0.2.1) - 2025-09-14
+
+### 🐛 Bug Fixes
+
+- correct mise task paths and update GitHub Actions - ([517da78](https://github.com/liblaf/route-rules/commit/517da78efa528ec916c9c44267a234e1c66ed671))
+
+### ♻ Code Refactoring
+
+- move Recipe class to separate module and update imports - ([06f93eb](https://github.com/liblaf/route-rules/commit/06f93eb6fddf9a90e9913edaf2889f81e38dad29))
+
+### ❤️ New Contributors
+
+- [@liblaf-bot[bot]](https://github.com/apps/liblaf-bot) made their first contribution
+- [@liblaf](https://github.com/liblaf) made their first contribution
+
 ## [0.2.0](https://github.com/liblaf/route-rules/compare/v0.1.1..v0.2.0) - 2025-08-31
 
 ### 💥 BREAKING CHANGES
@@ -36,11 +51,6 @@
 - add mihomo build and deployment workflow - ([7f7de47](https://github.com/liblaf/route-rules/commit/7f7de47d46f8d1ef28217c719f14c9d81edf2507))
 - add GitHub token to Mihomo download step - ([a16e8e7](https://github.com/liblaf/route-rules/commit/a16e8e7aa18ea6e195ae0d12439498897ec33767))
 - replace uv setup with custom Python setup action - ([b60c867](https://github.com/liblaf/route-rules/commit/b60c867c5b8835543f56209ecf6075f4fe092f52))
-
-### ❤️ New Contributors
-
-- [@liblaf-bot[bot]](https://github.com/apps/liblaf-bot) made their first contribution
-- [@liblaf](https://github.com/liblaf) made their first contribution
 
 ## [0.1.0] - 2025-02-04
 
