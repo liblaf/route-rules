@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/liblaf/route-rules/compare/v0.2.0...v0.2.1) (2025-09-14)
+
+
+### 🐛 Bug Fixes
+
+* correct mise task paths and update GitHub Actions ([517da78](https://github.com/liblaf/route-rules/commit/517da78efa528ec916c9c44267a234e1c66ed671))
+
+
+### ♻️ Code Refactoring
+
+* move Recipe class to separate module and update imports ([06f93eb](https://github.com/liblaf/route-rules/commit/06f93eb6fddf9a90e9913edaf2889f81e38dad29))
+
 ## [0.2.0](https://github.com/liblaf/route-rules/compare/v0.1.1..v0.2.0) - 2025-08-31
 
 ### 💥 BREAKING CHANGES
