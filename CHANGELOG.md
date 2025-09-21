@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/liblaf/route-rules/compare/v0.2.1...v0.2.2) (2025-09-21)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency liblaf-grapes to v3 ([#29](https://github.com/liblaf/route-rules/issues/29)) ([65e2ec1](https://github.com/liblaf/route-rules/commit/65e2ec133e4b9839119beeffabdab99789a2883c))
+* **deps:** update dependency liblaf-grapes to v4 ([#31](https://github.com/liblaf/route-rules/issues/31)) ([d8e401e](https://github.com/liblaf/route-rules/commit/d8e401e1add08a5f9880808fd9d4739e917ab85f))
+
 ## [0.2.1](https://github.com/liblaf/route-rules/compare/v0.2.0..v0.2.1) - 2025-09-14
 
 ### 🐛 Bug Fixes
