@@ -901,7 +901,7 @@ wheels = [
 
 [[package]]
 name = "liblaf-grapes"
-version = "4.1.0"
+version = "5.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "about-time" },
@@ -924,9 +924,9 @@ dependencies = [
     { name = "wadler-lindig" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/37/3f/babe0cd5234f663e49710f1775eff647da5ef58a68c1fbe853609c36f7c3/liblaf_grapes-4.1.0.tar.gz", hash = "sha256:0c943786e1a3199bea4967399c93b14f310b59491582157061a07a04ba26becd", size = 30240, upload-time = "2025-09-16T06:58:59.896Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/18/16/8e54760052dd865dbabd67da508dfdca8b45f87118573506810360077e46/liblaf_grapes-5.0.2.tar.gz", hash = "sha256:42c10b3bbb3e7de86c5f2af51b91e266a58704464ccd2f1a06af04ce1f86456a", size = 30911, upload-time = "2025-10-07T07:00:28.79Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/09/6a/b90c7b76bb6ad6251cc105b9c52a4bf3aa840ff7683d0d2ec6bde297961f/liblaf_grapes-4.1.0-py3-none-any.whl", hash = "sha256:c0e647ae3d733504510051e7ee6b015d29bdf76d3df4c1a58f064fdaab7dd11d", size = 63292, upload-time = "2025-09-16T06:58:58.262Z" },
+    { url = "https://files.pythonhosted.org/packages/af/8e/c51f01365b8060acd5e06fe9cd03e792c37b22ebed283b938d0c8f9cfa14/liblaf_grapes-5.0.2-py3-none-any.whl", hash = "sha256:d85e71ba3fc36df867c539494bfc47456a27289c6ad274780ea3fde118d66ecf", size = 64910, upload-time = "2025-10-07T07:00:27.358Z" },
 ]
 
 [[package]]
@@ -1914,7 +1914,7 @@ requires-dist = [
     { name = "hishel", specifier = ">=0.1,<0.2" },
     { name = "httpx", extras = ["socks"], specifier = ">=0.28,<0.29" },
     { name = "lazy-loader", specifier = ">=0.4,<0.5" },
-    { name = "liblaf-grapes", specifier = ">=4,<5" },
+    { name = "liblaf-grapes", specifier = ">=5,<6" },
     { name = "loguru", specifier = ">=0.7,<0.8" },
     { name = "prettytable", specifier = ">=3,<4" },
     { name = "python-slugify", specifier = ">=8,<9" },
