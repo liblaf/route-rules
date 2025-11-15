@@ -1,6 +1,6 @@
 import collections
-import datetime
 import os
+from datetime import datetime
 from pathlib import Path
 from typing import Self
 
@@ -12,7 +12,7 @@ from route_rules.provider import Behavior, Format
 
 from ._config import Config
 from ._meta import ArtifactMeta, Meta, ProviderMeta, RecipeMeta, RecipeStatistics
-from ._recipe import RecipeWrapper
+from ._recipe import Recipe
 
 
 def _default_exporters() -> list[ExporterMihomo]:
@@ -27,25 +27,27 @@ def _default_exporters() -> list[ExporterMihomo]:
 
 @attrs.define
 class Builder:
-    dist_dir: Path = attrs.field(default=Path("dist"))
+    dist_dir: Path = Path("dist")
     exporters: list[ExporterMihomo] = attrs.field(factory=_default_exporters)
-    recipes: list[RecipeWrapper] = attrs.field(factory=list)
+    recipes: list[Recipe] = attrs.field(factory=list)
 
     @classmethod
     def load(cls, file: str | os.PathLike[str]) -> Self:
         config: Config = Config.load(file)
         self: Self = cls()
         for recipe_config in config.recipes:
-            self.recipes.append(RecipeWrapper.from_config(recipe_config))
+            self.recipes.append(Recipe.from_config(recipe_config))
         return self
 
     async def build(self) -> None:
-        meta = Meta(build_time=datetime.datetime.now().astimezone())
+        meta = Meta(build_time=datetime.now().astimezone())
         for recipe in self.recipes:
             meta.recipes.append(await self.build_recipe(recipe))
-        (self.dist_dir / "meta.json").write_bytes(meta.json_encode())
+        meta_file: Path = self.dist_dir / "meta"
+        meta_file.parent.mkdir(parents=True, exist_ok=True)
+        meta_file.write_text(meta.json_encode())
 
-    async def build_recipe(self, recipe: RecipeWrapper) -> RecipeMeta:
+    async def build_recipe(self, recipe: Recipe) -> RecipeMeta:
         ruleset: RuleSet = await recipe.build()
         meta = RecipeMeta(
             name=recipe.name,
@@ -61,22 +63,21 @@ class Builder:
                 )
             )
         for exporter in self.exporters:
-            path: Path = exporter.export_path(recipe.slug)
-            size: int = exporter.export(self.dist_dir / path, ruleset)
-            if size == 0:
+            file: Path | None = exporter.export(self.dist_dir, recipe.slug, ruleset)
+            if file is None:
                 continue
             meta.artifacts.append(
                 ArtifactMeta(
                     behavior=exporter.behavior,
                     format=exporter.format,
-                    path=path,
-                    size=size,
+                    path=file,
+                    size=file.stat().st_size,
                 )
             )
         return meta
 
     async def _build_statistics(
-        self, recipe: RecipeWrapper, ruleset: RuleSet
+        self, recipe: Recipe, ruleset: RuleSet
     ) -> RecipeStatistics:
         outputs: dict[str, int] = {typ: len(values) for typ, values in ruleset.items()}
         inputs: dict[str, int] = collections.defaultdict(lambda: 0)

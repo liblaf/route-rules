@@ -24,7 +24,7 @@ build:
     create_environment:
       - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
     install:
-      - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --all-extras --all-groups --frozen --link-mode copy
+      - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --all-extras --all-groups --frozen --all-packages --link-mode copy
     pre_build:
       - if test -f 'docs/scripts/pre-build.sh'; then bash 'docs/scripts/pre-build.sh'; fi
 

@@ -1,5 +1,4 @@
 from . import core, gen, provider, utils
-from ._recipe import Recipe
 from .core import RuleSet
 from .gen import (
     ArtifactMeta,
@@ -7,8 +6,8 @@ from .gen import (
     Config,
     Meta,
     ProviderMeta,
+    Recipe,
     RecipeMeta,
-    RecipeWrapper,
 )
 from .provider import (
     Behavior,
@@ -32,7 +31,6 @@ __all__ = [
     "ProviderRegistry",
     "Recipe",
     "RecipeMeta",
-    "RecipeWrapper",
     "RuleSet",
     "core",
     "download",

@@ -7,37 +7,36 @@ name: Test
 
 on:
   push:
+    branches-ignore:
+      - copier-update
+      - mega-linter-fix/**
+      - pre-commit-ci-update-config
+      - release-please--branches**
   pull_request:
   workflow_dispatch:
 
-jobs:
-  skip-duplicate:
-    name: Skip Duplicate
-    permissions:
-      actions: write
-    runs-on: ubuntu-latest
-    outputs:
-      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
-    steps:
-      - id: skip-duplicate
-        name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
-        with:
-          cancel-others: true
+env:
+  FORCE_COLOR: 1
 
-  collect:
-    name: Collect
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
+concurrency:
+  group: ${{ github.workflow }} @ ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  metadata:
+    name: Metadata
     runs-on: ubuntu-latest
     outputs:
       has-tests: ${{ steps.collect.outputs.has-tests }}
+      python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+      - id: inspect
+        name: Build and Inspect a Python Package
+        uses: hynek/build-and-inspect-python-package@v2
       - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+        uses: liblaf/actions/setup-python@v1
       - id: collect
         name: Collect
         run: |-
@@ -49,11 +48,11 @@ jobs:
 
   test:
     name: Test
-    needs:
-      - collect
-    if: needs.collect.outputs.has-tests == 'true'
     permissions:
       id-token: write
+    needs:
+      - metadata
+    if: needs.metadata.outputs.has-tests == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -61,14 +60,15 @@ jobs:
         with:
           fetch-depth: 0 # I don't know why, but it is present in the official example
       - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+        uses: liblaf/actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install Mise
         uses: jdx/mise-action@v3
       - name: Test
         run: mise run test
-        env:
-          FORCE_COLOR: 1
-      - name: Upload Coverage
+      - if: success() || failure()
+        name: Upload Coverage
         uses: codecov/codecov-action@v5
         with:
           use_oidc: true
@@ -77,3 +77,7 @@ jobs:
         uses: codecov/test-results-action@v1
         with:
           use_oidc: true
+    strategy:
+      matrix:
+        python-version: ${{ fromJson(needs.metadata.outputs.python-versions) }}
+      fail-fast: false

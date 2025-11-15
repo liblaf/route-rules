@@ -20,7 +20,7 @@ class Provider(abc.ABC):
     )
 
     _cache: cachetools.Cache = attrs.field(
-        factory=lambda: cachetools.LRUCache(maxsize=65536), kw_only=True
+        repr=False, factory=lambda: cachetools.LRUCache(maxsize=65536), kw_only=True
     )
 
     def download_url(self, name: str) -> str:

@@ -49,6 +49,8 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          verbose: true
+          print-hash: true
           attestations: true
 
   release:
@@ -59,17 +61,12 @@ jobs:
       - build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
       - name: Download Artifacts
         uses: actions/download-artifact@v6
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
       - name: Upload Release Assets
-        uses: liblaf/actions/release@dist
+        uses: softprops/action-gh-release@v2
         with:
           files: dist/*
-          tag: ${{ github.ref_name }}

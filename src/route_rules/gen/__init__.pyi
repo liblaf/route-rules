@@ -1,7 +1,7 @@
 from ._builder import Builder
-from ._config import Config
+from ._config import Config, RecipeConfig
 from ._meta import ArtifactMeta, Meta, ProviderMeta, RecipeMeta
-from ._recipe import RecipeWrapper
+from ._recipe import Recipe
 
 __all__ = [
     "ArtifactMeta",
@@ -9,6 +9,7 @@ __all__ = [
     "Config",
     "Meta",
     "ProviderMeta",
+    "Recipe",
+    "RecipeConfig",
     "RecipeMeta",
-    "RecipeWrapper",
 ]

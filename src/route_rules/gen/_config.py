@@ -8,7 +8,8 @@ import pydantic
 
 class RecipeConfig(pydantic.BaseModel):
     name: str
-    providers: list[str]
+    providers: list[str] = pydantic.Field(default_factory=list)
+    excludes: list[str] = pydantic.Field(default_factory=list)
 
 
 class Config(pydantic.BaseModel):

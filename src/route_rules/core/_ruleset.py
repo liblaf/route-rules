@@ -19,6 +19,9 @@ class RuleSet(collections.UserDict[str, set[str]]):
     def __or__(self, other: Mapping[str, Iterable[str]], /) -> Self:  # pyright: ignore[reportIncompatibleMethodOverride]
         return self.union(other)
 
+    def __sub__(self, other: Mapping[str, Iterable[str]], /) -> Self:
+        return self.difference(other)
+
     @property
     def domain(self) -> set[str]:
         return self["DOMAIN"]
@@ -42,4 +45,9 @@ class RuleSet(collections.UserDict[str, set[str]]):
     def union(self, *others: Mapping[str, Iterable[str]]) -> Self:
         return toolz.merge_with(
             lambda lst: set.union(*lst), self, *others, factory=type(self)
+        )
+
+    def difference(self, *others: Mapping[str, Iterable[str]]) -> Self:
+        return toolz.merge_with(
+            lambda lst: set.difference(*lst), self, *others, factory=type(self)
         )

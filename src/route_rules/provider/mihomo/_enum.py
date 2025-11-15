@@ -14,8 +14,11 @@ class Format(enum.StrEnum):
 
     @property
     def ext(self) -> str:
-        return {
-            Format.YAML: ".yaml",
-            Format.TEXT: ".list",
-            Format.MRS: ".mrs",
-        }[self]
+        return _FORMAT_EXT[self]
+
+
+_FORMAT_EXT: dict[Format, str] = {
+    Format.YAML: ".yaml",
+    Format.TEXT: ".list",
+    Format.MRS: ".mrs",
+}

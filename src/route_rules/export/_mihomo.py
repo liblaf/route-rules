@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import override
 
 import attrs
+import autoregistry
 import msgspec
 
 from route_rules.core import RuleSet
@@ -16,81 +17,63 @@ from ._abc import Exporter
 
 @attrs.define
 class ExporterMihomo(Exporter):
-    behavior: Behavior = attrs.field()
-    format: Format = attrs.field()
-    export_path_template: str = attrs.field(
-        default="mihomo/{slug}.{behavior}{format.ext}", kw_only=True
-    )
+    behavior: Behavior
+    format: Format
 
     @override
     def export(
-        self,
-        file: str | os.PathLike[str],
-        ruleset: RuleSet,
-    ) -> int:
+        self, folder: str | os.PathLike[str], slug: str, ruleset: RuleSet
+    ) -> Path | None:
         data: bytes = encode(ruleset, behavior=self.behavior, format=self.format)
         if not data:
-            return 0
-        file = Path(file)
+            return None
+        folder = Path(folder)
+        file: Path = folder / "mihomo" / f"{slug}.{self.behavior}{self.format.ext}"
         file.parent.mkdir(parents=True, exist_ok=True)
         file.write_bytes(data)
-        return len(data)
-
-    @override
-    def export_path(self, slug: str) -> Path:
-        return Path(
-            self.export_path_template.format(
-                slug=slug, behavior=self.behavior, format=self.format
-            )
-        )
-
-
-@attrs.define
-class EncodeError(RuntimeError):
-    behavior: Behavior = attrs.field()
-    format: Format = attrs.field()
+        return file
 
 
 def encode(ruleset: RuleSet, behavior: Behavior, format: Format) -> bytes:  # noqa: A002
-    payload: Iterable[str]
-    match behavior:
-        case Behavior.DOMAIN:
-            payload = _encode_domain(ruleset)
-        case Behavior.IPCIDR:
-            payload = _encode_ipcidr(ruleset)
-        case Behavior.CLASSICAL:
-            payload = _encode_classical(ruleset)
-        case _:
-            raise EncodeError(behavior=behavior, format=format)
+    payload: Iterable[str] = _behavior_encoders[behavior](ruleset)
     match format:
-        case Format.YAML:
-            return _encode_yaml(payload)
-        case Format.TEXT:
-            return _encode_text(payload).encode()
         case Format.MRS:
-            return _encode_mrs(payload, behavior=behavior)
+            return _format_encoders[format](payload, behavior)
         case _:
-            raise EncodeError(behavior=behavior, format=format)
+            return _format_encoders[format](payload)
 
 
+_behavior_encoders = autoregistry.Registry(prefix="_encode_")
+
+
+@_behavior_encoders
 def _encode_domain(ruleset: RuleSet) -> Generator[str]:
     yield from ruleset.domain
     for domain in ruleset.domain_suffix:
         yield f"+.{domain}"
 
 
+@_behavior_encoders
 def _encode_ipcidr(ruleset: RuleSet) -> set[str]:
     return ruleset.ip_cidr
 
 
+_CLASSICAL_TYPE_EXCLUDE: set[str] = {"DOMAIN", "DOMAIN-SUFFIX", "IP-CIDR"}
+
+
+@_behavior_encoders
 def _encode_classical(ruleset: RuleSet) -> Generator[str]:
-    for typ, values in ruleset.data.items():
-        if typ in {"DOMAIN", "DOMAIN-SUFFIX", "IP-CIDR"}:
+    for typ, values in ruleset.items():
+        if typ in _CLASSICAL_TYPE_EXCLUDE:
             continue
         for value in values:
             yield f"{typ},{value}"
 
 
+_format_encoders = autoregistry.Registry(prefix="_encode_")
+
+
+@_format_encoders
 def _encode_yaml(payload: Iterable[str]) -> bytes:
     payload = list(payload)
     if not payload:
@@ -98,13 +81,15 @@ def _encode_yaml(payload: Iterable[str]) -> bytes:
     return msgspec.yaml.encode({"payload": list(payload)})
 
 
-def _encode_text(payload: Iterable[str]) -> str:
+@_format_encoders
+def _encode_text(payload: Iterable[str]) -> bytes:
     payload = list(payload)
     if not payload:
-        return ""
-    return "\n".join(payload)
+        return b""
+    return "\n".join(payload).encode()
 
 
+@_format_encoders
 def _encode_mrs(payload: Iterable[str], behavior: Behavior) -> bytes:
     payload = list(payload)
     if not payload:

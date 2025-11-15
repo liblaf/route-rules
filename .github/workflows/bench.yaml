@@ -5,37 +5,36 @@ name: Bench
 
 on:
   push:
+    branches-ignore:
+      - copier-update
+      - mega-linter-fix/**
+      - pre-commit-ci-update-config
+      - release-please--branches**
   pull_request:
   workflow_dispatch:
 
-jobs:
-  skip-duplicate:
-    name: Skip Duplicate
-    permissions:
-      actions: write
-    runs-on: ubuntu-latest
-    outputs:
-      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
-    steps:
-      - id: skip-duplicate
-        name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
-        with:
-          cancel-others: true
+env:
+  FORCE_COLOR: 1
 
-  collect:
-    name: Collect
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
+concurrency:
+  group: ${{ github.workflow }} @ ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  metadata:
+    name: Metadata
     runs-on: ubuntu-latest
     outputs:
       has-benches: ${{ steps.collect.outputs.has-benches }}
+      python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+      - id: inspect
+        name: Build and Inspect a Python Package
+        uses: hynek/build-and-inspect-python-package@v2
       - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+        uses: liblaf/actions/setup-python@v1
       - id: collect
         name: Collect
         run: |-
@@ -45,17 +44,18 @@ jobs:
             echo 'has-benches=false' >> "$GITHUB_OUTPUT"
           fi
 
+  # CodSpeedHQ does not support the same benchmark multiple times
   bench:
     name: Bench
     needs:
-      - collect
-    if: needs.collect.outputs.has-benches == 'true'
+      - metadata
+    if: needs.metadata.outputs.has-benches == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+        uses: liblaf/actions/setup-python@v1
       - name: Install Mise
         uses: jdx/mise-action@v3
       - name: Bench

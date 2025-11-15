@@ -5,18 +5,12 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-function is-in-ci() {
-  if [[ -z ${CI:-} ]]; then
+function in-ci() {
+  if [[ -n ${CI:-} ]]; then
+    return 0
+  else
     return 1
   fi
-  case "${CI,,}" in
-    1 | on | true | y | yes) return 0 ;;
-    0 | off | false | n | no | "") return 1 ;;
-    *)
-      echo "Invalid boolean: $CI." >&2
-      exit 1
-      ;;
-  esac
 }
 
 function needs-gpu() {
@@ -37,7 +31,7 @@ else
   numprocesses='auto'
 fi
 
-if is-in-ci; then
+if in-ci; then
   # ref: <https://docs.codecov.com/docs/test-analytics#1-output-a-junit-xml-file-in-your-ci>
   pytest \
     --junit-xml='junit.xml' --override-ini junit_family=legacy \
