@@ -5,6 +5,11 @@ recipes:
       - MetaCubeX/geosite:category-ai-!cn
       - SukkaW/classical:non_ip/ai
 
+  - name: 🪙 Binance
+    providers:
+      - blackmatrix7:Binance
+      - MetaCubeX/geosite:binance
+
   - name: 🎯 Direct
     providers:
       - blackmatrix7:Direct
