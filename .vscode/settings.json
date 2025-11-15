@@ -9,7 +9,6 @@
     "**/.pytest_cache/": true,
     "**/.ruff_cache/": true,
     "**/.venv/": true,
-    "**/dist/": true,
     "**/junit.xml": true,
     "**/site/": true
   },

@@ -33,9 +33,9 @@ class ProviderRegistry:
                 format=Format.YAML,
             ),
             ProviderMihomo(
-                "liblaf",
-                "https://raw.githubusercontent.com/liblaf/route-rules/main/rules/{name}.list",
-                "https://github.com/liblaf/route-rules/blob/main/rules/{name}.list",
+                "liblaf/domain",
+                "https://raw.githubusercontent.com/liblaf/route-rules/main/rules/{name}.domain.list",
+                "https://github.com/liblaf/route-rules/blob/main/rules/{name}.domain.list",
                 behavior=Behavior.DOMAIN,
                 format=Format.TEXT,
             ),

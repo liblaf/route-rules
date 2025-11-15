@@ -43,7 +43,7 @@ class Builder:
         meta = Meta(build_time=datetime.now().astimezone())
         for recipe in self.recipes:
             meta.recipes.append(await self.build_recipe(recipe))
-        meta_file: Path = self.dist_dir / "meta"
+        meta_file: Path = self.dist_dir / "meta.json"
         meta_file.parent.mkdir(parents=True, exist_ok=True)
         meta_file.write_text(meta.json_encode())
 
