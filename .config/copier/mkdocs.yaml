@@ -15,7 +15,6 @@ edit_uri: blob/main/docs/
 
 extra_css:
   - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/fonts.min.css
-  - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/mkdocstrings/api-autonav.min.css
   - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/mkdocstrings/material.min.css
   - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/mkdocstrings/syntax-highlight-in-signatures.min.css
 
