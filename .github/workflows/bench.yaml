@@ -29,7 +29,7 @@ jobs:
       python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - id: inspect
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - name: Setup Python
         uses: liblaf/actions/setup-python@v1
       - name: Install Mise
