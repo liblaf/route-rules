@@ -22,7 +22,7 @@ jobs:
       package-version: ${{ steps.build.outputs.package_version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - id: build
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2

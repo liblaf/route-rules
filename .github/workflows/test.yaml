@@ -31,7 +31,7 @@ jobs:
       python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - id: inspect
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # I don't know why, but it is present in the official example
       - name: Setup Python

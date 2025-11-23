@@ -37,7 +37,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           token: ${{ steps.auth.outputs.token }}
       - id: release-please
@@ -67,7 +67,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           ref: ${{ fromJson(needs.release-please.outputs.pr).headBranchName }}
           token: ${{ steps.auth.outputs.token }}
@@ -123,7 +123,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
         with:
           ref: ${{ needs.release-please.outputs.tag }}
           token: ${{ steps.auth.outputs.token }}
