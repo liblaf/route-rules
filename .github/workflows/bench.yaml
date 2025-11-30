@@ -16,10 +16,6 @@ on:
 env:
   FORCE_COLOR: 1
 
-concurrency:
-  group: ${{ github.workflow }} @ ${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   metadata:
     name: Metadata
@@ -29,7 +25,7 @@ jobs:
       python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - id: inspect
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2
@@ -53,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Python
         uses: liblaf/actions/setup-python@v1
       - name: Install Mise
