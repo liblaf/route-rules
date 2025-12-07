@@ -5,11 +5,8 @@ name: Docs
 
 on:
   push:
-    branches-ignore:
-      - copier-update
-      - mega-linter-fix/**
-      - pre-commit-ci-update-config
-      - release-please--branches**
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
@@ -29,7 +26,7 @@ jobs:
         name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Set Environment Variables
-        run: printf 'SITE_URL=%s\n' '${{ steps.config.outputs.base_url }}' >> "$GITHUB_ENV"
+        run: echo 'SITE_URL=${{ steps.config.outputs.base_url }}' >> "$GITHUB_ENV"
       - name: Setup Python
         uses: liblaf/actions/setup-python@v1
       - if: hashFiles('docs/scripts/pre-build.sh') != ''
