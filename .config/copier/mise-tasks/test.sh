@@ -37,6 +37,7 @@ if in-ci; then
     --junit-xml='junit.xml' --override-ini junit_family=legacy \
     --cov --cov-branch \
     --numprocesses "$numprocesses" \
+    --hypothesis-show-statistics \
     "$@"
 else
   pytest --numprocesses "$numprocesses" "$@"
