@@ -53,7 +53,7 @@ dynamic = ["version"]
 dev = ["icecream>=2,<3"]
 build = ["check-wheel-contents>=0.6,<0.7", "hatch>=1,<2", "twine>=6,<7"]
 docs = [
-  "liblaf-mkdocs-preset>=0.2,<0.3",
+  "liblaf-mkdocs-preset>=0.3,<0.4",
   "mkdocs>=1,<2",
   "mkdocs-gen-files>=0.6,<0.7"
 ]
