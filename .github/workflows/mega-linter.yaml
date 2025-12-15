@@ -40,7 +40,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - id: lint
         name: MegaLinter
         uses: liblaf/actions/mega-linter@v1
