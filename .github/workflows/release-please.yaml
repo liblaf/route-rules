@@ -37,7 +37,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           token: ${{ steps.auth.outputs.token }}
       - id: release-please
@@ -67,11 +67,13 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ fromJson(needs.release-please.outputs.pr).headBranchName }}
           token: ${{ steps.auth.outputs.token }}
           fetch-depth: 0
+      - name: Prettier Manifest
+        run: npx prettier --write --no-config '.config/release-please/.manifest.json'
       - id: tag
         name: Get Tag
         run: |-
@@ -94,7 +96,7 @@ jobs:
       - name: Commit
         uses: liblaf/actions/commit@v1
         with:
-          add-options: --verbose 'CHANGELOG.md'
+          add-options: --verbose '.config/release-please/.manifest.json' 'CHANGELOG.md'
           force: true
           message: ${{ steps.message.outputs.message }}
           ref: ${{ fromJson(needs.release-please.outputs.pr).headBranchName }}
@@ -123,7 +125,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.release-please.outputs.tag }}
           token: ${{ steps.auth.outputs.token }}
