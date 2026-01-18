@@ -5,11 +5,8 @@ name: Bench
 
 on:
   push:
-    branches-ignore:
-      - copier-update
-      - mega-linter-fix/**
-      - pre-commit-ci-update-config
-      - release-please--branches**
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
@@ -17,8 +14,8 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  metadata:
-    name: Metadata
+  collect:
+    name: Collect
     runs-on: ubuntu-latest
     outputs:
       has-benches: ${{ steps.collect.outputs.has-benches }}
@@ -35,17 +32,23 @@ jobs:
         name: Collect
         run: |-
           if pytest -m 'benchmark' --collect-only; then
-            echo 'has-benches=true' >> "$GITHUB_OUTPUT"
+            echo 'has-tests=true' >> "$GITHUB_OUTPUT"
           else
-            echo 'has-benches=false' >> "$GITHUB_OUTPUT"
+            code="$?"
+            if (("$code" == 5)); then
+              echo 'has-tests=false' >> "$GITHUB_OUTPUT"
+            else
+              exit "$code"
+            fi
           fi
 
   # CodSpeedHQ does not support the same benchmark multiple times
+  # so we don't run on multiple python versions here.
   bench:
     name: Bench
     needs:
-      - metadata
-    if: needs.metadata.outputs.has-benches == 'true'
+      - collect
+    if: needs.collect.outputs.has-benches == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

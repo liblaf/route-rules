@@ -17,7 +17,7 @@ if [[ -f 'pixi.lock' ]]; then
 fi
 
 if [[ -f 'uv.lock' ]]; then
-  uv='uv'
-  if has uv-wrapper.sh; then uv='uv-wrapper.sh'; fi
-  "$uv" sync --upgrade "$@"
+  uv_sync=(uv sync)
+  if has uv-sync.sh; then uv_sync=(uv-sync.sh); fi
+  "${uv_sync[@]}" --upgrade "$@"
 fi

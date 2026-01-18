@@ -33,7 +33,7 @@ dependencies = [
   "hishel[httpx]>=1,<2",
   "httpx[socks]>=0.28,<0.29",
   "lazy-loader>=0.4,<0.5",
-  "liblaf-grapes>=8,<9",
+  "liblaf-grapes>=9,<10",
   "prettytable>=3,<4",
   "python-slugify>=8,<9",
   "validators>=0.35,<0.36"
@@ -53,7 +53,7 @@ dynamic = ["version"]
 dev = ["icecream>=2,<3"]
 build = ["check-wheel-contents>=0.6,<0.7", "hatch>=1,<2", "twine>=6,<7"]
 docs = [
-  "liblaf-mkdocs-preset>=0.2,<0.3",
+  "liblaf-mkdocs-preset>=0.3,<0.4",
   "mkdocs>=1,<2",
   "mkdocs-gen-files>=0.6,<0.7"
 ]
@@ -88,11 +88,9 @@ extends = ".config/linters/pyrightconfig.json"
 [tool.pytest]
 addopts = [
   "--doctest-modules",
-  "--hypothesis-show-statistics",
-  "--showlocals",
-  "--strict-config",
-  "--strict-markers",
-  "--suppress-no-test-exit-code"
+  "--hypothesis-explain",
+  "--import-mode=importlib",
+  "--showlocals"
 ]
 consider_namespace_packages = true
 strict = true

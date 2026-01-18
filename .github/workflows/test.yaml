@@ -7,11 +7,8 @@ name: Test
 
 on:
   push:
-    branches-ignore:
-      - copier-update
-      - mega-linter-fix/**
-      - pre-commit-ci-update-config
-      - release-please--branches**
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
@@ -19,8 +16,8 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  metadata:
-    name: Metadata
+  collect:
+    name: Collect
     runs-on: ubuntu-latest
     outputs:
       has-tests: ${{ steps.collect.outputs.has-tests }}
@@ -39,7 +36,12 @@ jobs:
           if pytest --collect-only; then
             echo 'has-tests=true' >> "$GITHUB_OUTPUT"
           else
-            echo 'has-tests=false' >> "$GITHUB_OUTPUT"
+            code="$?"
+            if (("$code" == 5)); then
+              echo 'has-tests=false' >> "$GITHUB_OUTPUT"
+            else
+              exit "$code"
+            fi
           fi
 
   test:
@@ -47,14 +49,16 @@ jobs:
     permissions:
       id-token: write
     needs:
-      - metadata
-    if: needs.metadata.outputs.has-tests == 'true'
+      - collect
+    if: needs.collect.outputs.has-tests == 'true'
     runs-on: ubuntu-latest
+    env:
+      EAGER_IMPORT: true # ref: <https://github.com/scientific-python/lazy-loader?tab=readme-ov-file#early-failure>
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0 # I don't know why, but it is present in the official example
+          fetch-depth: 0 # I don't know why, but it is present in Codecov's documentation
       - name: Setup Python
         uses: liblaf/actions/setup-python@v1
         with:
@@ -75,5 +79,5 @@ jobs:
           use_oidc: true
     strategy:
       matrix:
-        python-version: ${{ fromJson(needs.metadata.outputs.python-versions) }}
+        python-version: ${{ fromJson(needs.collect.outputs.python-versions) }}
       fail-fast: false
