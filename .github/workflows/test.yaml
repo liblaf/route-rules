@@ -71,11 +71,13 @@ jobs:
         name: Upload Coverage
         uses: codecov/codecov-action@v5
         with:
+          report_type: coverage
           use_oidc: true
       - if: success() || failure()
         name: Upload Test Results
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v5
         with:
+          report_type: test_results
           use_oidc: true
     strategy:
       matrix:
