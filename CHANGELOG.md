@@ -7,7 +7,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/README.md),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.1](https://github.com/liblaf/route-rules/releases/tag/v0.3.1) - 2026-01-18
+## [0.3.2](https://github.com/liblaf/route-rules/releases/tag/v0.3.2) - 2026-02-22
+
+### 🐛 Bug Fixes
+
+- **deps:** update dependency cachetools to v7 (#53) - [c681a8a](https://github.com/liblaf/route-rules/commit/c681a8a21272b4e59e9242fd5a38b370c4a1431a) by [@renovate[bot]](https://github.com/apps/renovate) in [#53](https://github.com/liblaf/route-rules/pull/53)
+
+### ❤️ Contributors
+
+- [@renovate[bot]](https://github.com/apps/renovate)
+- [@liblaf[bot]](https://github.com/apps/liblaf)
+
+## [0.3.1](https://github.com/liblaf/route-rules/releases/tag/v0.3.1) - 2026-01-25
 
 ### 🐛 Bug Fixes
 
@@ -15,9 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ❤️ Contributors
 
-- [@liblaf](https://github.com/liblaf) made their first contribution
-- [@renovate[bot]](https://github.com/apps/renovate) made their first contribution in [#49](https://github.com/liblaf/route-rules/pull/49)
-- [@liblaf[bot]](https://github.com/apps/liblaf) made their first contribution in [#45](https://github.com/liblaf/route-rules/pull/45)
+- [@liblaf[bot]](https://github.com/apps/liblaf)
+- [@liblaf](https://github.com/liblaf)
+- [@renovate[bot]](https://github.com/apps/renovate)
 - [@copier-update[bot]](https://github.com/apps/copier-update) made their first contribution in [#36](https://github.com/liblaf/route-rules/pull/36)
 
 ## [0.3.0](https://github.com/liblaf/route-rules/releases/tag/v0.3.0) - 2025-11-16
