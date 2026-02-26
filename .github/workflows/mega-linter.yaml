@@ -43,7 +43,7 @@ jobs:
           token: ${{ steps.auth.outputs.token }}
       - if: success() || failure()
         name: Upload Reports
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: mega-linter-reports
           path: |-
