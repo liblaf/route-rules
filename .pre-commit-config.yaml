@@ -19,14 +19,14 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.8
+    rev: v0.15.4
     hooks:
       - id: ruff-check
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.3.8
+    rev: v2.4.4
     hooks:
       - id: biome-check
         exclude: \.jsonc?$
@@ -34,6 +34,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        exclude: ^(.+\.lock)|(.+-lock\..+)$
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-merge-conflict
