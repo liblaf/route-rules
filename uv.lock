@@ -774,14 +774,14 @@ wheels = [
 
 [[package]]
 name = "fieldz"
-version = "0.1.3"
+version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/78/c2/9d35a747f439051bff41511178b0b527f1466c7fd4b5a5f7357c136e82bc/fieldz-0.1.3.tar.gz", hash = "sha256:bc21013b2bd5f8a4a782ecef440343ff059fc0a4a2033ae4d616311675260585", size = 18018, upload-time = "2025-09-26T20:42:24.67Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f8/46/7a8d1db959eabd5d3e52bd3c000a8b132184b7651cbd5481c4cbf31ff65d/fieldz-0.2.0.tar.gz", hash = "sha256:e11215188cad5c5371113d2b7707155960efd0d48500b6bf675648bc3f6fc8d6", size = 18222, upload-time = "2026-02-24T19:26:02.251Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/12/a0/5db990f52226aa4e01e268f285fa56ddf233b3b27b993b4ecc751cf2216f/fieldz-0.1.3-py3-none-any.whl", hash = "sha256:f975fc6f250958966e39504f89bf09bad41479b4c5e0b06b36d13fd92fbac792", size = 18227, upload-time = "2025-09-26T20:42:22.894Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/9d/9034acaf3d80e85deb3d49876cb734479327b9cf89a918815ef67cb6b36c/fieldz-0.2.0-py3-none-any.whl", hash = "sha256:43b5be702816df39f55d08ae392eaabe58d3c69d2e4b61a853252cb2da41931f", size = 17946, upload-time = "2026-02-24T19:26:00.931Z" },
 ]
 
 [[package]]
@@ -1146,19 +1146,19 @@ wheels = [
 
 [[package]]
 name = "lazy-loader"
-version = "0.4"
+version = "0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6f/6b/c875b30a1ba490860c93da4cabf479e03f584eba06fe5963f6f6644653d8/lazy_loader-0.4.tar.gz", hash = "sha256:47c75182589b91a4e1a85a136c074285a5ad4d9f39c63e0d7fb76391c4574cd1", size = 15431, upload-time = "2024-04-05T13:03:12.261Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/ac/21a1f8aa3777f5658576777ea76bfb124b702c520bbe90edf4ae9915eafa/lazy_loader-0.5.tar.gz", hash = "sha256:717f9179a0dbed357012ddad50a5ad3d5e4d9a0b8712680d4e687f5e6e6ed9b3", size = 15294, upload-time = "2026-03-06T15:45:09.054Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/60/d497a310bde3f01cb805196ac61b7ad6dc5dcf8dce66634dc34364b20b4f/lazy_loader-0.4-py3-none-any.whl", hash = "sha256:342aa8e14d543a154047afb4ba8ef17f5563baad3fc610d7b15b213b0f119efc", size = 12097, upload-time = "2024-04-05T13:03:10.514Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/a1/8d812e53a5da1687abb10445275d41a8b13adb781bbf7196ddbcf8d88505/lazy_loader-0.5-py3-none-any.whl", hash = "sha256:ab0ea149e9c554d4ffeeb21105ac60bed7f3b4fd69b1d2360a4add51b170b005", size = 8044, upload-time = "2026-03-06T15:45:07.668Z" },
 ]
 
 [[package]]
 name = "liblaf-grapes"
-version = "9.2.0"
+version = "9.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "about-time" },
@@ -1181,13 +1181,12 @@ dependencies = [
     { name = "quantiphy" },
     { name = "rich" },
     { name = "toolz" },
-    { name = "typing-extensions" },
     { name = "wadler-lindig" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f5/9d/0b12e638bf52f4f89e3e3c2f3adece0615e4367764648292d91dcc6af2d4/liblaf_grapes-9.2.0.tar.gz", hash = "sha256:fdcd81579afb189edac24edb31f64eb0712cbfb8dfbc49bf4ae34703a36fb668", size = 42609, upload-time = "2026-02-22T01:17:25.04Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/da/cc4ca0e4fe04132feb9b21344d5141c4c4c778ea2871e30b7d80e504d096/liblaf_grapes-9.3.3.tar.gz", hash = "sha256:397a1e5c6b0a7f1211ba1d1f3a5f4bfe05bbd227e3f8c48efb61214a927111d0", size = 45091, upload-time = "2026-03-08T01:16:27.728Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/15/c3/26e7090016c9632acbe7db7c9f38736f2c8e8e8206673d53c8ccc1fa85e1/liblaf_grapes-9.2.0-py3-none-any.whl", hash = "sha256:c08ed774331a884ecfbb9c14c8b1dfaacc01a2193d96c9b10c031bdc565e3b1c", size = 90963, upload-time = "2026-02-22T01:17:23.535Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/19/6416e090ded33dd34c8120ff8410362ecd18f03981b44ab4ed9119d96679/liblaf_grapes-9.3.3-py3-none-any.whl", hash = "sha256:47aabb8cd3153c55a238d082e7b98b87e6c35111bb28eed803b7a14d56a59b8a", size = 95618, upload-time = "2026-03-08T01:16:25.702Z" },
 ]
 
 [[package]]
@@ -2325,7 +2324,7 @@ requires-dist = [
     { name = "cytoolz", specifier = ">=1,<2" },
     { name = "hishel", extras = ["httpx"], specifier = ">=1,<2" },
     { name = "httpx", extras = ["socks"], specifier = ">=0.28,<0.29" },
-    { name = "lazy-loader", specifier = ">=0.4,<0.5" },
+    { name = "lazy-loader", specifier = ">=0.5,<0.6" },
     { name = "liblaf-grapes", specifier = ">=9,<10" },
     { name = "prettytable", specifier = ">=3,<4" },
     { name = "python-slugify", specifier = ">=8,<9" },
