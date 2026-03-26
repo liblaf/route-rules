@@ -64,7 +64,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Mise
-        uses: jdx/mise-action@v3
+        uses: jdx/mise-action@v4
       - name: Test
         run: mise run test
       - if: success() || failure()

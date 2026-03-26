@@ -30,7 +30,7 @@ jobs:
       - name: Test Mihomo
         run: mihomo -v
       - name: Install mise
-        uses: jdx/mise-action@v3
+        uses: jdx/mise-action@v4
       - name: Setup Python
         uses: liblaf/actions/setup-python@dist
       - name: Build
