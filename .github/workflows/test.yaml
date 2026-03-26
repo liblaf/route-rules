@@ -69,13 +69,13 @@ jobs:
         run: mise run test
       - if: success() || failure()
         name: Upload Coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           report_type: coverage
           use_oidc: true
       - if: success() || failure()
         name: Upload Test Results
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           report_type: test_results
           use_oidc: true
