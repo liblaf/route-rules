@@ -24,11 +24,15 @@ jobs:
           fetch-depth: 0
       - id: config
         name: Configure GitHub Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@v5
       - name: Set Environment Variables
         run: echo 'SITE_URL=${{ steps.config.outputs.base_url }}' >> "$GITHUB_ENV"
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - if: hashFiles('docs/scripts/pre-build.sh') != ''
         name: Pre-Build
         run: docs/scripts/pre-build.sh

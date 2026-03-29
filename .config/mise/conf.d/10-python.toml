@@ -3,4 +3,10 @@
 # DO NOT EDIT!
 
 [hooks]
-enter = "mise run install"
+enter = { task = "install" }
+
+[tasks.lint]
+depends = ["lint:python", "lint:toml"]
+
+[tasks."lint:python"]
+run = ["ruff format", "ruff check --fix", "lint-imports"]

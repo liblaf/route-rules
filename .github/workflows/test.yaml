@@ -20,29 +20,23 @@ jobs:
     name: Collect
     runs-on: ubuntu-latest
     outputs:
-      has-tests: ${{ steps.collect.outputs.has-tests }}
-      python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
+      sessions: ${{ steps.collect.outputs.sessions }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - id: inspect
-        name: Build and Inspect a Python Package
-        uses: hynek/build-and-inspect-python-package@v2
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - id: collect
         name: Collect
         run: |-
-          if pytest --collect-only; then
-            echo 'has-tests=true' >> "$GITHUB_OUTPUT"
-          else
-            code="$?"
-            if (("$code" == 5)); then
-              echo 'has-tests=false' >> "$GITHUB_OUTPUT"
-            else
-              exit "$code"
-            fi
-          fi
+          echo "sessions=$(
+            nox --list-sessions --json --tags 'test' |
+              jq --compact-output '[.[].session]'
+          )" >> "$GITHUB_OUTPUT"
 
   test:
     name: Test
@@ -50,23 +44,21 @@ jobs:
       id-token: write
     needs:
       - collect
-    if: needs.collect.outputs.has-tests == 'true'
+    if: needs.collect.outputs.sessions != '[]'
     runs-on: ubuntu-latest
-    env:
-      EAGER_IMPORT: true # ref: <https://github.com/scientific-python/lazy-loader?tab=readme-ov-file#early-failure>
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0 # I don't know why, but it is present in Codecov's documentation
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install Mise
-        uses: jdx/mise-action@v4
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - name: Test
-        run: mise run test
+        run: nox --session '${{ matrix.session }}'
       - if: success() || failure()
         name: Upload Coverage
         uses: codecov/codecov-action@v6
@@ -81,5 +73,5 @@ jobs:
           use_oidc: true
     strategy:
       matrix:
-        python-version: ${{ fromJson(needs.collect.outputs.python-versions) }}
+        session: ${{ fromJson(needs.collect.outputs.sessions) }}
       fail-fast: false

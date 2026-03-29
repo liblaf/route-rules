@@ -25,17 +25,16 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: MegaLinter
+      deployment: false
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          ref: ${{ github.head_ref || github.ref }}
       - id: lint
         name: MegaLinter
         uses: liblaf/actions/mega-linter@v1
@@ -55,21 +54,7 @@ jobs:
         run: |-
           cp --target-directory='${{ runner.temp }}' --verbose 'megalinter-reports/megalinter-report.md'
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports'
-      - if: steps.lint.outputs.has-updated-sources > 0 && github.ref == 'refs/heads/main'
-        name: Create PR with Applied Fixes
-        uses: peter-evans/create-pull-request@v8
+      - name: autofix
+        uses: autofix-ci/action@v1
         with:
           commit-message: "chore(mega-linter): apply linters automatic fixes"
-          branch: mega-linter-fix/${{ github.ref_name }}
-          sign-commits: true
-          title: "chore(mega-linter): apply linters automatic fixes"
-          body-path: ${{ runner.temp }}/megalinter-report.md
-          labels: automerge,bot
-          assignees: ${{ github.repository_owner }}
-          reviewers: ${{ github.repository_owner }}
-      - if: steps.lint.outputs.has-updated-sources > 0 && github.ref != 'refs/heads/main'
-        name: Commit and Push Applied Linter Fixes
-        uses: liblaf/actions/commit@v1
-        with:
-          add-options: --verbose --update
-          message: "chore(mega-linter): apply linters automatic fixes"

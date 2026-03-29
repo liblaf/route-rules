@@ -18,29 +18,23 @@ jobs:
     name: Collect
     runs-on: ubuntu-latest
     outputs:
-      has-benches: ${{ steps.collect.outputs.has-benches }}
-      python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
+      sessions: ${{ steps.collect.outputs.sessions }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - id: inspect
-        name: Build and Inspect a Python Package
-        uses: hynek/build-and-inspect-python-package@v2
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - id: collect
         name: Collect
         run: |-
-          if pytest -m 'benchmark' --collect-only; then
-            echo 'has-tests=true' >> "$GITHUB_OUTPUT"
-          else
-            code="$?"
-            if (("$code" == 5)); then
-              echo 'has-tests=false' >> "$GITHUB_OUTPUT"
-            else
-              exit "$code"
-            fi
-          fi
+          echo "sessions=$(
+            nox --list-sessions --json --tags 'bench' |
+              jq --compact-output '[.[].session]'
+          )" >> "$GITHUB_OUTPUT"
 
   # CodSpeedHQ does not support the same benchmark multiple times
   # so we don't run on multiple python versions here.
@@ -48,19 +42,19 @@ jobs:
     name: Bench
     needs:
       - collect
-    if: needs.collect.outputs.has-benches == 'true'
+    if: needs.collect.outputs.sessions != '[]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
-      - name: Install Mise
-        uses: jdx/mise-action@v4
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - name: Bench
         uses: CodSpeedHQ/action@v4
         with:
-          run: mise run bench
+          run: nox --tags 'bench'
           mode: instrumentation
-        env:
-          FORCE_COLOR: 1
