@@ -7,7 +7,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/README.md),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.2](https://github.com/liblaf/route-rules/releases/tag/v0.3.2) - 2026-02-27
+## [0.3.3](https://github.com/liblaf/route-rules/releases/tag/v0.3.3) - 2026-03-27
+
+### 🐛 Bug Fixes
+
+- **deps:** update dependency lazy-loader to >=0.5,<0.6 (#60) - [96b99bd](https://github.com/liblaf/route-rules/commit/96b99bd66e634781a089877a76a7a76964e45dcb) by [@renovate[bot]](https://github.com/apps/renovate) in [#60](https://github.com/liblaf/route-rules/pull/60)
+
+### ❤️ Contributors
+
+- [@renovate[bot]](https://github.com/apps/renovate)
+- [@liblaf[bot]](https://github.com/apps/liblaf)
+
+## [0.3.2](https://github.com/liblaf/route-rules/releases/tag/v0.3.2) - 2026-03-01
 
 ### 🐛 Bug Fixes
 
@@ -16,9 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ❤️ Contributors
 
+- [@liblaf[bot]](https://github.com/apps/liblaf)
 - [@liblaf](https://github.com/liblaf)
 - [@renovate[bot]](https://github.com/apps/renovate)
-- [@liblaf[bot]](https://github.com/apps/liblaf)
 
 ## [0.3.1](https://github.com/liblaf/route-rules/releases/tag/v0.3.1) - 2026-01-25
 
