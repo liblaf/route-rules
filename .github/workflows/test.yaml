@@ -24,12 +24,12 @@ jobs:
       python-versions: ${{ steps.inspect.outputs.supported_python_classifiers_json_array }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - id: inspect
         name: Build and Inspect a Python Package
-        uses: hynek/build-and-inspect-python-package@v2
+        uses: hynek/build-and-inspect-python-package@fe0a0fb1925ca263d076ca4f2c13e93a6e92a33e # v2
       - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
+        uses: liblaf/actions/setup-python@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
       - id: collect
         name: Collect
         run: |-
@@ -56,26 +56,26 @@ jobs:
       EAGER_IMPORT: true # ref: <https://github.com/scientific-python/lazy-loader?tab=readme-ov-file#early-failure>
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0 # I don't know why, but it is present in Codecov's documentation
       - name: Setup Python
-        uses: liblaf/actions/setup-python@v1
+        uses: liblaf/actions/setup-python@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
       - name: Test
         run: mise run test
       - if: success() || failure()
         name: Upload Coverage
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           report_type: coverage
           use_oidc: true
       - if: success() || failure()
         name: Upload Test Results
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           report_type: test_results
           use_oidc: true
