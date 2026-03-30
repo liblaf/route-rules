@@ -32,17 +32,17 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@v1
+        uses: liblaf/actions/auth@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           token: ${{ steps.auth.outputs.token }}
       - id: release-please
         name: Release Please
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4
         with:
           token: ${{ steps.auth.outputs.token }}
           config-file: .config/release-please/config.json
@@ -62,12 +62,12 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@v1
+        uses: liblaf/actions/auth@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ fromJson(needs.release-please.outputs.pr).headBranchName }}
           token: ${{ steps.auth.outputs.token }}
@@ -81,7 +81,7 @@ jobs:
           version="$(awk '{ print $NF }' <<< "$title")"
           printf 'tag=%s\n' "v$version" >> "$GITHUB_OUTPUT"
       - name: Changelog
-        uses: liblaf/actions/changelog@v1
+        uses: liblaf/actions/changelog@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           output: CHANGELOG.md
           args: --tag '${{ steps.tag.outputs.tag }}'
@@ -94,7 +94,7 @@ jobs:
       - name: Undo Last Commit
         run: git reset --soft HEAD~1
       - name: Commit
-        uses: liblaf/actions/commit@v1
+        uses: liblaf/actions/commit@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           add-options: --verbose '.config/release-please/.manifest.json' 'CHANGELOG.md'
           force: true
@@ -120,19 +120,19 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@v1
+        uses: liblaf/actions/auth@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ needs.release-please.outputs.tag }}
           token: ${{ steps.auth.outputs.token }}
           fetch-depth: 0
       - id: changelog
         name: Changelog
-        uses: liblaf/actions/changelog@v1
+        uses: liblaf/actions/changelog@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           args: --current --strip all
       - name: Update Release Notes

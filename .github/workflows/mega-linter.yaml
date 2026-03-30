@@ -28,22 +28,22 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@v1
+        uses: liblaf/actions/auth@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ github.head_ref || github.ref }}
       - id: lint
         name: MegaLinter
-        uses: liblaf/actions/mega-linter@v1
+        uses: liblaf/actions/mega-linter@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           token: ${{ steps.auth.outputs.token }}
       - if: success() || failure()
         name: Upload Reports
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: mega-linter-reports
           path: |-
@@ -57,7 +57,7 @@ jobs:
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports'
       - if: steps.lint.outputs.has-updated-sources > 0 && github.ref == 'refs/heads/main'
         name: Create PR with Applied Fixes
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8
         with:
           commit-message: "chore(mega-linter): apply linters automatic fixes"
           branch: mega-linter-fix/${{ github.ref_name }}
@@ -69,7 +69,7 @@ jobs:
           reviewers: ${{ github.repository_owner }}
       - if: steps.lint.outputs.has-updated-sources > 0 && github.ref != 'refs/heads/main'
         name: Commit and Push Applied Linter Fixes
-        uses: liblaf/actions/commit@v1
+        uses: liblaf/actions/commit@1f83732587ff97f1babbe9218fdc5436dda1a16f # v1
         with:
           add-options: --verbose --update
           message: "chore(mega-linter): apply linters automatic fixes"
