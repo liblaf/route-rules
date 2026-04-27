@@ -7,33 +7,36 @@
 
 ci:
   autofix_commit_msg: |-
-    chore(ci): auto fixes from pre-commit.com hooks
+    chore(pre-commit): auto fixes from pre-commit.com hooks
 
     for more information, see https://pre-commit.ci
   autoupdate_commit_msg: |-
-    chore(ci): pre-commit autoupdate
+    chore(pre-commit): pre-commit autoupdate
   skip:
-    # `biome.jsonc` may extend from an NPM package.
-    # `additional_dependencies` won't work in this case.
-    - biome-check
+    - oxfmt
+    - oxlint
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.8
+    rev: v0.15.11
     hooks:
       - id: ruff-check
         args:
           - --fix
       - id: ruff-format
-  - repo: https://github.com/biomejs/pre-commit
-    rev: v2.3.8
+  - repo: https://github.com/oxc-project/mirrors-oxfmt
+    rev: v0.45.0
     hooks:
-      - id: biome-check
-        exclude: \.jsonc?$
+      - id: oxfmt
+  - repo: https://github.com/oxc-project/mirrors-oxlint
+    rev: v1.60.0
+    hooks:
+      - id: oxlint
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        exclude: ^(.+\.lock)|(.+-lock\..+)$
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-merge-conflict
@@ -44,9 +47,15 @@ repos:
       - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: trailing-whitespace
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.1.80
+    hooks:
+      - id: rumdl-fmt
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1
     hooks:
       - id: shellcheck
-        args:
-          - --exclude=SC1091

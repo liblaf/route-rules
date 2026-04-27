@@ -1,0 +1,9 @@
+#:schema https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/rumdl.json
+# ref: <https://rumdl.dev/global-settings/>
+
+[global]
+extend-enable = ["MD060"]
+extend-disable = ["MD001", "MD013", "MD033", "MD036", "MD041"]
+
+[per-file-flavor]
+"docs/**/*.md" = "mkdocs"

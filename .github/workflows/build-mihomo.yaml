@@ -2,10 +2,11 @@ name: Build Mihomo
 
 on:
   push:
-    branches-ignore:
-      - assets**
-      - dist**
-      - gh-pages
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron: "0 0 * * *" # Runs at 00:00
   workflow_dispatch:
@@ -31,8 +32,12 @@ jobs:
         run: mihomo -v
       - name: Install mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
+      - name: Setup uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          activate-environment: true
+      - name: Install dependencies
+        run: uv sync --active --frozen --all-packages
       - name: Build
         run: mise run build
       - name: Upload Artifacts
@@ -63,26 +68,26 @@ jobs:
           folder: dist
           branch: mihomo
           single-commit: true
-
-  docs:
-    name: Docs
-    permissions:
-      contents: write
-      pages: write
-    needs:
-      - deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          fetch-depth: 0
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
-      - name: Deploy
-        run: mkdocs gh-deploy --force --no-history
-      - name: Setup GitHub Pages
-        uses: liblaf/actions/setup-pages@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
-        with:
-          token: ${{ secrets.GH_PAT || github.token }}
-        continue-on-error: true
+  # TODO: deploy docs to GitHub Pages
+  # docs:
+  #   name: Docs
+  #   permissions:
+  #     contents: write
+  #     pages: write
+  #   needs:
+  #     - deploy
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Setup Python
+  #       uses: liblaf/actions/setup-python@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
+  #     - name: Deploy
+  #       run: mkdocs gh-deploy --force --no-history
+  #     - name: Setup GitHub Pages
+  #       uses: liblaf/actions/setup-pages@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
+  #       with:
+  #         token: ${{ secrets.GH_PAT || github.token }}
+  #       continue-on-error: true

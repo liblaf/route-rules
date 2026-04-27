@@ -1,0 +1,163 @@
+## ref: <https://zensical.org/docs/setup/basics/>
+
+[project]
+# Basics
+site_name = "Route Rules"
+site_url = "__SITE_URL__"
+site_description = ""
+site_author = "liblaf"
+# Navigation
+nav = [
+  { "Home" = "README.md" },
+]
+# Repository
+repo_url = "https://github.com/liblaf/route-rules"
+edit_uri = "edit/main/docs/"
+
+# ref: <https://zensical.org/docs/setup/extensions/#default-configuration>
+[project.markdown_extensions.abbr]
+
+[project.markdown_extensions.admonition]
+
+[project.markdown_extensions.attr_list]
+
+[project.markdown_extensions.def_list]
+
+[project.markdown_extensions.footnotes]
+
+[project.markdown_extensions.md_in_html]
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+
+[project.markdown_extensions.pymdownx.betterem]
+smart_enable = "all"
+
+[project.markdown_extensions.pymdownx.caret]
+
+[project.markdown_extensions.pymdownx.details]
+
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+
+# ref: <https://zensical.org/docs/authoring/code-blocks/>
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+
+[project.markdown_extensions.pymdownx.inlinehilite]
+
+[project.markdown_extensions.pymdownx.keys]
+
+[project.markdown_extensions.pymdownx.mark]
+
+[project.markdown_extensions.pymdownx.smartsymbols]
+
+[project.markdown_extensions.pymdownx.snippets]
+
+[project.markdown_extensions.pymdownx.superfences]
+
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+
+[project.markdown_extensions.pymdownx.tilde]
+
+[project.markdown_extensions.toc]
+permalink = true
+
+[project.markdown_extensions.zensical.extensions.preview]
+
+[project.plugins.mkdocstrings]
+default_handler = "python"
+enable_inventory = true
+
+[project.plugins.mkdocstrings.handlers.python]
+inventories = ["https://docs.python.org/3/objects.inv"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+# General
+backlinks = "flat"
+extensions = [
+  # Built-in
+  "dataclasses",
+  "unpack_typeddict",
+  # Official
+  { griffe_inherited_docstrings = {} },
+  { griffe_pydantic = { schema = true } },
+  { griffe_warnings_deprecated = {} },
+  # Third-party
+  { griffe_fieldz = { include_inherited = true } },
+]
+find_stubs_package = true
+show_inheritance_diagram = true
+# Headings
+heading_level = 1
+show_root_heading = true
+show_symbol_type_heading = true
+show_symbol_type_toc = true
+# Members
+inherited_members = true
+filters = "public"
+summary = true
+# Docstrings
+docstring_style = "google"
+docstring_options.ignore_init_summary = true
+docstring_section_style = "list"
+merge_init_into_class = true
+relative_crossrefs = true
+scoped_crossrefs = true
+show_if_no_docstring = true
+# Signatures
+modernize_annotations = true
+overloads_only = true
+show_signature_annotations = true
+show_signature_type_parameters = true
+separate_signature = true
+signature_crossrefs = true
+
+[project.theme]
+features = [
+  "content.action.edit",
+  "content.action.view",
+  "content.code.copy",
+  "content.code.select",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.instant.progress",
+  "navigation.path",
+  "navigation.prune",
+  "navigation.tabs",
+  "navigation.tabs.sticky",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow"
+]
+
+[project.theme.icon]
+logo = "simple/python"
+repo = "fontawesome/brands/github"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "System Preference"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Light Mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Dark Mode"

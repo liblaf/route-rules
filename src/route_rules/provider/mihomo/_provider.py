@@ -22,4 +22,4 @@ class ProviderMihomo(Provider):
     async def load(self, name: str) -> RuleSet:
         url: str = self.download_url(name)
         response: httpx.Response = await utils.download(url)
-        return decode(response.text, behavior=self.behavior, format=self.format)
+        return await decode(response.text, behavior=self.behavior, format=self.format)

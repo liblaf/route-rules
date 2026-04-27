@@ -3,6 +3,7 @@
 # DO NOT EDIT!
 
 # ref: <https://docs.readthedocs.com/platform/stable/config-file/v2.html>
+# ref: <https://docs.readthedocs.com/platform/stable/intro/zensical.html>
 # ref: <https://docs.readthedocs.com/platform/stable/reference/environment-variables.html>
 
 version: 2
@@ -21,12 +22,20 @@ build:
       - asdf plugin add uv
       - asdf install uv latest
       - asdf global uv latest
+
     create_environment:
       - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
+
     install:
       - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --frozen --all-packages --link-mode copy
-    pre_build:
-      - if test -f 'docs/scripts/pre-build.sh'; then bash 'docs/scripts/pre-build.sh'; fi
 
-mkdocs:
-  configuration: mkdocs.yaml
+    pre_build:
+      - sed --in-place "s|__SITE_URL__|$READTHEDOCS_CANONICAL_URL|g" 'zensical.toml'
+
+    build:
+      html:
+        - zensical build
+
+    post_build:
+      - mkdir --parents --verbose "$READTHEDOCS_OUTPUT/html/"
+      - cp --archive --no-target-directory 'site/' "$READTHEDOCS_OUTPUT/html/"

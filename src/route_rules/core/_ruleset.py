@@ -2,10 +2,11 @@ import collections
 from collections.abc import Iterable, Mapping
 from typing import Self, override
 
-import cytoolz as toolz
+import tlz
 
 _ALIASES: dict[str, str] = {
-    "IP-CIDR6": "IP-CIDR"  # IP-CIDR and IP-CIDR6 have the same effect, with IP-CIDR6 being an alias.
+    # IP-CIDR and IP-CIDR6 have the same effect, with IP-CIDR6 being an alias.
+    "IP-CIDR6": "IP-CIDR"
 }
 
 
@@ -16,7 +17,7 @@ class RuleSet(collections.UserDict[str, set[str]]):
         return self[key]
 
     @override
-    def __or__(self, other: Mapping[str, Iterable[str]], /) -> Self:  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __or__(self, other: Mapping[str, Iterable[str]], /) -> Self:  # ty:ignore[invalid-method-override]
         return self.union(other)
 
     def __sub__(self, other: Mapping[str, Iterable[str]], /) -> Self:
@@ -43,11 +44,17 @@ class RuleSet(collections.UserDict[str, set[str]]):
         return self
 
     def union(self, *others: Mapping[str, Iterable[str]]) -> Self:
-        return toolz.merge_with(
-            lambda lst: set.union(*lst), self, *others, factory=type(self)
+        return tlz.merge_with(
+            lambda lst: set.union(*lst),
+            self,
+            *others,
+            factory=type(self),  # ty:ignore[invalid-argument-type]
         )
 
     def difference(self, *others: Mapping[str, Iterable[str]]) -> Self:
-        return toolz.merge_with(
-            lambda lst: set.difference(*lst), self, *others, factory=type(self)
+        return tlz.merge_with(
+            lambda lst: set.difference(*lst),
+            self,
+            *others,
+            factory=type(self),  # ty:ignore[invalid-argument-type]
         )

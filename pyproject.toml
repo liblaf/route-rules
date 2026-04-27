@@ -25,18 +25,19 @@ classifiers = [
   "Typing :: Typed"
 ]
 dependencies = [
-  "anyio>=4,<5",
-  "autoregistry>=1,<2",
-  "cachetools>=7,<8",
-  "cachetools-async>=0.0.5,<0.0.6",
-  "cytoolz>=1,<2",
-  "hishel[httpx]>=1,<2",
-  "httpx[socks]>=0.28,<0.29",
-  "lazy-loader>=0.5,<0.6",
-  "liblaf-grapes>=9,<10",
-  "prettytable>=3,<4",
-  "python-slugify>=8,<9",
-  "validators>=0.35,<0.36"
+  "anyio>=4",
+  "autoregistry>=1",
+  "cachetools>=7",
+  "cachetools-async>=0.0.5",
+  "cytoolz>=1",
+  "hishel[httpx]>=1",
+  "httpx[socks]>=0.28",
+  "lazy-loader>=0.5",
+  "liblaf-grapes>=9",
+  "prettytable>=3",
+  "python-slugify>=8",
+  "toolz>=1",
+  "validators>=0.35"
 ]
 dynamic = ["version"]
 
@@ -50,14 +51,19 @@ dynamic = ["version"]
 "Source Code" = "https://github.com/liblaf/route-rules"
 
 [dependency-groups]
-dev = ["icecream>=2,<3"]
-build = ["check-wheel-contents>=0.6,<0.7", "hatch>=1,<2", "twine>=6,<7"]
+build = ["check-wheel-contents>=0.6", "hatch>=1", "twine>=6"]
 docs = [
-  "liblaf-mkdocs-preset>=0.3,<0.4",
-  "mkdocs>=1,<2",
-  "mkdocs-gen-files>=0.6,<0.7"
+  "griffe-fieldz>=0.5",
+  "griffe-inherited-docstrings>=1",
+  "griffe-pydantic>=1",
+  "griffe-warnings-deprecated>=1",
+  "mkdocstrings[python]>=1",
+  "zensical>=0.0.36"
 ]
-test = ["liblaf-pytest-preset>=0.1,<0.2", "pytest>=9,<10"]
+lint = ["import-linter[ui]>=2", "ruff>=0.15", "ty>=0.0.32"]
+nox = ["liblaf-nox-recipes>=0.1", "nox>=2026", "nox-uv>=0.7"]
+test = ["pytest>=9", "pytest-cov>=7", "pytest-randomly>=4"]
+typing = ["toolz-stubs>=0.4"]
 
 [build-system]
 requires = ["hatch-vcs", "hatchling"]
@@ -82,17 +88,23 @@ packages = ["src/route_rules"]
 [tool.hatch.version]
 source = "vcs"
 
-[tool.pyright]
-extends = ".config/linters/pyrightconfig.json"
+[tool.importlinter]
+root_package = "route_rules"
+
+[[tool.importlinter.contracts]]
+ancestors = ["route_rules"]
+name = "Acyclic siblings"
+type = "acyclic_siblings"
 
 [tool.pytest]
 addopts = [
   "--doctest-modules",
-  "--hypothesis-explain",
   "--import-mode=importlib",
+  "--junitxml=junit.xml",
   "--showlocals"
 ]
 consider_namespace_packages = true
+junit_family = "legacy"
 strict = true
 testpaths = ["benches", "src", "tests"]
 

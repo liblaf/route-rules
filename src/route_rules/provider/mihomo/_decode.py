@@ -12,9 +12,9 @@ from ._enum import Behavior, Format
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def decode(data: str | bytes, behavior: Behavior, format: Format) -> RuleSet:  # noqa: A002
-    payload: list[str] = _format_decoders[format](data)
-    ruleset: RuleSet = _behavior_decoders[behavior](payload)
+async def decode(data: str | bytes, behavior: Behavior, format: Format) -> RuleSet:  # noqa: A002
+    payload: list[str] = await _format_decoders[format](data)  # ty:ignore[invalid-argument-type]
+    ruleset: RuleSet = await _behavior_decoders[behavior](payload)  # ty:ignore[invalid-argument-type]
     return ruleset
 
 
@@ -22,12 +22,12 @@ _format_decoders = autoregistry.Registry(prefix="_decode_")
 
 
 @_format_decoders
-def _decode_yaml(data: str | bytes) -> list[str]:
+async def _decode_yaml(data: str | bytes) -> list[str]:
     return msgspec.yaml.decode(data)["payload"]
 
 
 @_format_decoders
-def _decode_text(text: str | bytes) -> list[str]:
+async def _decode_text(text: str | bytes) -> list[str]:
     if isinstance(text, bytes):
         text = text.decode()
     text = re.sub(r"#.*", "", text, flags=re.MULTILINE)
@@ -41,7 +41,7 @@ _behavior_decoders = autoregistry.Registry(prefix="_decode_")
 
 
 @_behavior_decoders
-def _decode_domain(payload: Iterable[str]) -> RuleSet:
+async def _decode_domain(payload: Iterable[str]) -> RuleSet:
     # ref: <https://wiki.metacubex.one/en/handbook/syntax/#domain-wildcards>
     ruleset = RuleSet()
     for line in payload:
@@ -57,7 +57,7 @@ def _decode_domain(payload: Iterable[str]) -> RuleSet:
 
 
 @_behavior_decoders
-def _decode_classical(payload: Iterable[str]) -> RuleSet:
+async def _decode_classical(payload: Iterable[str]) -> RuleSet:
     ruleset = RuleSet()
     for line in payload:
         typ: str

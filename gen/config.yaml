@@ -4,11 +4,12 @@ recipes:
       - dler-io:AI Suite
       - MetaCubeX/geosite:category-ai-!cn
       - SukkaW/classical:non_ip/ai
+      - SukkaW/classical:non_ip/apple_intelligence
 
-  - name: 🪙 Binance
+  - name: 🪙 Crypto
     providers:
-      - blackmatrix7:Binance
-      - MetaCubeX/geosite:binance
+      - blackmatrix7:Crypto
+      - MetaCubeX/geosite:category-cryptocurrency
 
   - name: 🎯 Direct
     providers:

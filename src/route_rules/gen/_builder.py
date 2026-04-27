@@ -1,10 +1,11 @@
 import collections
 import os
+import pathlib
 from datetime import datetime
-from pathlib import Path
 from typing import Self
 
 import attrs
+from anyio import Path
 
 from route_rules.core import RuleSet
 from route_rules.export import ExporterMihomo
@@ -27,7 +28,7 @@ def _default_exporters() -> list[ExporterMihomo]:
 
 @attrs.define
 class Builder:
-    dist_dir: Path = Path("dist")
+    dist_dir: Path = Path("dist")  # noqa: RUF009
     exporters: list[ExporterMihomo] = attrs.field(factory=_default_exporters)
     recipes: list[Recipe] = attrs.field(factory=list)
 
@@ -44,8 +45,8 @@ class Builder:
         for recipe in self.recipes:
             meta.recipes.append(await self.build_recipe(recipe))
         meta_file: Path = self.dist_dir / "meta.json"
-        meta_file.parent.mkdir(parents=True, exist_ok=True)
-        meta_file.write_text(meta.json_encode())
+        await meta_file.parent.mkdir(parents=True, exist_ok=True)
+        await meta_file.write_text(meta.json_encode())
 
     async def build_recipe(self, recipe: Recipe) -> RecipeMeta:
         ruleset: RuleSet = await recipe.build()
@@ -63,15 +64,17 @@ class Builder:
                 )
             )
         for exporter in self.exporters:
-            file: Path | None = exporter.export(self.dist_dir, recipe.slug, ruleset)
+            file: Path | None = await exporter.export(
+                self.dist_dir, recipe.slug, ruleset
+            )
             if file is None:
                 continue
             meta.artifacts.append(
                 ArtifactMeta(
                     behavior=exporter.behavior,
                     format=exporter.format,
-                    path=file,
-                    size=file.stat().st_size,
+                    path=pathlib.Path(file),
+                    size=(await file.stat()).st_size,
                 )
             )
         return meta
