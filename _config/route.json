@@ -1,0 +1,38 @@
+{
+  "$schema": "https://gist.github.com/artiga033/fea992d95ad44dc8d024b229223b1002/raw/83c676c1ec9f37af2bce0505da396b5444b30032/sing-box.schema.json",
+  "route": {
+    "rules": [
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [{ "protocol": "dns" }, { "port": 53 }],
+        "outbound": "out:dns"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          { "port": 853 },
+          { "network": "udp", "port": 443 },
+          { "protocol": "stun" }
+        ],
+        "outbound": "REJECT"
+      },
+      { "rule_set": "rule-set:ads", "outbound": "REJECT" },
+      {
+        "ip_is_private": true,
+        "rule_set": "rule-set:private",
+        "outbound": "DIRECT"
+      },
+      { "clash_mode": "direct", "outbound": "DIRECT" },
+      { "clash_mode": "global", "outbound": "PROXY" },
+      { "rule_set": "rule-set:cn", "outbound": "DIRECT" },
+      { "rule_set": "rule-set:ai", "outbound": "🤖 AI" },
+      { "rule_set": "rule-set:download", "outbound": "☁️ Download" },
+      { "rule_set": "rule-set:emby", "outbound": "🍟 Emby" },
+      { "rule_set": "rule-set:media", "outbound": "📺 Media" }
+    ],
+    "final": "PROXY",
+    "auto_detect_interface": true
+  }
+}
