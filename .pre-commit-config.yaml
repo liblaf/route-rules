@@ -18,7 +18,7 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.11
+    rev: v0.15.15
     hooks:
       - id: ruff-check
         args:
@@ -52,7 +52,7 @@ repos:
     hooks:
       - id: actionlint
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.80
+    rev: v0.2.4
     hooks:
       - id: rumdl-fmt
   - repo: https://github.com/shellcheck-py/shellcheck-py
