@@ -22,15 +22,15 @@ run = ["rm --force --recursive '{{ config_root }}/.cache'", "zensical serve"]
 
 [tasks."gen:init"]
 description = "Generate lazy-loading __init__.py files from __init__.pyi stubs"
-file = "https://raw.githubusercontent.com/liblaf/copier-python/c7a15e85128f819074f7658ed62acbe70a78a9be/mise-tasks/gen/init.py"
+file = "https://raw.githubusercontent.com/liblaf/copier-python/cc1a80e954c07d2a22324da1f7e90314df4ec495/mise-tasks/gen/init.py"
 
 [tasks."gen:ref-pages"]
 description = "Generate API reference pages from public Python modules"
-file = "https://raw.githubusercontent.com/liblaf/copier-python/c7a15e85128f819074f7658ed62acbe70a78a9be/mise-tasks/gen/ref-pages.py"
+file = "https://raw.githubusercontent.com/liblaf/copier-python/cc1a80e954c07d2a22324da1f7e90314df4ec495/mise-tasks/gen/ref-pages.py"
 
 [tasks.install]
 description = "Install project dependencies from pixi.lock or uv.lock"
-file = "https://raw.githubusercontent.com/liblaf/copier-python/c7a15e85128f819074f7658ed62acbe70a78a9be/mise-tasks/install.sh"
+file = "https://raw.githubusercontent.com/liblaf/copier-python/cc1a80e954c07d2a22324da1f7e90314df4ec495/mise-tasks/install.sh"
 
 [tasks.lint]
 description = "Run all linters"
@@ -42,8 +42,8 @@ run = ["lint-imports", "ruff check --fix", "ruff format", "ty check --fix"]
 
 [tasks."lint:toml"]
 description = "Sort, format, and lint TOML files with toml-sort and tombi"
-file = "https://raw.githubusercontent.com/liblaf/copier-python/c7a15e85128f819074f7658ed62acbe70a78a9be/mise-tasks/lint/toml.sh"
+file = "https://raw.githubusercontent.com/liblaf/copier-python/cc1a80e954c07d2a22324da1f7e90314df4ec495/mise-tasks/lint/toml.sh"
 
 [tasks.upgrade]
 description = "Upgrade project dependencies from pixi.lock or uv.lock"
-file = "https://raw.githubusercontent.com/liblaf/copier-python/c7a15e85128f819074f7658ed62acbe70a78a9be/mise-tasks/upgrade.sh"
+file = "https://raw.githubusercontent.com/liblaf/copier-python/cc1a80e954c07d2a22324da1f7e90314df4ec495/mise-tasks/upgrade.sh"

@@ -16,6 +16,4 @@
 
 ## Route
 
-```json linenums="1"
---8<-- "docs/_config/route.json"
-```
+    --8<-- "docs/_config/route.json"

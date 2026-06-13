@@ -18,18 +18,18 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.11
+    rev: v0.15.16
     hooks:
       - id: ruff-check
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/oxc-project/mirrors-oxfmt
-    rev: v0.45.0
+    rev: v0.54.0
     hooks:
       - id: oxfmt
   - repo: https://github.com/oxc-project/mirrors-oxlint
-    rev: v1.60.0
+    rev: v1.69.0
     hooks:
       - id: oxlint
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -52,7 +52,7 @@ repos:
     hooks:
       - id: actionlint
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.80
+    rev: v0.2.10
     hooks:
       - id: rumdl-fmt
   - repo: https://github.com/shellcheck-py/shellcheck-py
