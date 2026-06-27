@@ -33,15 +33,15 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@d510a5eaa5206b30ed1009660d04ef8082daf2d9 # v2
+        uses: liblaf/actions/auth@512d1652c6a71a8f141d1901f50994afaddc925e # v3
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - id: lint
         name: MegaLinter
-        uses: liblaf/megalinter-custom-flavor-all@e4ff3731165d0b37dcf66ef40ddcd9e6c1825adf # main
+        uses: liblaf/megalinter-custom-flavor-all@2ce9ad17fcc1129eb4e52946f5115d7bf512bff9 # main
         env:
           GITHUB_TOKEN: ${{ steps.auth.outputs.token }}
           MEGALINTER_CONFIG: https://raw.githubusercontent.com/liblaf/megalinter-custom-flavor-all/refs/heads/main/.mega-linter.yml
@@ -60,10 +60,7 @@ jobs:
           cp --target-directory='${{ runner.temp }}' --verbose 'megalinter-reports/megalinter-report.md'
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports'
       - id: pr
-        if: >-
-          steps.lint.outputs.has-updated-sources == 1 && (github.event_name ==
-          'push' || github.event.pull_request.head.repo.full_name ==
-          github.repository)
+        if: steps.lint.outputs.has-updated-sources == 1 && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         name: Create PR
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
@@ -93,12 +90,13 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@d510a5eaa5206b30ed1009660d04ef8082daf2d9 # v2
+        uses: liblaf/actions/auth@512d1652c6a71a8f141d1901f50994afaddc925e # v3
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Approve
-        uses: liblaf/actions/approve@d510a5eaa5206b30ed1009660d04ef8082daf2d9 # v2
+        uses: liblaf/actions/approve@512d1652c6a71a8f141d1901f50994afaddc925e # v3
         with:
           approve-token: ${{ steps.auth.outputs.token }}
           pull: ${{ needs.mega-linter.outputs.pull-request-url }}
+          reviewer: ${{ steps.auth.outputs.committer-name }}

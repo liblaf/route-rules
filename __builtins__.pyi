@@ -4,10 +4,10 @@
 # ref: <https://github.com/astral-sh/ruff/pull/22021>
 # ref: <https://github.com/microsoft/pyright/blob/main/docs/builtins.md>
 
-from typing import overload, type_check_only
+from typing import Protocol, overload, type_check_only
 
 @type_check_only
-class _IceCreamDebugger:
+class _IceCreamDebugger(Protocol):
     @overload
     def __call__(self, **kwargs) -> None: ...
     @overload

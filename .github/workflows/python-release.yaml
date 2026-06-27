@@ -25,10 +25,10 @@ jobs:
       package-version: ${{ steps.build.outputs.package_version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - id: build
         name: Build and inspect a Python package
-        uses: hynek/build-and-inspect-python-package@fe0a0fb1925ca263d076ca4f2c13e93a6e92a33e # v2
+        uses: hynek/build-and-inspect-python-package@d44ca7d91762de7a7d5436ddae667c6da6d1c3df # v2
         with:
           attest-build-provenance-github: true
 
@@ -70,7 +70,7 @@ jobs:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
       - name: Upload release assets
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3
+        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b # v3
         with:
           draft: false
           files: dist/*
