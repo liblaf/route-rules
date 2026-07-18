@@ -21,15 +21,16 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@d510a5eaa5206b30ed1009660d04ef8082daf2d9 # v2
+        uses: liblaf/actions/auth@ce9dc3a1daa92e93ddfe62d8378b93cedaa5056c # v3
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Approve
-        uses: liblaf/actions/approve@d510a5eaa5206b30ed1009660d04ef8082daf2d9 # v2
+        uses: liblaf/actions/approve@ce9dc3a1daa92e93ddfe62d8378b93cedaa5056c # v3
         with:
           approve-token: ${{ steps.auth.outputs.token }}
           label: ${{ matrix.label }}
+          reviewer: ${{ steps.auth.outputs.committer-name }}
     strategy:
       matrix:
         label:
