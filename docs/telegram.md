@@ -1,0 +1,28 @@
+# ✈️ Telegram
+
+Last Updated At: 2026-07-24T02:07:12+00:00
+
+## Links
+
+| Name                 |                                                GitHub                                                |                                           jsDeliver                                            |
+| :------------------- | :--------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
+| telegram.domain.mrs  | [Link](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/dist/mihomo/telegram.domain.mrs)  | [Link](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/dist/mihomo/telegram.domain.mrs)  |
+| telegram.domain.list | [Link](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/dist/mihomo/telegram.domain.list) | [Link](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/dist/mihomo/telegram.domain.list) |
+| telegram.ipcidr.mrs  | [Link](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/dist/mihomo/telegram.ipcidr.mrs)  | [Link](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/dist/mihomo/telegram.ipcidr.mrs)  |
+| telegram.ipcidr.list | [Link](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/dist/mihomo/telegram.ipcidr.list) | [Link](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/dist/mihomo/telegram.ipcidr.list) |
+
+## Statistics
+
+| Type          |   I |   O |
+| :------------ | --: | --: |
+| DOMAIN        |   2 |   1 |
+| DOMAIN-SUFFIX |  14 |  14 |
+| IP-CIDR       |  16 |  16 |
+| Total         |  32 |  31 |
+
+## Sources
+
+| Name                             |                           Preview                            |                           Download                            |
+| :------------------------------- | :----------------------------------------------------------: | :-----------------------------------------------------------: |
+| SukkaW/classical:ip/telegram     |   [Preview](https://ruleset.skk.moe/Clash/ip/telegram.txt)   |   [Download](https://ruleset.skk.moe/Clash/ip/telegram.txt)   |
+| SukkaW/classical:non_ip/telegram | [Preview](https://ruleset.skk.moe/Clash/non_ip/telegram.txt) | [Download](https://ruleset.skk.moe/Clash/non_ip/telegram.txt) |
