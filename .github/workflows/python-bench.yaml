@@ -22,9 +22,9 @@ jobs:
       sessions: ${{ steps.collect.outputs.sessions }}
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Setup uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           activate-environment: true
       - name: Install dependencies
@@ -47,15 +47,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Setup uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           activate-environment: true
       - name: Install dependencies
         run: uv sync --active --frozen --all-packages
       - name: Bench
-        uses: CodSpeedHQ/action@db35df748deb45fdef0960669f57d627c1956c30 # v4
+        uses: CodSpeedHQ/action@4296e51e7041e24dadb86d1d6e8b9320d223dbe8 # v5
         with:
           run: nox --tags 'bench'
-          mode: instrumentation
+          mode: simulation,walltime,memory
