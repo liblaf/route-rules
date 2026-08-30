@@ -3,6 +3,7 @@ package build
 import (
 	"context"
 	"fmt"
+	"net/netip"
 	"strings"
 
 	"github.com/liblaf/route-rules/internal/config"
@@ -104,25 +105,42 @@ func (result Result) Rules(name string) (rules.Collection, bool) {
 
 func verifyAssertions(cfg config.Config, built Result) error {
 	for _, assertion := range cfg.Assertions {
-		actual := cfg.Fallback
+		kind := "domain"
+		target := assertion.Domain
+		matchesTarget := func(collection rules.Collection) bool {
+			return collection.MatchesDomain(assertion.Domain)
+		}
+		if assertion.IP != "" {
+			kind = "IP"
+			target = assertion.IP
+			address, err := netip.ParseAddr(assertion.IP)
+			if err != nil {
+				panic("validated assertion has an invalid IP address")
+			}
+			matchesTarget = func(collection rules.Collection) bool {
+				return collection.Prefixes.Contains(address)
+			}
+		}
+
+		matches := make([]string, 0)
 		for _, name := range cfg.Priority {
 			collection, exists := built.byName[name]
 			if !exists {
 				panic("priority references an unbuilt ruleset")
 			}
-			if collection.MatchesDomain(assertion.Domain) {
-				actual = name
-				break
+			if matchesTarget(collection) {
+				matches = append(matches, name)
 			}
 		}
+		actual := cfg.Fallback
+		if len(matches) != 0 {
+			actual = matches[0]
+		}
 		if actual != assertion.RuleSet {
-			matches := make([]string, 0)
-			for _, name := range cfg.Priority {
-				if built.byName[name].MatchesDomain(assertion.Domain) {
-					matches = append(matches, name)
-				}
-			}
-			return fmt.Errorf("domain assertion %q: classified as %q, expected %q (matching sets: %s)", assertion.Domain, actual, assertion.RuleSet, strings.Join(matches, ", "))
+			return fmt.Errorf("%s assertion %q: classified as %q, expected %q (matching sets: %s)", kind, target, actual, assertion.RuleSet, strings.Join(matches, ", "))
+		}
+		if assertion.Exclusive && (len(matches) != 1 || matches[0] != assertion.RuleSet) {
+			return fmt.Errorf("%s assertion %q: expected exclusive membership in %q (matching sets: %s)", kind, target, assertion.RuleSet, strings.Join(matches, ", "))
 		}
 	}
 	return nil

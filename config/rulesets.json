@@ -1,12 +1,28 @@
 {
   "repository": "liblaf/route-rules",
   "fallback": "proxy",
-  "priority": ["lan", "cn", "crypto", "us", "proxy"],
+  "priority": ["tailnet", "lan", "cn", "crypto", "us", "proxy"],
   "v2fly_url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
   "ignore_domains": ["7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe"],
   "rulesets": [
     {
+      "name": "tailnet",
+      "sources": [
+        {
+          "name": "Tailscale:MagicDNS",
+          "kind": "domain-file",
+          "path": "sources/tailnet.domain.txt"
+        },
+        {
+          "name": "Tailscale:address-ranges",
+          "kind": "cidr-file",
+          "path": "sources/tailnet.ipcidr.txt"
+        }
+      ]
+    },
+    {
       "name": "lan",
+      "exclude": ["tailnet"],
       "sources": [
         {
           "name": "SukkaW/Surge:lan-domain",
@@ -35,7 +51,7 @@
     },
     {
       "name": "cn",
-      "exclude": ["lan"],
+      "exclude": ["tailnet", "lan"],
       "sources": [
         {
           "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
@@ -99,7 +115,7 @@
     },
     {
       "name": "crypto",
-      "exclude": ["lan", "cn"],
+      "exclude": ["tailnet", "lan", "cn"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:category-cryptocurrency",
@@ -110,7 +126,7 @@
     },
     {
       "name": "us",
-      "exclude": ["lan", "cn"],
+      "exclude": ["tailnet", "lan", "cn"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}",
@@ -141,7 +157,7 @@
     },
     {
       "name": "proxy",
-      "exclude": ["lan", "cn"],
+      "exclude": ["tailnet", "lan", "cn"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:geolocation-!cn",
@@ -167,6 +183,9 @@
     }
   ],
   "assertions": [
+    {"domain": "server.example.ts.net", "ruleset": "tailnet", "exclusive": true},
+    {"ip": "100.64.0.1", "ruleset": "tailnet", "exclusive": true},
+    {"ip": "fd7a:115c:a1e0::1", "ruleset": "tailnet", "exclusive": true},
     {"domain": "localhost", "ruleset": "lan"},
     {"domain": "dl.acm.org", "ruleset": "cn"},
     {"domain": "www.elsevier.com", "ruleset": "cn"},

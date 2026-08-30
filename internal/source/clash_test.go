@@ -1,6 +1,9 @@
 package source
 
-import "testing"
+import (
+	"net/netip"
+	"testing"
+)
 
 func TestParseClashPreservesNonMRSRules(t *testing.T) {
 	t.Parallel()
@@ -50,5 +53,24 @@ func TestParseV2FlyRuleAttributes(t *testing.T) {
 	}
 	if _, exists := attributes["cn"]; !exists {
 		t.Fatal("cn attribute was not parsed")
+	}
+}
+
+func TestParseCIDR(t *testing.T) {
+	t.Parallel()
+	result, err := parseCIDR("# Tailscale ranges\n100.64.0.0/10\nfd7a:115c:a1e0::/48\n")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := result.InputRules, 2; got != want {
+		t.Fatalf("got %d input rules, expected %d", got, want)
+	}
+	for _, address := range []netip.Addr{
+		netip.MustParseAddr("100.64.0.1"),
+		netip.MustParseAddr("fd7a:115c:a1e0::1"),
+	} {
+		if !result.Rules.Prefixes.Contains(address) {
+			t.Fatalf("parsed prefixes do not contain %s", address)
+		}
 	}
 }

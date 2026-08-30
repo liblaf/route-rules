@@ -1,0 +1,4 @@
+# Tailscale's official IPv4 and IPv6 device address ranges.
+# Source: https://tailscale.com/docs/reference/reserved-ip-addresses
+100.64.0.0/10
+fd7a:115c:a1e0::/48

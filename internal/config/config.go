@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/netip"
 	"os"
 	"path/filepath"
 	"strings"
@@ -40,8 +41,10 @@ type Source struct {
 }
 
 type Assertion struct {
-	Domain  string `json:"domain"`
-	RuleSet string `json:"ruleset"`
+	Domain    string `json:"domain"`
+	IP        string `json:"ip"`
+	RuleSet   string `json:"ruleset"`
+	Exclusive bool   `json:"exclusive"`
 }
 
 func Load(path string) (Config, error) {
@@ -114,11 +117,18 @@ func (c Config) Validate() error {
 		return fmt.Errorf("fallback %q is not a ruleset", c.Fallback)
 	}
 	for _, assertion := range c.Assertions {
-		if assertion.Domain == "" {
-			return fmt.Errorf("assertion domain is required")
+		if (assertion.Domain == "") == (assertion.IP == "") {
+			return fmt.Errorf("assertion requires exactly one of domain or ip")
+		}
+		target := assertion.Domain
+		if assertion.IP != "" {
+			target = assertion.IP
+			if _, err := netip.ParseAddr(assertion.IP); err != nil {
+				return fmt.Errorf("assertion IP %q: %w", assertion.IP, err)
+			}
 		}
 		if _, exists := sets[assertion.RuleSet]; !exists {
-			return fmt.Errorf("assertion for %q has unknown ruleset %q", assertion.Domain, assertion.RuleSet)
+			return fmt.Errorf("assertion for %q has unknown ruleset %q", target, assertion.RuleSet)
 		}
 	}
 	return nil
@@ -145,16 +155,20 @@ func validateSource(source Source) error {
 		if hasURL || !hasURLs || hasPath || hasSelection {
 			return fmt.Errorf("kind iana-local requires urls")
 		}
-	case "domain-file":
+	case "domain-file", "cidr-file":
 		if hasURL || hasURLs || !hasPath || hasSelection {
-			return fmt.Errorf("kind domain-file requires a path")
+			return fmt.Errorf("kind %s requires a path", source.Kind)
 		}
-		clean := filepath.Clean(source.Path)
-		if filepath.IsAbs(source.Path) || clean == ".." || strings.HasPrefix(clean, ".."+string(filepath.Separator)) {
+		if !isLocalPath(source.Path) {
 			return fmt.Errorf("path must stay below the configuration directory")
 		}
 	default:
 		return fmt.Errorf("unknown kind %q", source.Kind)
 	}
 	return nil
+}
+
+func isLocalPath(path string) bool {
+	clean := filepath.Clean(path)
+	return !filepath.IsAbs(path) && clean != ".." && !strings.HasPrefix(clean, ".."+string(filepath.Separator))
 }

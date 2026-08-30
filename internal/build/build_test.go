@@ -1,6 +1,8 @@
 package build
 
 import (
+	"net/netip"
+	"strings"
 	"testing"
 
 	"github.com/liblaf/route-rules/internal/config"
@@ -33,5 +35,30 @@ func TestVerifyAssertionsUsesPriorityAndFallback(t *testing.T) {
 	}}
 	if err := verifyAssertions(cfg, built); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestVerifyAssertionsSupportsExclusiveIPMembership(t *testing.T) {
+	t.Parallel()
+	tailnetPrefix := netip.MustParsePrefix("100.64.0.0/10")
+	cfg := config.Config{
+		Priority: []string{"tailnet", "lan"},
+		Fallback: "lan",
+		Assertions: []config.Assertion{
+			{IP: "100.64.0.1", RuleSet: "tailnet", Exclusive: true},
+		},
+	}
+	built := Result{byName: map[string]rules.Collection{
+		"tailnet": {Prefixes: rules.PrefixSet{tailnetPrefix}},
+		"lan":     {},
+	}}
+	if err := verifyAssertions(cfg, built); err != nil {
+		t.Fatal(err)
+	}
+
+	built.byName["lan"] = rules.Collection{Prefixes: rules.PrefixSet{tailnetPrefix}}
+	err := verifyAssertions(cfg, built)
+	if err == nil || !strings.Contains(err.Error(), "expected exclusive membership") {
+		t.Fatalf("got error %v, expected exclusive-membership failure", err)
 	}
 }

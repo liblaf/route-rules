@@ -1,0 +1,3 @@
+# Tailscale MagicDNS fully qualified names end in .ts.net.
+# Source: https://tailscale.com/docs/features/magicdns
++.ts.net

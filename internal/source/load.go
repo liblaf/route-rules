@@ -43,6 +43,8 @@ func (loader *Loader) Load(ctx context.Context, baseDir string, source config.So
 		result, err = loader.loadDNSMasq(ctx, source.URL)
 	case "cidr":
 		result, err = loader.loadCIDR(ctx, source.URL)
+	case "cidr-file":
+		result, err = loadCIDRFile(baseDir, source.Path)
 	case "v2fly":
 		result, err = loader.loadV2Fly(ctx, source)
 	case "iana-local":
@@ -103,8 +105,22 @@ func (loader *Loader) loadCIDR(ctx context.Context, url string) (Result, error) 
 	if err != nil {
 		return Result{}, err
 	}
-	result := Result{Ignored: make(map[string]int), Fetches: []FetchMetadata{metadata}}
-	for number, raw := range strings.Split(string(payload), "\n") {
+	result, err := parseCIDR(string(payload))
+	result.Fetches = []FetchMetadata{metadata}
+	return result, err
+}
+
+func loadCIDRFile(baseDir, path string) (Result, error) {
+	payload, err := os.ReadFile(filepath.Join(baseDir, filepath.Clean(path)))
+	if err != nil {
+		return Result{}, err
+	}
+	return parseCIDR(string(payload))
+}
+
+func parseCIDR(payload string) (Result, error) {
+	result := Result{Ignored: make(map[string]int)}
+	for number, raw := range strings.Split(payload, "\n") {
 		line := strings.TrimSpace(raw)
 		if line == "" || strings.HasPrefix(line, "#") {
 			continue
