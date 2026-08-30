@@ -1,6 +1,6 @@
 # Mihomo rule sets
 
-Generated at 2026-08-30T15:47:09Z. Do not edit this branch manually.
+Generated at 2026-08-30T19:21:09Z. Do not edit this branch manually.
 
 Evaluation order: `tailnet` → `lan` → `cn` → `crypto` → `us` → `proxy`, then fallback `proxy`.
 
