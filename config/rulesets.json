@@ -1,0 +1,182 @@
+{
+  "repository": "liblaf/route-rules",
+  "fallback": "proxy",
+  "priority": ["lan", "cn", "crypto", "us", "proxy"],
+  "v2fly_url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
+  "ignore_domains": ["7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe"],
+  "rulesets": [
+    {
+      "name": "lan",
+      "sources": [
+        {
+          "name": "SukkaW/Surge:lan-domain",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/lan.txt"
+        },
+        {
+          "name": "SukkaW/Surge:lan-ip",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/ip/lan.txt"
+        },
+        {
+          "name": "v2fly/domain-list-community:private",
+          "kind": "v2fly",
+          "lists": ["private"]
+        },
+        {
+          "name": "IANA:local-addresses",
+          "kind": "iana-local",
+          "urls": [
+            "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry-1.csv",
+            "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry-1.csv"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cn",
+      "exclude": ["lan"],
+      "sources": [
+        {
+          "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
+          "kind": "dnsmasq",
+          "url": "https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf"
+        },
+        {
+          "name": "gaoyifan/china-operator-ip:china46.txt",
+          "kind": "cidr",
+          "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt"
+        },
+        {
+          "name": "SukkaW/Surge:apple_cn",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt"
+        },
+        {
+          "name": "SukkaW/Surge:direct",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/direct.txt"
+        },
+        {
+          "name": "SukkaW/Surge:domestic-domain",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/domestic.txt"
+        },
+        {
+          "name": "SukkaW/Surge:domestic-ip",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/ip/domestic.txt"
+        },
+        {
+          "name": "SukkaW/Surge:microsoft_cdn",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt"
+        },
+        {
+          "name": "v2fly/domain-list-community:{cn,elsevier,sciencedirect}",
+          "kind": "v2fly",
+          "lists": ["cn", "elsevier", "sciencedirect"]
+        },
+        {
+          "name": "v2fly/domain-list-community:geolocation-!cn@cn",
+          "kind": "v2fly",
+          "lists": ["geolocation-!cn"],
+          "require_attributes": ["cn"]
+        },
+        {
+          "name": "v2fly/domain-list-community:all@cn",
+          "kind": "v2fly",
+          "all_lists": true,
+          "require_attributes": ["cn"]
+        },
+        {
+          "name": "custom:cn",
+          "kind": "domain-file",
+          "path": "overrides/cn.domain.txt",
+          "optional_if_covered": true
+        }
+      ]
+    },
+    {
+      "name": "crypto",
+      "exclude": ["lan", "cn"],
+      "sources": [
+        {
+          "name": "v2fly/domain-list-community:category-cryptocurrency",
+          "kind": "v2fly",
+          "lists": ["category-cryptocurrency"]
+        }
+      ]
+    },
+    {
+      "name": "us",
+      "exclude": ["lan", "cn"],
+      "sources": [
+        {
+          "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}",
+          "kind": "v2fly",
+          "lists": ["anthropic", "apple", "category-ai-!cn", "google-gemini", "openai"]
+        },
+        {
+          "name": "SukkaW/Surge:ai-domain",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/ai.txt"
+        },
+        {
+          "name": "SukkaW/Surge:ai-ip",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/ip/ai.txt"
+        },
+        {
+          "name": "SukkaW/Surge:apple_services-domain",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/apple_services.txt"
+        },
+        {
+          "name": "SukkaW/Surge:apple_services-ip",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/ip/apple_services.txt"
+        }
+      ]
+    },
+    {
+      "name": "proxy",
+      "exclude": ["lan", "cn"],
+      "sources": [
+        {
+          "name": "v2fly/domain-list-community:geolocation-!cn",
+          "kind": "v2fly",
+          "lists": ["geolocation-!cn"]
+        },
+        {
+          "name": "SukkaW/Surge:telegram-domain",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/telegram.txt"
+        },
+        {
+          "name": "SukkaW/Surge:telegram-ip",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/ip/telegram.txt"
+        },
+        {
+          "name": "SukkaW/Surge:global",
+          "kind": "clash",
+          "url": "https://ruleset.skk.moe/Clash/non_ip/global.txt"
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {"domain": "localhost", "ruleset": "lan"},
+    {"domain": "dl.acm.org", "ruleset": "cn"},
+    {"domain": "www.elsevier.com", "ruleset": "cn"},
+    {"domain": "www.sciencedirect.com", "ruleset": "cn"},
+    {"domain": "ieeexplore.ieee.org", "ruleset": "cn"},
+    {"domain": "www.scopus.com", "ruleset": "cn"},
+    {"domain": "shop.pockyt.io", "ruleset": "cn"},
+    {"domain": "cdn.jsdelivr.net", "ruleset": "proxy"},
+    {"domain": "flame.is.tue.mpg.de", "ruleset": "proxy"},
+    {"domain": "api.openai.com", "ruleset": "us"},
+    {"domain": "www.binance.com", "ruleset": "crypto"}
+  ]
+}

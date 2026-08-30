@@ -1,40 +1,4 @@
-# ref: <https://github.com/github/gitignore/blob/main/Python.gitignore>
-
-# Globally Useful gitignores
+/bin/
+/dist/
+/coverage.out
 *.log
-*.log.*
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-
-# Distribution / packaging
-dist/
-
-# Unit test / coverage reports
-.nox/
-.cache/
-.coverage
-.coverage.*
-.hypothesis/
-.pytest_cache/
-
-# pixi
-.pixi/
-
-# Environments
-.venv/
-
-# mkdocs documentation
-/site/
-
-# Ruff stuff:
-.ruff_cache/
-
-# [Codecov](https://docs.codecov.com/docs/test-analytics#1-output-a-junit-xml-file-in-your-ci)
-junit.xml
-
-# [CodSpeed](https://codspeed.io/)
-.codspeed/
-
-# [hatch-vcs](https://github.com/ofek/hatch-vcs)
-_version.py

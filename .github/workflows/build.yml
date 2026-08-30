@@ -1,0 +1,142 @@
+name: Build and publish rule sets
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "23 16 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: route-rules-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  MIHOMO_VERSION: v1.19.30
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install Mihomo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          install_dir="$RUNNER_TEMP/mihomo"
+          mkdir -p "$install_dir"
+          gh release download "$MIHOMO_VERSION" \
+            --repo MetaCubeX/mihomo \
+            --pattern "mihomo-linux-amd64-${MIHOMO_VERSION}.gz" \
+            --dir "$install_dir"
+          gzip -dc "$install_dir/mihomo-linux-amd64-${MIHOMO_VERSION}.gz" > "$install_dir/mihomo"
+          chmod +x "$install_dir/mihomo"
+          echo "$install_dir" >> "$GITHUB_PATH"
+
+      - name: Check formatting
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [[ -n "$unformatted" ]]; then
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Test
+        run: go test -race ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build generator
+        run: |
+          mkdir -p bin
+          go build -trimpath -o bin/route-rules ./cmd/route-rules
+
+      - name: Generate rule sets and site
+        run: |
+          generated_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          bin/route-rules --generated-at "$generated_at"
+
+      - name: Upload generated output
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: generated-output
+          path: dist
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 7
+
+  publish-mihomo:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Download generated output
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: generated-output
+          path: dist
+
+      - name: Publish mihomo branch
+        run: |
+          publish_dir="$RUNNER_TEMP/mihomo-branch"
+          git fetch --no-tags origin mihomo
+          git worktree add --detach "$publish_dir" origin/mihomo
+          rsync -a --delete --exclude=.git dist/ "$publish_dir/"
+          git -C "$publish_dir" add -A
+          if git -C "$publish_dir" diff --cached --quiet; then
+            echo "Generated output is unchanged."
+            exit 0
+          fi
+          git -C "$publish_dir" config user.name "github-actions[bot]"
+          git -C "$publish_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$publish_dir" commit -m "build: update rule sets"
+          git -C "$publish_dir" push origin HEAD:mihomo
+
+  deploy-pages:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download generated output
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: generated-output
+          path: dist
+
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+
+      - name: Package Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: dist
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5

@@ -1,0 +1,9 @@
+# Reviewed domains that should use the mainland connection.
+# The builder omits entries already covered by another CN source.
++.gjm20.top
++.gptapi.asia
++.kde.org
++.liblaf.me
++.pockyt.io
++.wd-gold.net
++.wd-red.com
