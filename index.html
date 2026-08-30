@@ -18,8 +18,8 @@
 </head>
 <body>
   <h1>Mihomo rule sets</h1>
-  <p class="muted">Last generated: 2026-08-30 15:25:03 UTC · Mihomo Meta v1.19.30 linux amd64 with go1.26.6 Sun Aug 16 09:58:25 UTC 2026</p>
-  <p>Evaluation order: <code>lan → cn → crypto → us → proxy</code>; fallback: <code>proxy</code>.</p>
+  <p class="muted">Last generated: 2026-08-30 15:47:09 UTC · Mihomo Meta v1.19.30 linux amd64 with go1.26.6 Sun Aug 16 09:58:25 UTC 2026</p>
+  <p>Evaluation order: <code>tailnet → lan → cn → crypto → us → proxy</code>; fallback: <code>proxy</code>.</p>
 
   <h2>Downloads</h2>
   <div class="scroll"><table>
@@ -34,10 +34,10 @@
       <td><code>crypto.domain.mrs</code></td><td>domain</td><td>227</td><td>2.2 KiB</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/crypto.domain.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/crypto.domain.mrs">jsDelivr</a></td>
     </tr><tr>
-      <td><code>lan.domain.mrs</code></td><td>domain</td><td>143</td><td>890 B</td>
+      <td><code>lan.domain.mrs</code></td><td>domain</td><td>142</td><td>892 B</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/lan.domain.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/lan.domain.mrs">jsDelivr</a></td>
     </tr><tr>
-      <td><code>lan.ipcidr.mrs</code></td><td>ipcidr</td><td>11</td><td>126 B</td>
+      <td><code>lan.ipcidr.mrs</code></td><td>ipcidr</td><td>50</td><td>140 B</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/lan.ipcidr.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/lan.ipcidr.mrs">jsDelivr</a></td>
     </tr><tr>
       <td><code>proxy.domain.mrs</code></td><td>domain</td><td>18972</td><td>140.5 KiB</td>
@@ -45,6 +45,12 @@
     </tr><tr>
       <td><code>proxy.ipcidr.mrs</code></td><td>ipcidr</td><td>13</td><td>152 B</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/proxy.ipcidr.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/proxy.ipcidr.mrs">jsDelivr</a></td>
+    </tr><tr>
+      <td><code>tailnet.domain.mrs</code></td><td>domain</td><td>1</td><td>50 B</td>
+      <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailnet.domain.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailnet.domain.mrs">jsDelivr</a></td>
+    </tr><tr>
+      <td><code>tailnet.ipcidr.mrs</code></td><td>ipcidr</td><td>2</td><td>70 B</td>
+      <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailnet.ipcidr.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailnet.ipcidr.mrs">jsDelivr</a></td>
     </tr><tr>
       <td><code>us.domain.mrs</code></td><td>domain</td><td>1635</td><td>16.5 KiB</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.domain.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.domain.mrs">jsDelivr</a></td>
@@ -58,30 +64,36 @@
   <div class="scroll"><table>
     <thead><tr><th>Set</th><th>Excludes</th><th>Domain</th><th>Classical</th><th>IP-CIDR</th><th>Removed</th></tr></thead>
     <tbody><tr>
-      <td><code>lan</code></td><td>—</td>
-      <td>143</td><td>1</td><td>11</td>
-      <td>44</td>
+      <td><code>tailnet</code></td><td>—</td>
+      <td>1</td><td>0</td><td>2</td>
+      <td>0</td>
     </tr><tr>
-      <td><code>cn</code></td><td>lan</td>
+      <td><code>lan</code></td><td>tailnet</td>
+      <td>142</td><td>1</td><td>50</td>
+      <td>6</td>
+    </tr><tr>
+      <td><code>cn</code></td><td>tailnet, lan</td>
       <td>111542</td><td>18</td><td>9629</td>
       <td>8541</td>
     </tr><tr>
-      <td><code>crypto</code></td><td>lan, cn</td>
+      <td><code>crypto</code></td><td>tailnet, lan, cn</td>
       <td>227</td><td>0</td><td>0</td>
       <td>5</td>
     </tr><tr>
-      <td><code>us</code></td><td>lan, cn</td>
+      <td><code>us</code></td><td>tailnet, lan, cn</td>
       <td>1635</td><td>3</td><td>33</td>
       <td>193</td>
     </tr><tr>
-      <td><code>proxy</code></td><td>lan, cn</td>
+      <td><code>proxy</code></td><td>tailnet, lan, cn</td>
       <td>18972</td><td>160</td><td>13</td>
       <td>6406</td>
     </tr></tbody>
   </table></div>
 
   <h2>Sources</h2>
-  <details><summary><code>lan</code> — 4 sources</summary>
+  <details><summary><code>tailnet</code> — 2 sources</summary>
+    <ul><li><strong>Tailscale:MagicDNS</strong>: 1 input; 1 domain, 0 classical, 0 IP-CIDR accepted</li><li><strong>Tailscale:address-ranges</strong>: 2 input; 0 domain, 0 classical, 2 IP-CIDR accepted</li></ul>
+  </details><details><summary><code>lan</code> — 4 sources</summary>
     <ul><li><strong>SukkaW/Surge:lan-domain</strong>: 50 input; 49 domain, 0 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/lan.txt">source</a> · 1.8 KiB</span></li><li><strong>SukkaW/Surge:lan-ip</strong>: 12 input; 0 domain, 0 classical, 11 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/lan.txt">source</a> · 693 B</span></li><li><strong>v2fly/domain-list-community:private</strong>: 131 input; 130 domain, 1 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Sun, 30 Aug 2026 14:34:28 GMT · 3.4 MiB</span></li><li><strong>IANA:local-addresses</strong>: 8 input; 0 domain, 0 classical, 8 IP-CIDR accepted<br><span class="muted"><a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry-1.csv">source</a> · modified Thu, 09 Oct 2025 21:51:16 GMT · 2.4 KiB</span><br><span class="muted"><a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry-1.csv">source</a> · modified Thu, 09 Oct 2025 21:51:16 GMT · 2.2 KiB</span></li></ul>
   </details><details><summary><code>cn</code> — 11 sources</summary>
     <ul><li><strong>felixonmars/dnsmasq-china-list:accelerated-domains.china.conf</strong>: 110624 input; 110604 domain, 0 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf">source</a> · 3.9 MiB</span></li><li><strong>gaoyifan/china-operator-ip:china46.txt</strong>: 9636 input; 0 domain, 0 classical, 9636 IP-CIDR accepted<br><span class="muted"><a href="https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt">source</a> · 149.9 KiB</span></li><li><strong>SukkaW/Surge:apple_cn</strong>: 10 input; 9 domain, 0 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt">source</a> · 826 B</span></li><li><strong>SukkaW/Surge:direct</strong>: 219 input; 173 domain, 9 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/direct.txt">source</a> · 6.1 KiB</span></li><li><strong>SukkaW/Surge:domestic-domain</strong>: 866 input; 864 domain, 1 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/domestic.txt">source</a> · 22.0 KiB</span></li><li><strong>SukkaW/Surge:domestic-ip</strong>: 3 input; 0 domain, 0 classical, 2 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/domestic.txt">source</a> · 566 B</span></li><li><strong>SukkaW/Surge:microsoft_cdn</strong>: 52 input; 51 domain, 0 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt">source</a> · 3.0 KiB</span></li><li><strong>v2fly/domain-list-community:{cn,elsevier,sciencedirect}</strong>: 6565 input; 6096 domain, 3 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Sun, 30 Aug 2026 14:34:28 GMT · 3.4 MiB</span></li><li><strong>v2fly/domain-list-community:geolocation-!cn@cn</strong>: 1118 input; 1111 domain, 7 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Sun, 30 Aug 2026 14:34:28 GMT · 3.4 MiB</span></li><li><strong>v2fly/domain-list-community:all@cn</strong>: 4351 input; 1150 domain, 8 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Sun, 30 Aug 2026 14:34:28 GMT · 3.4 MiB</span></li><li><strong>custom:cn</strong>: 7 input; 6 domain, 0 classical, 0 IP-CIDR accepted; 1 custom rules already covered</li></ul>
