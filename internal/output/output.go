@@ -250,7 +250,8 @@ func writeIndex(path string, manifest Manifest) error {
 				panic(fmt.Sprintf("unsupported byte count type %T", value))
 			}
 		},
-		"time": func(value time.Time) string { return value.Format("2006-01-02 15:04:05 UTC") },
+		"rfc3339": func(value time.Time) string { return value.UTC().Format(time.RFC3339) },
+		"time":    func(value time.Time) string { return value.UTC().Format("2006-01-02 15:04:05 UTC") },
 		"subTotal": func(before, after build.Counts) int {
 			return before.Domain + before.Classical + before.IPCIDR - after.Domain - after.Classical - after.IPCIDR
 		},
@@ -317,7 +318,7 @@ const indexTemplate = `<!doctype html>
 </head>
 <body>
   <h1>Mihomo rule sets</h1>
-  <p class="muted">Last generated: {{time .GeneratedAt}} · {{.MihomoVersion}}</p>
+  <p class="muted">Last generated: <time id="generated-at" datetime="{{rfc3339 .GeneratedAt}}">{{time .GeneratedAt}}</time><span id="generated-relative"></span> · {{.MihomoVersion}}</p>
   <p>Evaluation order: <code>{{range $i, $name := .Priority}}{{if $i}} → {{end}}{{$name}}{{end}}</code>; fallback: <code>{{.Fallback}}</code>.</p>
 
   <h2>Downloads</h2>
@@ -344,6 +345,37 @@ const indexTemplate = `<!doctype html>
     <ul>{{range .Sources}}<li><strong>{{.Name}}</strong>: {{.InputRules}} input; {{.Accepted.Domain}} domain, {{.Accepted.Classical}} classical, {{.Accepted.IPCIDR}} IP-CIDR accepted{{if .OmittedAsCovered}}; {{.OmittedAsCovered}} custom rules already covered{{end}}{{range .Fetches}}<br><span class="muted"><a href="{{.URL}}">source</a>{{if .LastModified}} · modified {{.LastModified}}{{end}} · {{size .Bytes}}</span>{{end}}</li>{{end}}</ul>
   </details>{{end}}
   <p class="muted">Machine-readable build metadata is available in <a href="stats.json">stats.json</a>. Keyword, regular-expression, and partial-wildcard rules that MRS cannot encode are preserved in <code>*.classical.list</code> companions.</p>
+  <script>
+    const generatedAtElement = document.querySelector("#generated-at");
+    const generatedRelativeElement = document.querySelector("#generated-relative");
+    const generatedAt = new Date(generatedAtElement.dateTime);
+    const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
+      dateStyle: "medium",
+      timeStyle: "medium",
+    });
+    const relativeTimeFormatter = new Intl.RelativeTimeFormat(undefined, {
+      numeric: "auto",
+    });
+    const relativeUnits = [
+      ["year", 365 * 24 * 60 * 60],
+      ["month", 30 * 24 * 60 * 60],
+      ["week", 7 * 24 * 60 * 60],
+      ["day", 24 * 60 * 60],
+      ["hour", 60 * 60],
+      ["minute", 60],
+      ["second", 1],
+    ];
+
+    function updateGeneratedTime() {
+      const deltaSeconds = (generatedAt.getTime() - Date.now()) / 1000;
+      const [unit, seconds] = relativeUnits.find(([, unitSeconds]) => Math.abs(deltaSeconds) >= unitSeconds) ?? ["second", 1];
+      generatedAtElement.textContent = dateTimeFormatter.format(generatedAt);
+      generatedRelativeElement.textContent = " (" + relativeTimeFormatter.format(Math.round(deltaSeconds / seconds), unit) + ")";
+    }
+
+    updateGeneratedTime();
+    setInterval(updateGeneratedTime, 60 * 1000);
+  </script>
 </body>
 </html>
 `

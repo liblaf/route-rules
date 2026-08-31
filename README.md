@@ -6,7 +6,7 @@
 
 Mihomo must evaluate these sets in this order:
 
-1. `tailnet` → the outbound that reaches the Tailscale tailnet
+1. `tailscale` → the outbound that reaches the Tailscale tailnet
 2. `lan` → `DIRECT`
 3. `cn` → `DIRECT`
 4. `crypto` → a globally supported non-US region
@@ -14,7 +14,7 @@ Mihomo must evaluate these sets in this order:
 6. `proxy` → the normal proxy pool
 7. unmatched traffic → the normal proxy pool
 
-Evaluate both `tailnet` providers before `lan`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. Keep domain and classical providers ahead of public IP-CIDR providers after these private-destination rules. This lets an explicit service decision such as `us` or `crypto` take precedence over the geographic location of a CDN address.
+Evaluate both `tailscale` providers before `lan`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. Keep domain and classical providers ahead of public IP-CIDR providers after these private-destination rules. This lets an explicit service decision such as `us` or `crypto` take precedence over the geographic location of a CDN address.
 
 The set exclusions in [`config/rulesets.json`](config/rulesets.json) are applied during generation. IP exclusions are exact CIDR set subtraction. A domain rule is removed only when an earlier rule covers its entire match space; partial domain differences cannot be represented by Mihomo and are resolved by the evaluation order above.
 
@@ -26,7 +26,7 @@ For each non-empty behavior, the `mihomo` branch contains:
 - `<name>.ipcidr.mrs` and its auditable `<name>.ipcidr.list` input.
 - `<name>.classical.list` when an upstream contains keyword, regular-expression, or partial-wildcard rules that MRS cannot represent faithfully.
 
-`tailnet` has both domain and IP-CIDR artifacts. `crypto` currently has no IP source, so no empty `crypto.ipcidr.mrs` is fabricated. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
+`tailscale` has both domain and IP-CIDR artifacts. `crypto` currently has no IP source, so no empty `crypto.ipcidr.mrs` is fabricated. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
 
 Example provider:
 
@@ -61,7 +61,7 @@ Use all non-empty companions for full source fidelity. GitHub Raw and jsDelivr l
 
 The declarative source map is in [`config/rulesets.json`](config/rulesets.json). It combines:
 
-- `tailnet`: Tailscale [MagicDNS names](https://tailscale.com/docs/features/magicdns) under `.ts.net` and its official [device address ranges](https://tailscale.com/docs/reference/reserved-ip-addresses). Public control-plane destinations such as `tailscale.com` and `tailscale.io` stay outside this set.
+- `tailscale`: Tailscale [MagicDNS names](https://tailscale.com/docs/features/magicdns) under `.ts.net` and its official [device address ranges](https://tailscale.com/docs/reference/reserved-ip-addresses). Public control-plane destinations such as `tailscale.com` and `tailscale.io` stay outside this set.
 - `lan`: SukkaW LAN, V2Fly `private`, and selected IANA local-address prefixes.
 - `cn`: dnsmasq-china-list, china-operator-ip, selected SukkaW direct/domestic lists, selected V2Fly lists plus every `@cn` entry, and local overrides.
 - `crypto`: V2Fly `category-cryptocurrency`.
