@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-30T19:21:09Z",
+  "generated_at": "2026-08-31T12:43:36Z",
   "repository": "liblaf/route-rules",
   "priority": [
-    "tailnet",
+    "tailscale",
     "lan",
     "cn",
     "crypto",
@@ -13,7 +13,7 @@
   "mihomo_version": "Mihomo Meta v1.19.30 linux amd64 with go1.26.6 Sun Aug 16 09:58:25 UTC 2026",
   "rulesets": [
     {
-      "name": "tailnet",
+      "name": "tailscale",
       "sources": [
         {
           "name": "Tailscale:MagicDNS",
@@ -146,7 +146,7 @@
         "ipcidr": 50
       },
       "excluded": [
-        "tailnet"
+        "tailscale"
       ]
     },
     {
@@ -155,34 +155,34 @@
         {
           "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
           "kind": "dnsmasq",
-          "input_rules": 110624,
+          "input_rules": 110538,
           "accepted": {
-            "domain": 110604,
+            "domain": 110517,
             "classical": 0,
             "ipcidr": 0
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf",
-              "bytes": 4057944,
-              "etag": "W/\"6e1bc967bf67bcd7d8fdc1e2b13934b7f8742521deffa4b4abbe2161ee4c97ea\""
+              "bytes": 4054446,
+              "etag": "W/\"e42fb9569db69068fdd8359b73c11088ff1423891e397c88630df648674bcd12\""
             }
           ]
         },
         {
           "name": "gaoyifan/china-operator-ip:china46.txt",
           "kind": "cidr",
-          "input_rules": 9636,
+          "input_rules": 9626,
           "accepted": {
             "domain": 0,
             "classical": 0,
-            "ipcidr": 9636
+            "ipcidr": 9626
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt",
-              "bytes": 153462,
-              "etag": "W/\"606d8c252aaa6c6d3485cb9719fc1f3f312d47613227af240ec3d3ad8c70ee4b\""
+              "bytes": 153275,
+              "etag": "W/\"8bf42bc665848683a69ae0dcbc7088dc1ff07e72a6394bb0d72fc9d3edb6c756\""
             }
           ]
         },
@@ -341,22 +341,22 @@
         }
       ],
       "before_optimization": {
-        "domain": 120064,
+        "domain": 119977,
         "classical": 28,
-        "ipcidr": 9638
+        "ipcidr": 9628
       },
       "after_optimization": {
-        "domain": 111595,
+        "domain": 111509,
         "classical": 18,
-        "ipcidr": 9629
+        "ipcidr": 9619
       },
       "final": {
-        "domain": 111542,
+        "domain": 111456,
         "classical": 18,
-        "ipcidr": 9629
+        "ipcidr": 9619
       },
       "excluded": [
-        "tailnet",
+        "tailscale",
         "lan"
       ]
     },
@@ -398,7 +398,7 @@
         "ipcidr": 0
       },
       "excluded": [
-        "tailnet",
+        "tailscale",
         "lan",
         "cn"
       ]
@@ -512,7 +512,7 @@
         "ipcidr": 33
       },
       "excluded": [
-        "tailnet",
+        "tailscale",
         "lan",
         "cn"
       ]
@@ -606,7 +606,7 @@
         "ipcidr": 13
       },
       "excluded": [
-        "tailnet",
+        "tailscale",
         "lan",
         "cn"
       ]
@@ -628,8 +628,8 @@
       "ruleset": "cn",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 111542,
-      "bytes": 1637576,
+      "rule_count": 111456,
+      "bytes": 1635970,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.list"
     },
@@ -638,8 +638,8 @@
       "ruleset": "cn",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 111542,
-      "bytes": 540735,
+      "rule_count": 111456,
+      "bytes": 539969,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs"
     },
@@ -648,8 +648,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "text",
-      "rule_count": 9629,
-      "bytes": 153356,
+      "rule_count": 9619,
+      "bytes": 153169,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.list"
     },
@@ -658,8 +658,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "mrs",
-      "rule_count": 9629,
-      "bytes": 37745,
+      "rule_count": 9619,
+      "bytes": 37751,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs"
     },
@@ -784,44 +784,44 @@
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/proxy.ipcidr.mrs"
     },
     {
-      "path": "tailnet.domain.list",
-      "ruleset": "tailnet",
+      "path": "tailscale.domain.list",
+      "ruleset": "tailscale",
       "behavior": "domain",
       "format": "text",
       "rule_count": 1,
       "bytes": 9,
-      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailnet.domain.list",
-      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailnet.domain.list"
+      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.domain.list",
+      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.domain.list"
     },
     {
-      "path": "tailnet.domain.mrs",
-      "ruleset": "tailnet",
+      "path": "tailscale.domain.mrs",
+      "ruleset": "tailscale",
       "behavior": "domain",
       "format": "mrs",
       "rule_count": 1,
       "bytes": 50,
-      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailnet.domain.mrs",
-      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailnet.domain.mrs"
+      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.domain.mrs",
+      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.domain.mrs"
     },
     {
-      "path": "tailnet.ipcidr.list",
-      "ruleset": "tailnet",
+      "path": "tailscale.ipcidr.list",
+      "ruleset": "tailscale",
       "behavior": "ipcidr",
       "format": "text",
       "rule_count": 2,
       "bytes": 34,
-      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailnet.ipcidr.list",
-      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailnet.ipcidr.list"
+      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.ipcidr.list",
+      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.ipcidr.list"
     },
     {
-      "path": "tailnet.ipcidr.mrs",
-      "ruleset": "tailnet",
+      "path": "tailscale.ipcidr.mrs",
+      "ruleset": "tailscale",
       "behavior": "ipcidr",
       "format": "mrs",
       "rule_count": 2,
       "bytes": 70,
-      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailnet.ipcidr.mrs",
-      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailnet.ipcidr.mrs"
+      "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.ipcidr.mrs",
+      "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.ipcidr.mrs"
     },
     {
       "path": "us.classical.list",
