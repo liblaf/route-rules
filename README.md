@@ -1,6 +1,6 @@
 # Mihomo rule sets
 
-Generated at 2026-09-01T16:44:03Z. Do not edit this branch manually.
+Generated at 2026-09-01T19:26:08Z. Do not edit this branch manually.
 
 Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `us` → `global`, then fallback `global`.
 
