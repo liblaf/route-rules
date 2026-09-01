@@ -20,18 +20,18 @@ func TestVerifyAssertionsUsesPriorityAndFallback(t *testing.T) {
 		t.Fatal(err)
 	}
 	cfg := config.Config{
-		Priority: []string{"lan", "us", "proxy"},
-		Fallback: "proxy",
+		Priority: []string{"lan", "us", "global"},
+		Fallback: "global",
 		Assertions: []config.Assertion{
 			{Domain: "router.local", RuleSet: "lan"},
 			{Domain: "api.openai.com", RuleSet: "us"},
-			{Domain: "unknown.example", RuleSet: "proxy"},
+			{Domain: "unknown.example", RuleSet: "global"},
 		},
 	}
 	built := Result{byName: map[string]rules.Collection{
-		"lan":   {Domains: rules.DomainSet{lanRule}},
-		"us":    {Domains: rules.DomainSet{usRule}},
-		"proxy": {},
+		"lan":    {Domains: rules.DomainSet{lanRule}},
+		"us":     {Domains: rules.DomainSet{usRule}},
+		"global": {},
 	}}
 	if err := verifyAssertions(cfg, built); err != nil {
 		t.Fatal(err)

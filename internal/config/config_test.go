@@ -26,7 +26,7 @@ func TestProjectConfigUsesTailscaleRuleSet(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	wantPriority := []string{"tailscale", "lan", "cn", "crypto", "us", "proxy"}
+	wantPriority := []string{"tailscale", "lan", "cn", "crypto", "us", "global"}
 	if !slices.Equal(cfg.Priority, wantPriority) {
 		t.Fatalf("got priority %v, want %v", cfg.Priority, wantPriority)
 	}

@@ -1,7 +1,7 @@
 {
   "repository": "liblaf/route-rules",
-  "fallback": "proxy",
-  "priority": ["tailscale", "lan", "cn", "crypto", "us", "proxy"],
+  "fallback": "global",
+  "priority": ["tailscale", "lan", "cn", "crypto", "us", "global"],
   "v2fly_url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
   "ignore_domains": ["7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe"],
   "rulesets": [
@@ -156,7 +156,7 @@
       ]
     },
     {
-      "name": "proxy",
+      "name": "global",
       "exclude": ["tailscale", "lan", "cn"],
       "sources": [
         {
@@ -193,8 +193,8 @@
     {"domain": "ieeexplore.ieee.org", "ruleset": "cn"},
     {"domain": "www.scopus.com", "ruleset": "cn"},
     {"domain": "shop.pockyt.io", "ruleset": "cn"},
-    {"domain": "cdn.jsdelivr.net", "ruleset": "proxy"},
-    {"domain": "flame.is.tue.mpg.de", "ruleset": "proxy"},
+    {"domain": "cdn.jsdelivr.net", "ruleset": "global"},
+    {"domain": "flame.is.tue.mpg.de", "ruleset": "global"},
     {"domain": "api.openai.com", "ruleset": "us"},
     {"domain": "www.binance.com", "ruleset": "crypto"}
   ]

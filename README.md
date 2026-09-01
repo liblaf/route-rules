@@ -11,7 +11,7 @@ Mihomo must evaluate these sets in this order:
 3. `cn` → `DIRECT`
 4. `crypto` → a globally supported non-US region
 5. `us` → a United States proxy
-6. `proxy` → the normal proxy pool
+6. `global` → the normal proxy pool
 7. unmatched traffic → the normal proxy pool
 
 Evaluate both `tailscale` providers before `lan`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. Keep domain and classical providers ahead of public IP-CIDR providers after these private-destination rules. This lets an explicit service decision such as `us` or `crypto` take precedence over the geographic location of a CDN address.
@@ -66,7 +66,7 @@ The declarative source map is in [`config/rulesets.json`](config/rulesets.json).
 - `cn`: dnsmasq-china-list, china-operator-ip, selected SukkaW direct/domestic lists, selected V2Fly lists plus every `@cn` entry, and local overrides.
 - `crypto`: V2Fly `category-cryptocurrency`.
 - `us`: selected V2Fly AI/Apple lists and SukkaW AI/Apple Services domain and IP rules.
-- `proxy`: V2Fly `geolocation-!cn` and SukkaW Telegram/global domain and IP rules.
+- `global`: V2Fly `geolocation-!cn` and SukkaW Telegram/global domain and IP rules.
 
 Add reviewed CN exceptions to [`config/overrides/cn.domain.txt`](config/overrides/cn.domain.txt). An override is omitted automatically when another CN source already covers it.
 
