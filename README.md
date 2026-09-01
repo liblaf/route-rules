@@ -1,18 +1,18 @@
 # Mihomo rule sets
 
-Generated at 2026-08-31T21:30:27Z. Do not edit this branch manually.
+Generated at 2026-09-01T16:44:03Z. Do not edit this branch manually.
 
-Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `us` → `proxy`, then fallback `proxy`.
+Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `us` → `global`, then fallback `global`.
 
 | Artifact | Rules | Size | GitHub | jsDelivr |
 |---|---:|---:|---|---|
-| `cn.domain.mrs` | 111459 | 527.2 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs) |
-| `cn.ipcidr.mrs` | 9619 | 36.9 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs) |
+| `cn.domain.mrs` | 111360 | 526.6 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs) |
+| `cn.ipcidr.mrs` | 9617 | 36.9 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs) |
 | `crypto.domain.mrs` | 230 | 2.2 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/crypto.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/crypto.domain.mrs) |
+| `global.domain.mrs` | 18980 | 140.7 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs) |
+| `global.ipcidr.mrs` | 13 | 152 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.ipcidr.mrs) |
 | `lan.domain.mrs` | 142 | 892 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/lan.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/lan.domain.mrs) |
 | `lan.ipcidr.mrs` | 50 | 140 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/lan.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/lan.ipcidr.mrs) |
-| `proxy.domain.mrs` | 18980 | 140.7 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/proxy.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/proxy.domain.mrs) |
-| `proxy.ipcidr.mrs` | 13 | 152 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/proxy.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/proxy.ipcidr.mrs) |
 | `tailscale.domain.mrs` | 1 | 50 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.domain.mrs) |
 | `tailscale.ipcidr.mrs` | 2 | 70 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.ipcidr.mrs) |
 | `us.domain.mrs` | 1635 | 16.5 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.domain.mrs) |
