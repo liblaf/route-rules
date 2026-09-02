@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-01T16:44:03Z",
+  "generated_at": "2026-09-02T19:24:57Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailscale",
@@ -155,34 +155,34 @@
         {
           "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
           "kind": "dnsmasq",
-          "input_rules": 110437,
+          "input_rules": 110415,
           "accepted": {
-            "domain": 110416,
+            "domain": 110394,
             "classical": 0,
             "ipcidr": 0
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf",
-              "bytes": 4050366,
-              "etag": "W/\"73cd6a67f3c98083e91081c9297b79795e16663ce2a90bce84ec98e9ef9b17a2\""
+              "bytes": 4049523,
+              "etag": "W/\"9fd63b467db8f09122fb33f7a850cae29a0e3acfb6a6cb348b49e25bf7d07a48\""
             }
           ]
         },
         {
           "name": "gaoyifan/china-operator-ip:china46.txt",
           "kind": "cidr",
-          "input_rules": 9624,
+          "input_rules": 9621,
           "accepted": {
             "domain": 0,
             "classical": 0,
-            "ipcidr": 9624
+            "ipcidr": 9621
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt",
-              "bytes": 153233,
-              "etag": "W/\"e50f566b60ac139a2e164e269bd661525f94fede5bc0992630e3e3860336be70\""
+              "bytes": 153174,
+              "etag": "W/\"cddc11e9125b1f0051be6100572788162a551d2e5f5b3bf0db12785c857793e7\""
             }
           ]
         },
@@ -341,19 +341,19 @@
         }
       ],
       "before_optimization": {
-        "domain": 119882,
+        "domain": 119860,
         "classical": 28,
-        "ipcidr": 9626
+        "ipcidr": 9623
       },
       "after_optimization": {
-        "domain": 111413,
+        "domain": 111391,
         "classical": 18,
-        "ipcidr": 9617
+        "ipcidr": 9614
       },
       "final": {
-        "domain": 111360,
+        "domain": 111338,
         "classical": 18,
-        "ipcidr": 9617
+        "ipcidr": 9614
       },
       "excluded": [
         "tailscale",
@@ -628,8 +628,8 @@
       "ruleset": "cn",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 111360,
-      "bytes": 1634192,
+      "rule_count": 111338,
+      "bytes": 1633833,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.list"
     },
@@ -638,8 +638,8 @@
       "ruleset": "cn",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 111360,
-      "bytes": 539189,
+      "rule_count": 111338,
+      "bytes": 539134,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs"
     },
@@ -648,8 +648,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "text",
-      "rule_count": 9617,
-      "bytes": 153127,
+      "rule_count": 9614,
+      "bytes": 153068,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.list"
     },
@@ -658,8 +658,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "mrs",
-      "rule_count": 9617,
-      "bytes": 37746,
+      "rule_count": 9614,
+      "bytes": 37774,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs"
     },
