@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-11T19:11:32Z",
+  "generated_at": "2026-09-14T20:21:13Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailscale",
@@ -101,9 +101,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         },
@@ -172,17 +172,17 @@
         {
           "name": "gaoyifan/china-operator-ip:china46.txt",
           "kind": "cidr",
-          "input_rules": 9712,
+          "input_rules": 9738,
           "accepted": {
             "domain": 0,
             "classical": 0,
-            "ipcidr": 9712
+            "ipcidr": 9738
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt",
-              "bytes": 154778,
-              "etag": "W/\"26521e4351307f88895848a6169d9b946c4d768eca3012f4c092ec371011500e\""
+              "bytes": 155239,
+              "etag": "W/\"6b0422ae1dc55bb3b134e9d06e20f9360482a54f4a1a4b0b2b0dcdae9a79895b\""
             }
           ]
         },
@@ -286,9 +286,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         },
@@ -304,9 +304,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         },
@@ -322,9 +322,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         },
@@ -343,17 +343,17 @@
       "before_optimization": {
         "domain": 119901,
         "classical": 28,
-        "ipcidr": 9714
+        "ipcidr": 9740
       },
       "after_optimization": {
         "domain": 111430,
         "classical": 18,
-        "ipcidr": 9705
+        "ipcidr": 9731
       },
       "final": {
         "domain": 111377,
         "classical": 18,
-        "ipcidr": 9705
+        "ipcidr": 9731
       },
       "excluded": [
         "tailscale",
@@ -375,9 +375,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         }
@@ -418,9 +418,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         },
@@ -523,18 +523,18 @@
         {
           "name": "v2fly/domain-list-community:geolocation-!cn",
           "kind": "v2fly",
-          "input_rules": 25008,
+          "input_rules": 25012,
           "accepted": {
-            "domain": 24107,
+            "domain": 24111,
             "classical": 158,
             "ipcidr": 0
           },
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3603461,
-              "etag": "\"0x8DF0D8D2D4330CA\"",
-              "last_modified": "Tue, 08 Sep 2026 09:40:11 GMT"
+              "bytes": 3603920,
+              "etag": "\"0x8DF12410201D1B8\"",
+              "last_modified": "Mon, 14 Sep 2026 09:17:32 GMT"
             }
           ]
         },
@@ -575,33 +575,33 @@
         {
           "name": "SukkaW/Surge:global",
           "kind": "clash",
-          "input_rules": 1269,
+          "input_rules": 1270,
           "accepted": {
-            "domain": 1259,
+            "domain": 1260,
             "classical": 9,
             "ipcidr": 0
           },
           "fetches": [
             {
               "url": "https://ruleset.skk.moe/Clash/non_ip/global.txt",
-              "bytes": 33221,
-              "etag": "W/\"c020d03bfcd92e4e5b183a7ff489c37b\""
+              "bytes": 33248,
+              "etag": "W/\"fb8940eb48d2d47cfcad841abbe3f81d\""
             }
           ]
         }
       ],
       "before_optimization": {
-        "domain": 25380,
+        "domain": 25385,
         "classical": 167,
         "ipcidr": 13
       },
       "after_optimization": {
-        "domain": 19865,
+        "domain": 19870,
         "classical": 167,
         "ipcidr": 13
       },
       "final": {
-        "domain": 18981,
+        "domain": 18986,
         "classical": 160,
         "ipcidr": 13
       },
@@ -648,8 +648,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "text",
-      "rule_count": 9705,
-      "bytes": 154672,
+      "rule_count": 9731,
+      "bytes": 155133,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.list"
     },
@@ -658,8 +658,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "mrs",
-      "rule_count": 9705,
-      "bytes": 38248,
+      "rule_count": 9731,
+      "bytes": 38301,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs"
     },
@@ -698,8 +698,8 @@
       "ruleset": "global",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 18981,
-      "bytes": 322142,
+      "rule_count": 18986,
+      "bytes": 322245,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.list"
     },
@@ -708,8 +708,8 @@
       "ruleset": "global",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 18981,
-      "bytes": 143949,
+      "rule_count": 18986,
+      "bytes": 144307,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs"
     },
