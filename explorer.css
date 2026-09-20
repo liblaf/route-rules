@@ -1,0 +1,172 @@
+.explorer {
+  --accent: #2878c7;
+  --panel: #8881;
+  border: 1px solid #8885;
+  border-radius: 0.7rem;
+  padding: 1.25rem;
+  margin: 2rem 0;
+}
+.explorer h2 {
+  margin-top: 0;
+}
+.explorer h3 {
+  margin: 0 0 0.5rem;
+}
+.explorer p {
+  margin: 0.65rem 0;
+}
+.explorer [hidden] {
+  display: none !important;
+}
+.explorer label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+.explorer input,
+.explorer select,
+.explorer button {
+  font: inherit;
+  border: 1px solid #8888;
+  border-radius: 0.35rem;
+  padding: 0.6rem 0.75rem;
+  min-height: 2.65rem;
+}
+.explorer input,
+.explorer select {
+  width: 100%;
+  box-sizing: border-box;
+  background: Canvas;
+  color: CanvasText;
+}
+.explorer button {
+  cursor: pointer;
+  background: var(--panel);
+  color: inherit;
+}
+.explorer button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.explorer :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.explorer .primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.explorer .controls {
+  display: flex;
+  gap: 0.8rem;
+  align-items: end;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.explorer .field {
+  flex: 1 1 12rem;
+}
+.explorer .field-wide {
+  flex: 2 1 16rem;
+}
+.explorer .status {
+  min-height: 1.5em;
+}
+.explorer .error {
+  color: #b42318;
+}
+.explorer .pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+.explorer .pagination .status {
+  margin-right: auto;
+}
+.explorer .entry-table {
+  table-layout: fixed;
+  margin-bottom: 0.8rem;
+}
+.explorer .entry-table th:first-child {
+  width: 11rem;
+}
+.explorer .entry-table td {
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.explorer .entry-table td:first-child {
+  font-size: 0.85em;
+}
+.explorer .downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.9em;
+}
+.explorer .match-card {
+  border: 1px solid #8885;
+  border-radius: 0.4rem;
+  padding: 1rem;
+  margin: 0.8rem 0;
+}
+.explorer .match-card > a {
+  font-size: 0.9em;
+}
+.explorer summary {
+  cursor: pointer;
+}
+.explorer .badge {
+  display: inline-block;
+  font-size: 0.65em;
+  font-weight: 500;
+  margin-left: 0.8rem;
+  border: 1px solid #8885;
+  border-radius: 1rem;
+  padding: 0.1rem 0.5rem;
+  vertical-align: middle;
+}
+.explorer .match-entries {
+  padding-left: 1.2rem;
+  overflow-wrap: anywhere;
+}
+.explorer .rule-type {
+  display: inline-block;
+  margin-right: 0.75rem;
+  font-size: 0.85em;
+}
+.explorer .empty-state {
+  background: var(--panel);
+  padding: 1rem;
+  border-radius: 0.4rem;
+}
+#browse {
+  scroll-margin-top: 1rem;
+}
+@media (max-width: 600px) {
+  .explorer {
+    padding: 1rem;
+  }
+  .explorer .entry-table th:first-child {
+    width: 7.5rem;
+  }
+  .explorer .controls {
+    align-items: stretch;
+  }
+  .explorer .primary {
+    width: 100%;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .explorer {
+    --accent: #185b9e;
+  }
+  .explorer .error {
+    color: #ffaca5;
+  }
+  .explorer :focus-visible {
+    outline-color: #78b7ff;
+  }
+}
