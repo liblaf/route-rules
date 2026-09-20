@@ -131,7 +131,13 @@
         {
           "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}",
           "kind": "v2fly",
-          "lists": ["anthropic", "apple", "category-ai-!cn", "google-gemini", "openai"]
+          "lists": [
+            "anthropic",
+            "apple",
+            "category-ai-!cn",
+            "google-gemini",
+            "openai"
+          ]
         },
         {
           "name": "SukkaW/Surge:ai-domain",
@@ -183,19 +189,23 @@
     }
   ],
   "assertions": [
-    {"domain": "server.example.ts.net", "ruleset": "tailscale", "exclusive": true},
-    {"ip": "100.64.0.1", "ruleset": "tailscale", "exclusive": true},
-    {"ip": "fd7a:115c:a1e0::1", "ruleset": "tailscale", "exclusive": true},
-    {"domain": "localhost", "ruleset": "lan"},
-    {"domain": "dl.acm.org", "ruleset": "cn"},
-    {"domain": "www.elsevier.com", "ruleset": "cn"},
-    {"domain": "www.sciencedirect.com", "ruleset": "cn"},
-    {"domain": "ieeexplore.ieee.org", "ruleset": "cn"},
-    {"domain": "www.scopus.com", "ruleset": "cn"},
-    {"domain": "shop.pockyt.io", "ruleset": "cn"},
-    {"domain": "cdn.jsdelivr.net", "ruleset": "global"},
-    {"domain": "flame.is.tue.mpg.de", "ruleset": "global"},
-    {"domain": "api.openai.com", "ruleset": "us"},
-    {"domain": "www.binance.com", "ruleset": "crypto"}
+    {
+      "domain": "server.example.ts.net",
+      "ruleset": "tailscale",
+      "exclusive": true
+    },
+    { "ip": "100.64.0.1", "ruleset": "tailscale", "exclusive": true },
+    { "ip": "fd7a:115c:a1e0::1", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "localhost", "ruleset": "lan" },
+    { "domain": "dl.acm.org", "ruleset": "cn" },
+    { "domain": "www.elsevier.com", "ruleset": "cn" },
+    { "domain": "www.sciencedirect.com", "ruleset": "cn" },
+    { "domain": "ieeexplore.ieee.org", "ruleset": "cn" },
+    { "domain": "www.scopus.com", "ruleset": "cn" },
+    { "domain": "shop.pockyt.io", "ruleset": "cn" },
+    { "domain": "cdn.jsdelivr.net", "ruleset": "global" },
+    { "domain": "flame.is.tue.mpg.de", "ruleset": "global" },
+    { "domain": "api.openai.com", "ruleset": "us" },
+    { "domain": "www.binance.com", "ruleset": "crypto" }
   ]
 }
