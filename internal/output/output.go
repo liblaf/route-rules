@@ -2,6 +2,7 @@ package output
 
 import (
 	"context"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -255,19 +256,38 @@ func writeIndex(path string, manifest Manifest) error {
 		"subTotal": func(before, after build.Counts) int {
 			return before.Domain + before.Classical + before.IPCIDR - after.Domain - after.Classical - after.IPCIDR
 		},
-	}).Parse(indexTemplate))
+	}).ParseFS(webFiles, "web/index.html"))
 	file, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("create site index: %w", err)
 	}
-	if err := tmpl.Execute(file, manifest); err != nil {
+	if err := tmpl.ExecuteTemplate(file, "index.html", manifest); err != nil {
 		_ = file.Close()
 		return fmt.Errorf("render site index: %w", err)
 	}
 	if err := file.Close(); err != nil {
 		return fmt.Errorf("close site index: %w", err)
 	}
+	for _, name := range webAssetNames {
+		payload, err := webFiles.ReadFile("web/" + name)
+		if err != nil {
+			return fmt.Errorf("read embedded site asset %s: %w", name, err)
+		}
+		if err := os.WriteFile(filepath.Join(filepath.Dir(path), name), payload, 0o644); err != nil {
+			return fmt.Errorf("write site asset %s: %w", name, err)
+		}
+	}
 	return nil
+}
+
+//go:embed web/index.html web/ruleset-matcher.mjs web/ruleset-data.mjs web/explorer.mjs web/explorer.css
+var webFiles embed.FS
+
+var webAssetNames = []string{
+	"ruleset-matcher.mjs",
+	"ruleset-data.mjs",
+	"explorer.mjs",
+	"explorer.css",
 }
 
 func writeGeneratedREADME(path string, manifest Manifest) error {
@@ -297,85 +317,3 @@ func humanSize(bytes int64) string {
 	}
 	return fmt.Sprintf("%.1f MiB", float64(bytes)/(1024*1024))
 }
-
-const indexTemplate = `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mihomo rule sets</title>
-  <style>
-    :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; }
-    body { max-width: 1120px; margin: 0 auto; padding: 2rem 1rem 4rem; line-height: 1.5; }
-    h1 { margin-bottom: .25rem; } .muted { color: #777; }
-    table { border-collapse: collapse; width: 100%; margin: 1rem 0 2rem; }
-    th, td { border-bottom: 1px solid #8885; padding: .55rem; text-align: left; }
-    th:nth-child(n+3), td:nth-child(n+3) { text-align: right; }
-    code { font-size: .9em; } a { color: #2878c7; } details { margin: .5rem 0; }
-    .scroll { overflow-x: auto; } .links { white-space: nowrap; }
-    @media (prefers-color-scheme: dark) { a { color: #78b7ff; } .muted { color: #aaa; } }
-  </style>
-</head>
-<body>
-  <h1>Mihomo rule sets</h1>
-  <p class="muted">Last generated: <time id="generated-at" datetime="{{rfc3339 .GeneratedAt}}">{{time .GeneratedAt}}</time><span id="generated-relative"></span> · {{.MihomoVersion}}</p>
-  <p>Evaluation order: <code>{{range $i, $name := .Priority}}{{if $i}} → {{end}}{{$name}}{{end}}</code>; fallback: <code>{{.Fallback}}</code>.</p>
-
-  <h2>Downloads</h2>
-  <div class="scroll"><table>
-    <thead><tr><th>Artifact</th><th>Behavior</th><th>Rules</th><th>Size</th><th>Downloads</th></tr></thead>
-    <tbody>{{range .Artifacts}}{{if eq .Format "mrs"}}<tr>
-      <td><code>{{.Path}}</code></td><td>{{.Behavior}}</td><td>{{.RuleCount}}</td><td>{{size .Bytes}}</td>
-      <td class="links"><a href="{{.GitHubURL}}">GitHub</a> · <a href="{{.JSDelivr}}">jsDelivr</a></td>
-    </tr>{{end}}{{end}}</tbody>
-  </table></div>
-
-  <h2>Rule statistics</h2>
-  <div class="scroll"><table>
-    <thead><tr><th>Set</th><th>Excludes</th><th>Domain</th><th>Classical</th><th>IP-CIDR</th><th>Removed</th></tr></thead>
-    <tbody>{{range .RuleSets}}<tr>
-      <td><code>{{.Name}}</code></td><td>{{range $i, $name := .Excluded}}{{if $i}}, {{end}}{{$name}}{{else}}—{{end}}</td>
-      <td>{{.Final.Domain}}</td><td>{{.Final.Classical}}</td><td>{{.Final.IPCIDR}}</td>
-      <td>{{subTotal .BeforeOptimization .Final}}</td>
-    </tr>{{end}}</tbody>
-  </table></div>
-
-  <h2>Sources</h2>
-  {{range .RuleSets}}<details><summary><code>{{.Name}}</code> — {{len .Sources}} sources</summary>
-    <ul>{{range .Sources}}<li><strong>{{.Name}}</strong>: {{.InputRules}} input; {{.Accepted.Domain}} domain, {{.Accepted.Classical}} classical, {{.Accepted.IPCIDR}} IP-CIDR accepted{{if .OmittedAsCovered}}; {{.OmittedAsCovered}} custom rules already covered{{end}}{{range .Fetches}}<br><span class="muted"><a href="{{.URL}}">source</a>{{if .LastModified}} · modified {{.LastModified}}{{end}} · {{size .Bytes}}</span>{{end}}</li>{{end}}</ul>
-  </details>{{end}}
-  <p class="muted">Machine-readable build metadata is available in <a href="stats.json">stats.json</a>. Keyword, regular-expression, and partial-wildcard rules that MRS cannot encode are preserved in <code>*.classical.list</code> companions.</p>
-  <script>
-    const generatedAtElement = document.querySelector("#generated-at");
-    const generatedRelativeElement = document.querySelector("#generated-relative");
-    const generatedAt = new Date(generatedAtElement.dateTime);
-    const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
-      dateStyle: "medium",
-      timeStyle: "medium",
-    });
-    const relativeTimeFormatter = new Intl.RelativeTimeFormat(undefined, {
-      numeric: "auto",
-    });
-    const relativeUnits = [
-      ["year", 365 * 24 * 60 * 60],
-      ["month", 30 * 24 * 60 * 60],
-      ["week", 7 * 24 * 60 * 60],
-      ["day", 24 * 60 * 60],
-      ["hour", 60 * 60],
-      ["minute", 60],
-      ["second", 1],
-    ];
-
-    function updateGeneratedTime() {
-      const deltaSeconds = (generatedAt.getTime() - Date.now()) / 1000;
-      const [unit, seconds] = relativeUnits.find(([, unitSeconds]) => Math.abs(deltaSeconds) >= unitSeconds) ?? ["second", 1];
-      generatedAtElement.textContent = dateTimeFormatter.format(generatedAt);
-      generatedRelativeElement.textContent = " (" + relativeTimeFormatter.format(Math.round(deltaSeconds / seconds), unit) + ")";
-    }
-
-    updateGeneratedTime();
-    setInterval(updateGeneratedTime, 60 * 1000);
-  </script>
-</body>
-</html>
-`

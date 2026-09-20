@@ -28,6 +28,8 @@ For each non-empty behavior, the `mihomo` branch contains:
 
 `tailscale` has both domain and IP-CIDR artifacts. `crypto` currently has no IP source, so no empty `crypto.ipcidr.mrs` is fabricated. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
 
+The GitHub Pages site lets you browse each generated ruleset and test a literal domain or IP address against them. It uses the generated lists in the browser and does not perform DNS lookups. Results are displayed in the configured evaluation priority; unsupported regular-expression classical rules are listed as unevaluated.
+
 Example provider:
 
 ```yaml
@@ -72,10 +74,11 @@ Add reviewed CN exceptions to [`config/overrides/cn.domain.txt`](config/override
 
 ## Build locally
 
-Requirements: Go 1.25 or newer and Mihomo 1.19.30 or newer on `PATH`.
+Requirements: Go 1.25 or newer, Node.js 22 or newer for browser-module tests, and Mihomo 1.19.30 or newer on `PATH`.
 
 ```console
 go test ./...
+node --test internal/output/web/*.test.mjs
 go run ./cmd/route-rules
 ```
 
