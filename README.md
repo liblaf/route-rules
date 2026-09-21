@@ -1,13 +1,13 @@
 # Mihomo rule sets
 
-Generated at 2026-09-20T20:50:13Z. Do not edit this branch manually.
+Generated at 2026-09-21T20:28:14Z. Do not edit this branch manually.
 
 Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `us` → `global`, then fallback `global`.
 
 | Artifact | Rules | Size | GitHub | jsDelivr |
 |---|---:|---:|---|---|
 | `cn.domain.mrs` | 111388 | 526.7 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs) |
-| `cn.ipcidr.mrs` | 9655 | 37.0 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs) |
+| `cn.ipcidr.mrs` | 9648 | 37.0 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs) |
 | `crypto.domain.mrs` | 230 | 2.2 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/crypto.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/crypto.domain.mrs) |
 | `global.domain.mrs` | 18990 | 140.5 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs) |
 | `global.ipcidr.mrs` | 13 | 152 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.ipcidr.mrs) |
