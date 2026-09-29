@@ -1249,6 +1249,7 @@
 +.kopfhorergunstigshop.com
 +.labs.google
 +.labs.google.com
++.labstailwind.pa.googleapis.com
 +.langchain.com
 +.latticedata.com
 +.leecountytimes.com
@@ -1317,6 +1318,7 @@
 +.mbheadphone.com
 +.me.com
 +.meta.ai
++.metaaivm.com
 +.micstl.com
 +.midjourney.com
 +.mistral.ai
@@ -1388,6 +1390,7 @@
 +.mozilla.ai
 +.mr-apple.com.tw
 +.ms4dre.com
++.muse.ai
 +.musickit.net
 +.myappleid.com
 +.mybeatsbydrestudio.com
@@ -1443,6 +1446,7 @@
 +.openai.com.cdn.cloudflare.net
 +.openart.ai
 +.openclaw.ai
++.opencode.ai
 +.openrouter.ai
 +.openspec.dev
 +.organicfruitapps.com
@@ -1617,6 +1621,8 @@ copilot-telemetry.githubusercontent.com
 copilot-workspace.githubnext.com
 copilotprodattachments.blob.core.windows.net
 daily-cloudcode-pa.googleapis.com
+geminiweb-pa.clients.google.com
+geminiweb-pa.clients6.google.com
 notary-submissions-prod.s3-accelerate.amazonaws.com
 notary-submissions-prod.s3.us-west-2.amazonaws.com
 notebooklm-pa.googleapis.com
