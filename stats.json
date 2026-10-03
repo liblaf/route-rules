@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T20:48:52Z",
+  "generated_at": "2026-10-03T19:17:47Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailscale",
@@ -172,17 +172,17 @@
         {
           "name": "gaoyifan/china-operator-ip:china46.txt",
           "kind": "cidr",
-          "input_rules": 9648,
+          "input_rules": 9656,
           "accepted": {
             "domain": 0,
             "classical": 0,
-            "ipcidr": 9648
+            "ipcidr": 9656
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt",
-              "bytes": 153750,
-              "etag": "W/\"eacbccf7a78f1fd250de652eb4e0fbd53af958be2b9032538d42c2d308126062\""
+              "bytes": 153885,
+              "etag": "W/\"60bae1be1b441ce235c90f049527c9be4e5b0802ca00ef9eb28542aa798c56f4\""
             }
           ]
         },
@@ -343,17 +343,17 @@
       "before_optimization": {
         "domain": 120159,
         "classical": 28,
-        "ipcidr": 9650
+        "ipcidr": 9658
       },
       "after_optimization": {
         "domain": 111624,
         "classical": 18,
-        "ipcidr": 9641
+        "ipcidr": 9649
       },
       "final": {
         "domain": 111571,
         "classical": 18,
-        "ipcidr": 9641
+        "ipcidr": 9649
       },
       "excluded": [
         "tailscale",
@@ -427,34 +427,37 @@
         {
           "name": "SukkaW/Surge:ai-domain",
           "kind": "clash",
-          "input_rules": 51,
+          "input_rules": 52,
           "accepted": {
-            "domain": 48,
+            "domain": 49,
             "classical": 2,
             "ipcidr": 0
           },
           "fetches": [
             {
               "url": "https://ruleset.skk.moe/Clash/non_ip/ai.txt",
-              "bytes": 1934,
-              "etag": "W/\"efe09f362dd900068e2d445cb261e0b9\""
+              "bytes": 1956,
+              "etag": "W/\"b3f03e58798f00a48297dfd79ba4d492\""
             }
           ]
         },
         {
           "name": "SukkaW/Surge:ai-ip",
           "kind": "clash",
-          "input_rules": 24,
+          "input_rules": 25,
           "accepted": {
             "domain": 0,
             "classical": 0,
             "ipcidr": 23
           },
+          "ignored": {
+            "IP-ASN": 1
+          },
           "fetches": [
             {
               "url": "https://ruleset.skk.moe/Clash/ip/ai.txt",
-              "bytes": 1435,
-              "etag": "W/\"74818edd898d4dab595dc3692c516842\""
+              "bytes": 1461,
+              "etag": "W/\"330f7506b27aff98a16be5081dda2d28\""
             }
           ]
         },
@@ -497,7 +500,7 @@
         }
       ],
       "before_optimization": {
-        "domain": 1837,
+        "domain": 1838,
         "classical": 3,
         "ipcidr": 34
       },
@@ -648,8 +651,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "text",
-      "rule_count": 9641,
-      "bytes": 153644,
+      "rule_count": 9649,
+      "bytes": 153779,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.list"
     },
@@ -658,8 +661,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "mrs",
-      "rule_count": 9641,
-      "bytes": 37621,
+      "rule_count": 9649,
+      "bytes": 37648,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs"
     },
