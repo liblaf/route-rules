@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T21:00:18Z",
+  "generated_at": "2026-10-10T20:09:44Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailscale",
@@ -172,17 +172,17 @@
         {
           "name": "gaoyifan/china-operator-ip:china46.txt",
           "kind": "cidr",
-          "input_rules": 9994,
+          "input_rules": 10009,
           "accepted": {
             "domain": 0,
             "classical": 0,
-            "ipcidr": 9994
+            "ipcidr": 10009
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/china46.txt",
-              "bytes": 158941,
-              "etag": "W/\"c9dc8195332df62e549d988dbf675394d4b7f29e6e639ede79f82f1c0c1cb8f6\""
+              "bytes": 159210,
+              "etag": "W/\"c24f911436e7443e7ec47a8cc4ad11fa3505338d86b60fa641f5fd8c29aa1193\""
             }
           ]
         },
@@ -343,17 +343,17 @@
       "before_optimization": {
         "domain": 120532,
         "classical": 28,
-        "ipcidr": 9996
+        "ipcidr": 10011
       },
       "after_optimization": {
         "domain": 111994,
         "classical": 18,
-        "ipcidr": 9987
+        "ipcidr": 10002
       },
       "final": {
         "domain": 111941,
         "classical": 18,
-        "ipcidr": 9987
+        "ipcidr": 10002
       },
       "excluded": [
         "tailscale",
@@ -651,8 +651,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "text",
-      "rule_count": 9987,
-      "bytes": 158835,
+      "rule_count": 10002,
+      "bytes": 159104,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.list"
     },
@@ -661,8 +661,8 @@
       "ruleset": "cn",
       "behavior": "ipcidr",
       "format": "mrs",
-      "rule_count": 9987,
-      "bytes": 38750,
+      "rule_count": 10002,
+      "bytes": 38798,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs"
     },
