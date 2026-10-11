@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T20:09:44Z",
+  "generated_at": "2026-10-11T05:11:47Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailscale",
@@ -155,17 +155,17 @@
         {
           "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
           "kind": "dnsmasq",
-          "input_rules": 111011,
+          "input_rules": 110205,
           "accepted": {
-            "domain": 110990,
+            "domain": 110185,
             "classical": 0,
             "ipcidr": 0
           },
           "fetches": [
             {
               "url": "https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf",
-              "bytes": 4071339,
-              "etag": "W/\"9351e4c4b9807f774ad60068e9b17ec8043e7dab1a764da59366f3ed07432905\""
+              "bytes": 4041013,
+              "etag": "W/\"2c544d8a1a577053bd0a650232edffd3126f8d811a10218930860d1953b2f99e\""
             }
           ]
         },
@@ -341,17 +341,17 @@
         }
       ],
       "before_optimization": {
-        "domain": 120532,
+        "domain": 119727,
         "classical": 28,
         "ipcidr": 10011
       },
       "after_optimization": {
-        "domain": 111994,
+        "domain": 111196,
         "classical": 18,
         "ipcidr": 10002
       },
       "final": {
-        "domain": 111941,
+        "domain": 111143,
         "classical": 18,
         "ipcidr": 10002
       },
@@ -604,7 +604,7 @@
         "ipcidr": 13
       },
       "final": {
-        "domain": 18995,
+        "domain": 18996,
         "classical": 160,
         "ipcidr": 13
       },
@@ -631,8 +631,8 @@
       "ruleset": "cn",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 111941,
-      "bytes": 1642653,
+      "rule_count": 111143,
+      "bytes": 1630199,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.list"
     },
@@ -641,8 +641,8 @@
       "ruleset": "cn",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 111941,
-      "bytes": 541515,
+      "rule_count": 111143,
+      "bytes": 537261,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs"
     },
@@ -701,8 +701,8 @@
       "ruleset": "global",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 18995,
-      "bytes": 322405,
+      "rule_count": 18996,
+      "bytes": 322419,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.list"
     },
@@ -711,8 +711,8 @@
       "ruleset": "global",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 18995,
-      "bytes": 144077,
+      "rule_count": 18996,
+      "bytes": 144067,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs"
     },
