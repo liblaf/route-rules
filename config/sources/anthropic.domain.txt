@@ -1,0 +1,39 @@
+# Additional Claude destinations reviewed on 2026-10-20.
+# Shared telemetry and widget domains intentionally route other applications too.
+# Source: https://code.claude.com/docs/en/network-config
+# Source: https://code.claude.com/docs/en/desktop#network-access-requirements
+# Source: https://ip.net.coffee/claude/site.html
+# Source: https://www.nodeseek.com/post-682343-1
+# Source: https://www.v2ex.com/t/1206031
+
+# Claude Desktop application host.
++.claude.app
+
+# Service-specific CDN, authentication, and content hosts from community lists.
+anthropic.com.cdn.cloudflare.net
+anthropic.auth0.com
+anthropic-com.ghost.io
+
+# Datadog: the hyphenated browser intake is outside datadoghq.com.
+# The suffix also covers http-intake.logs.us5.datadoghq.com.
++.datadoghq.com
+browser-intake-us5-datadoghq.com
+
+# Shared error reporting, feature flags, and fraud detection services.
+# Source: https://github.com/anthropics/claude-code/blob/main/.devcontainer/init-firewall.sh
+# Source: https://docs.statsig.com/infrastructure/statsig_domains
+# Source: https://developers.sift.com/docs/curl/apis-overview/overview/
++.sentry.io
++.statsig.com
++.statsigapi.net
++.statsigcdn.com
++.sift.com
++.siftscience.com
+
+# Shared customer support widgets and analytics.
+# Source: https://www.intercom.com/help/en/articles/3894-using-intercom-with-content-security-policy
++.intercom.io
++.intercomcdn.com
++.intercomassets.com
++.intercom-chat.com
+cdn.usefathom.com

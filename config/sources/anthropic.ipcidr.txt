@@ -1,0 +1,4 @@
+# Claude API inbound addresses, reviewed on 2026-10-20.
+# Source: https://platform.claude.com/docs/en/api/ip-addresses#inbound-ip-addresses
+160.79.104.0/23
+2607:6bc0::/48

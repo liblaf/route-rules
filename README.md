@@ -10,9 +10,15 @@ Mihomo must evaluate these sets in this order:
 2. `lan` → `DIRECT`
 3. `cn` → `DIRECT`
 4. `crypto` → a globally supported non-US region
-5. `us` → a United States proxy
-6. `global` → the normal proxy pool
-7. unmatched traffic → the normal proxy pool
+5. `openai` → the proxy selected for OpenAI services
+6. `anthropic` → the proxy selected for Anthropic services
+7. `us` → a United States proxy
+8. `global` → the normal proxy pool
+9. unmatched traffic → the normal proxy pool
+
+The dedicated `openai` and `anthropic` sets let you select a separate outbound for each service. `us` retains its existing coverage of both services, so configurations using only `us` continue to work.
+
+`anthropic` also includes shared telemetry, feature-flag, fraud-detection, support-widget, and analytics destinations from the [supporting-service list](config/sources/anthropic.domain.txt). Requests from other applications to these shared services follow the Claude outbound too. Keep `openai` first so its known Sentry endpoint retains the OpenAI outbound. For one consistent Claude egress address, select a fixed proxy rather than a load-balancing group.
 
 Evaluate both `tailscale` providers before `lan`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. Keep domain and classical providers ahead of public IP-CIDR providers after these private-destination rules. This lets an explicit service decision such as `us` or `crypto` take precedence over the geographic location of a CDN address.
 
@@ -26,7 +32,7 @@ For each non-empty behavior, the `mihomo` branch contains:
 - `<name>.ipcidr.mrs` and its auditable `<name>.ipcidr.list` input.
 - `<name>.classical.list` when an upstream contains keyword, regular-expression, or partial-wildcard rules that MRS cannot represent faithfully.
 
-`tailscale` has both domain and IP-CIDR artifacts. `crypto` currently has no IP source, so no empty `crypto.ipcidr.mrs` is fabricated. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
+`tailscale` and `anthropic` have both domain and IP-CIDR artifacts. `crypto` and `openai` currently have no IP source, so no empty IP-CIDR artifacts are fabricated for them. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
 
 The GitHub Pages site lets you browse each generated ruleset and test a literal domain or IP address against them. It uses the generated lists in the browser and does not perform DNS lookups. Results are displayed in the configured evaluation priority; unsupported regular-expression classical rules are listed as unevaluated.
 
@@ -67,6 +73,8 @@ The declarative source map is in [`config/rulesets.json`](config/rulesets.json).
 - `lan`: SukkaW LAN, V2Fly `private`, and selected IANA local-address prefixes.
 - `cn`: dnsmasq-china-list, china-operator-ip, selected SukkaW direct/domestic lists, selected V2Fly lists plus every `@cn` entry, and local overrides.
 - `crypto`: V2Fly `category-cryptocurrency`.
+- `openai`: V2Fly `openai`, covering OpenAI, ChatGPT, and Sora domains and supporting services.
+- `anthropic`: V2Fly `anthropic`, [local supporting-service domains](config/sources/anthropic.domain.txt) reviewed against [Claude Code network requirements](https://code.claude.com/docs/en/network-config), the [Net.Coffee list](https://ip.net.coffee/claude/site.html), the [NodeSeek discussion](https://www.nodeseek.com/post-682343-1), and the [V2EX configuration](https://www.v2ex.com/t/1206031), plus [official API inbound IPv4/IPv6 ranges](https://platform.claude.com/docs/en/api/ip-addresses) in the [local CIDR source](config/sources/anthropic.ipcidr.txt).
 - `us`: selected V2Fly AI/Apple lists and SukkaW AI/Apple Services domain and IP rules.
 - `global`: V2Fly `geolocation-!cn` and SukkaW Telegram/global domain and IP rules.
 
