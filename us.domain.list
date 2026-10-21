@@ -60,9 +60,12 @@
 +.albeats.com
 +.alchemysynth.com
 +.annstores.net
++.ant.dev
 +.anthropic.com
++.anthropic.team
 +.antigravity-unleash.goog
 +.antigravity.google
++.antspace.dev
 +.anythingllm.com
 +.aokwholesale.net
 +.ap0le.com
@@ -713,6 +716,7 @@
 +.cdn-apple.com
 +.cerebras.ai
 +.chat.com
++.chatbotclaude.com
 +.chatgpt.com
 +.chatgpt.livekit.cloud
 +.chatgpt.site
@@ -779,10 +783,16 @@
 +.ciciaicdn.com
 +.clau.de
 +.claude.ai
++.claude.app
 +.claude.com
 +.claude.dev
++.claude.new
++.claude.site
++.claudeacademy.com
 +.claudemcpclient.com
 +.claudemcpcontent.com
++.claudepages.dev
++.claudestudio.com
 +.claudeusercontent.com
 +.clawhub.ai
 +.clipdrop.co
@@ -1634,6 +1644,7 @@ notary-submissions-prod.s3.us-west-2.amazonaws.com
 notebooklm-pa.googleapis.com
 notebooklm.googleapis.com
 o33249.ingest.sentry.io
+o33249.ingest.us.sentry.io
 openai.qualtrics.com
 openaiapi-site.azureedge.net
 openaiassets.blob.core.windows.net
