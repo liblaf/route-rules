@@ -1,6 +1,6 @@
 # Mihomo rule sets
 
-Generated at 2026-10-25T04:08:45Z. Do not edit this branch manually.
+Generated at 2026-10-25T19:07:12Z. Do not edit this branch manually.
 
 Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `openai` → `anthropic` → `us` → `global`, then fallback `global`.
 
@@ -9,7 +9,7 @@ Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `openai` → `
 | `anthropic.domain.mrs` | 35 | 497 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/anthropic.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/anthropic.domain.mrs) |
 | `anthropic.ipcidr.mrs` | 2 | 67 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/anthropic.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/anthropic.ipcidr.mrs) |
 | `cn.domain.mrs` | 110465 | 520.9 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.domain.mrs) |
-| `cn.ipcidr.mrs` | 10007 | 37.6 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs) |
+| `cn.ipcidr.mrs` | 10006 | 37.6 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/cn.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/cn.ipcidr.mrs) |
 | `crypto.domain.mrs` | 236 | 2.2 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/crypto.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/crypto.domain.mrs) |
 | `global.domain.mrs` | 19073 | 141.1 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs) |
 | `global.ipcidr.mrs` | 13 | 152 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.ipcidr.mrs) |
