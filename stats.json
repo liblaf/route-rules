@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T20:46:52Z",
+  "generated_at": "2026-10-28T04:44:35Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailscale",
@@ -552,11 +552,11 @@
         {
           "name": "SukkaW/Surge:ai-ip",
           "kind": "clash",
-          "input_rules": 152,
+          "input_rules": 380,
           "accepted": {
             "domain": 0,
             "classical": 0,
-            "ipcidr": 150
+            "ipcidr": 378
           },
           "ignored": {
             "IP-ASN": 1
@@ -564,8 +564,8 @@
           "fetches": [
             {
               "url": "https://ruleset.skk.moe/Clash/ip/ai.txt",
-              "bytes": 6056,
-              "etag": "W/\"993f7dc7f5dbd39c918df5b0428413d6\""
+              "bytes": 14242,
+              "etag": "W/\"ae32bd0e47741d9517fe255aa8b34d07\""
             }
           ]
         },
@@ -610,17 +610,17 @@
       "before_optimization": {
         "domain": 1865,
         "classical": 3,
-        "ipcidr": 161
+        "ipcidr": 389
       },
       "after_optimization": {
         "domain": 1799,
         "classical": 3,
-        "ipcidr": 160
+        "ipcidr": 388
       },
       "final": {
         "domain": 1669,
         "classical": 3,
-        "ipcidr": 160
+        "ipcidr": 388
       },
       "excluded": [
         "tailscale",
@@ -1039,8 +1039,8 @@
       "ruleset": "us",
       "behavior": "ipcidr",
       "format": "text",
-      "rule_count": 160,
-      "bytes": 2726,
+      "rule_count": 388,
+      "bytes": 6580,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.ipcidr.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.ipcidr.list"
     },
@@ -1049,8 +1049,8 @@
       "ruleset": "us",
       "behavior": "ipcidr",
       "format": "mrs",
-      "rule_count": 160,
-      "bytes": 645,
+      "rule_count": 388,
+      "bytes": 1258,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.ipcidr.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.ipcidr.mrs"
     }

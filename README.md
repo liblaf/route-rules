@@ -1,6 +1,6 @@
 # Mihomo rule sets
 
-Generated at 2026-10-27T20:46:52Z. Do not edit this branch manually.
+Generated at 2026-10-28T04:44:35Z. Do not edit this branch manually.
 
 Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `openai` → `anthropic` → `us` → `global`, then fallback `global`.
 
@@ -19,6 +19,6 @@ Evaluation order: `tailscale` → `lan` → `cn` → `crypto` → `openai` → `
 | `tailscale.domain.mrs` | 5 | 101 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.domain.mrs) |
 | `tailscale.ipcidr.mrs` | 2 | 70 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/tailscale.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/tailscale.ipcidr.mrs) |
 | `us.domain.mrs` | 1669 | 16.9 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.domain.mrs) |
-| `us.ipcidr.mrs` | 160 | 645 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.ipcidr.mrs) |
+| `us.ipcidr.mrs` | 388 | 1.2 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.ipcidr.mrs) |
 
 Full statistics: [GitHub Pages](https://liblaf.github.io/route-rules/).

@@ -20,7 +20,7 @@
 </head>
 <body>
   <h1>Mihomo rule sets</h1>
-  <p class="muted">Last generated: <time id="generated-at" datetime="2026-10-27T20:46:52Z">2026-10-27 20:46:52 UTC</time><span id="generated-relative"></span> · Mihomo Meta v1.19.30 linux amd64 with go1.26.6 Sun Aug 16 09:58:25 UTC 2026</p>
+  <p class="muted">Last generated: <time id="generated-at" datetime="2026-10-28T04:44:35Z">2026-10-28 04:44:35 UTC</time><span id="generated-relative"></span> · Mihomo Meta v1.19.30 linux amd64 with go1.26.6 Sun Aug 16 09:58:25 UTC 2026</p>
   <p>Evaluation order: <code>tailscale → lan → cn → crypto → openai → anthropic → us → global</code>; fallback: <code>global</code>.</p>
 
   <div class="explorer">
@@ -118,7 +118,7 @@
       <td><code>us.domain.mrs</code></td><td>domain</td><td>1669</td><td>16.9 KiB</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.domain.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.domain.mrs">jsDelivr</a></td>
     </tr><tr>
-      <td><code>us.ipcidr.mrs</code></td><td>ipcidr</td><td>160</td><td>645 B</td>
+      <td><code>us.ipcidr.mrs</code></td><td>ipcidr</td><td>388</td><td>1.2 KiB</td>
       <td class="links"><a href="https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.ipcidr.mrs">GitHub</a> · <a href="https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.ipcidr.mrs">jsDelivr</a></td>
     </tr></tbody>
   </table></div>
@@ -152,7 +152,7 @@
       <td>1</td>
     </tr><tr>
       <td><a href="#browse" data-ruleset="us"><code>us</code></a></td><td>tailscale, lan, cn</td>
-      <td>1669</td><td>3</td><td>160</td>
+      <td>1669</td><td>3</td><td>388</td>
       <td>197</td>
     </tr><tr>
       <td><a href="#browse" data-ruleset="global"><code>global</code></a></td><td>tailscale, lan, cn</td>
@@ -175,7 +175,7 @@
   </details><details><summary><code>anthropic</code> — 3 sources</summary>
     <ul><li><strong>v2fly/domain-list-community:anthropic</strong>: 19 input; 19 domain, 0 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Tue, 27 Oct 2026 07:06:38 GMT · 3.6 MiB</span></li><li><strong>custom:anthropic-supporting-services</strong>: 17 input; 17 domain, 0 classical, 0 IP-CIDR accepted</li><li><strong>Anthropic:api-inbound-addresses</strong>: 2 input; 0 domain, 0 classical, 2 IP-CIDR accepted</li></ul>
   </details><details><summary><code>us</code> — 5 sources</summary>
-    <ul><li><strong>v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}</strong>: 2093 input; 1797 domain, 1 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Tue, 27 Oct 2026 07:06:38 GMT · 3.6 MiB</span></li><li><strong>SukkaW/Surge:ai-domain</strong>: 55 input; 52 domain, 2 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/ai.txt">source</a> · 2.0 KiB</span></li><li><strong>SukkaW/Surge:ai-ip</strong>: 152 input; 0 domain, 0 classical, 150 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/ai.txt">source</a> · 5.9 KiB</span></li><li><strong>SukkaW/Surge:apple_services-domain</strong>: 26 input; 16 domain, 0 classical, 1 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/apple_services.txt">source</a> · 1.1 KiB</span></li><li><strong>SukkaW/Surge:apple_services-ip</strong>: 11 input; 0 domain, 0 classical, 10 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/apple_services.txt">source</a> · 814 B</span></li></ul>
+    <ul><li><strong>v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}</strong>: 2093 input; 1797 domain, 1 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Tue, 27 Oct 2026 07:06:38 GMT · 3.6 MiB</span></li><li><strong>SukkaW/Surge:ai-domain</strong>: 55 input; 52 domain, 2 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/ai.txt">source</a> · 2.0 KiB</span></li><li><strong>SukkaW/Surge:ai-ip</strong>: 380 input; 0 domain, 0 classical, 378 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/ai.txt">source</a> · 13.9 KiB</span></li><li><strong>SukkaW/Surge:apple_services-domain</strong>: 26 input; 16 domain, 0 classical, 1 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/apple_services.txt">source</a> · 1.1 KiB</span></li><li><strong>SukkaW/Surge:apple_services-ip</strong>: 11 input; 0 domain, 0 classical, 10 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/apple_services.txt">source</a> · 814 B</span></li></ul>
   </details><details><summary><code>global</code> — 4 sources</summary>
     <ul><li><strong>v2fly/domain-list-community:geolocation-!cn</strong>: 25182 input; 24273 domain, 158 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml">source</a> · modified Tue, 27 Oct 2026 07:06:38 GMT · 3.6 MiB</span></li><li><strong>SukkaW/Surge:telegram-domain</strong>: 15 input; 14 domain, 0 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/telegram.txt">source</a> · 834 B</span></li><li><strong>SukkaW/Surge:telegram-ip</strong>: 15 input; 0 domain, 0 classical, 13 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/ip/telegram.txt">source</a> · 1.1 KiB</span></li><li><strong>SukkaW/Surge:global</strong>: 1275 input; 1265 domain, 9 classical, 0 IP-CIDR accepted<br><span class="muted"><a href="https://ruleset.skk.moe/Clash/non_ip/global.txt">source</a> · 32.6 KiB</span></li></ul>
   </details>
