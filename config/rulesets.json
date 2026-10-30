@@ -2,12 +2,10 @@
   "repository": "liblaf/route-rules",
   "fallback": "global",
   "priority": [
+    "tailnet",
     "tailscale",
     "lan",
     "cn",
-    "crypto",
-    "openai",
-    "anthropic",
     "us",
     "global"
   ],
@@ -15,23 +13,34 @@
   "ignore_domains": ["7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe"],
   "rulesets": [
     {
-      "name": "tailscale",
+      "name": "tailnet",
       "sources": [
         {
           "name": "Tailscale:MagicDNS",
           "kind": "domain-file",
-          "path": "sources/tailscale.domain.txt"
+          "path": "sources/tailnet.domain.txt"
         },
         {
           "name": "Tailscale:address-ranges",
           "kind": "cidr-file",
-          "path": "sources/tailscale.ipcidr.txt"
+          "path": "sources/tailnet.ipcidr.txt"
+        }
+      ]
+    },
+    {
+      "name": "tailscale",
+      "exclude": ["tailnet"],
+      "sources": [
+        {
+          "name": "Tailscale:public-services",
+          "kind": "domain-file",
+          "path": "sources/tailscale.domain.txt"
         }
       ]
     },
     {
       "name": "lan",
-      "exclude": ["tailscale"],
+      "exclude": ["tailnet", "tailscale"],
       "sources": [
         {
           "name": "SukkaW/Surge:lan-domain",
@@ -60,7 +69,7 @@
     },
     {
       "name": "cn",
-      "exclude": ["tailscale", "lan"],
+      "exclude": ["tailnet", "tailscale", "lan"],
       "sources": [
         {
           "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
@@ -103,18 +112,6 @@
           "lists": ["cn", "elsevier", "sciencedirect"]
         },
         {
-          "name": "v2fly/domain-list-community:geolocation-!cn@cn",
-          "kind": "v2fly",
-          "lists": ["geolocation-!cn"],
-          "require_attributes": ["cn"]
-        },
-        {
-          "name": "v2fly/domain-list-community:all@cn",
-          "kind": "v2fly",
-          "all_lists": true,
-          "require_attributes": ["cn"]
-        },
-        {
           "name": "custom:cn",
           "kind": "domain-file",
           "path": "overrides/cn.domain.txt",
@@ -123,51 +120,8 @@
       ]
     },
     {
-      "name": "crypto",
-      "exclude": ["tailscale", "lan", "cn"],
-      "sources": [
-        {
-          "name": "v2fly/domain-list-community:category-cryptocurrency",
-          "kind": "v2fly",
-          "lists": ["category-cryptocurrency"]
-        }
-      ]
-    },
-    {
-      "name": "openai",
-      "exclude": ["tailscale", "lan", "cn"],
-      "sources": [
-        {
-          "name": "v2fly/domain-list-community:openai",
-          "kind": "v2fly",
-          "lists": ["openai"]
-        }
-      ]
-    },
-    {
-      "name": "anthropic",
-      "exclude": ["tailscale", "lan", "cn"],
-      "sources": [
-        {
-          "name": "v2fly/domain-list-community:anthropic",
-          "kind": "v2fly",
-          "lists": ["anthropic"]
-        },
-        {
-          "name": "custom:anthropic-supporting-services",
-          "kind": "domain-file",
-          "path": "sources/anthropic.domain.txt"
-        },
-        {
-          "name": "Anthropic:api-inbound-addresses",
-          "kind": "cidr-file",
-          "path": "sources/anthropic.ipcidr.txt"
-        }
-      ]
-    },
-    {
       "name": "us",
-      "exclude": ["tailscale", "lan", "cn"],
+      "exclude": ["tailnet", "tailscale", "lan", "cn"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}",
@@ -179,6 +133,16 @@
             "google-gemini",
             "openai"
           ]
+        },
+        {
+          "name": "custom:anthropic-supporting-services",
+          "kind": "domain-file",
+          "path": "sources/anthropic.domain.txt"
+        },
+        {
+          "name": "Anthropic:api-inbound-addresses",
+          "kind": "cidr-file",
+          "path": "sources/anthropic.ipcidr.txt"
         },
         {
           "name": "SukkaW/Surge:ai-domain",
@@ -204,7 +168,7 @@
     },
     {
       "name": "global",
-      "exclude": ["tailscale", "lan", "cn"],
+      "exclude": ["tailnet", "tailscale", "lan", "cn"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:geolocation-!cn",
@@ -230,13 +194,24 @@
     }
   ],
   "assertions": [
+    { "domain": "ts.net", "ruleset": "tailnet", "exclusive": true },
     {
       "domain": "server.example.ts.net",
-      "ruleset": "tailscale",
+      "ruleset": "tailnet",
       "exclusive": true
     },
-    { "ip": "100.64.0.1", "ruleset": "tailscale", "exclusive": true },
-    { "ip": "fd7a:115c:a1e0::1", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "forgejo.liblaf.me", "ruleset": "tailnet" },
+    { "domain": "jellyfin.liblaf.me", "ruleset": "tailnet" },
+    { "domain": "oplist.liblaf.me", "ruleset": "tailnet" },
+    { "domain": "qbt.liblaf.me", "ruleset": "tailnet" },
+    { "ip": "100.64.0.1", "ruleset": "tailnet", "exclusive": true },
+    { "ip": "fd7a:115c:a1e0::1", "ruleset": "tailnet", "exclusive": true },
+    { "domain": "tailscale.com", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "login.tailscale.com", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "controlplane.tailscale.com", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "derp1-all.tailscale.com", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "tailscale.io", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "controlplane.tailscale.io", "ruleset": "tailscale", "exclusive": true },
     { "domain": "localhost", "ruleset": "lan" },
     { "domain": "dl.acm.org", "ruleset": "cn" },
     { "domain": "www.elsevier.com", "ruleset": "cn" },
@@ -245,35 +220,37 @@
     { "domain": "www.scopus.com", "ruleset": "cn" },
     { "domain": "shop.pockyt.io", "ruleset": "cn" },
     { "domain": "cdn.jsdelivr.net", "ruleset": "global" },
+    { "domain": "dl.google.com", "ruleset": "global" },
+    { "domain": "dl.l.google.com", "ruleset": "global" },
     { "domain": "flame.is.tue.mpg.de", "ruleset": "global" },
-    { "domain": "api.openai.com", "ruleset": "openai" },
-    { "domain": "chatgpt.com", "ruleset": "openai" },
-    { "domain": "sora.com", "ruleset": "openai" },
-    { "domain": "o33249.ingest.sentry.io", "ruleset": "openai" },
-    { "domain": "browser-intake-datadoghq.com", "ruleset": "openai" },
-    { "domain": "api.anthropic.com", "ruleset": "anthropic" },
-    { "domain": "claude.ai", "ruleset": "anthropic" },
-    { "domain": "claude.com", "ruleset": "anthropic" },
-    { "domain": "claude.app", "ruleset": "anthropic" },
-    { "domain": "anthropic.com.cdn.cloudflare.net", "ruleset": "anthropic" },
-    { "domain": "anthropic.auth0.com", "ruleset": "anthropic" },
-    { "domain": "anthropic-com.ghost.io", "ruleset": "anthropic" },
-    { "domain": "statsig.anthropic.com", "ruleset": "anthropic" },
-    { "domain": "http-intake.logs.us5.datadoghq.com", "ruleset": "anthropic" },
-    { "domain": "browser-intake-us5-datadoghq.com", "ruleset": "anthropic" },
-    { "domain": "o1158394.ingest.us.sentry.io", "ruleset": "anthropic" },
-    { "domain": "api.statsig.com", "ruleset": "anthropic" },
-    { "domain": "events.statsigapi.net", "ruleset": "anthropic" },
-    { "domain": "api.statsigcdn.com", "ruleset": "anthropic" },
-    { "domain": "cdn.sift.com", "ruleset": "anthropic" },
-    { "domain": "api3.siftscience.com", "ruleset": "anthropic" },
-    { "domain": "widget.intercom.io", "ruleset": "anthropic" },
-    { "domain": "js.intercomcdn.com", "ruleset": "anthropic" },
-    { "domain": "static.intercomassets.com", "ruleset": "anthropic" },
-    { "domain": "nexus-websocket-a.intercom-chat.com", "ruleset": "anthropic" },
-    { "domain": "cdn.usefathom.com", "ruleset": "anthropic" },
-    { "ip": "160.79.104.1", "ruleset": "anthropic" },
-    { "ip": "2607:6bc0::1", "ruleset": "anthropic" },
-    { "domain": "www.binance.com", "ruleset": "crypto" }
+    { "domain": "api.openai.com", "ruleset": "us" },
+    { "domain": "chatgpt.com", "ruleset": "us" },
+    { "domain": "sora.com", "ruleset": "us" },
+    { "domain": "o33249.ingest.sentry.io", "ruleset": "us" },
+    { "domain": "browser-intake-datadoghq.com", "ruleset": "us" },
+    { "domain": "api.anthropic.com", "ruleset": "us" },
+    { "domain": "claude.ai", "ruleset": "us" },
+    { "domain": "claude.com", "ruleset": "us" },
+    { "domain": "claude.app", "ruleset": "us" },
+    { "domain": "anthropic.com.cdn.cloudflare.net", "ruleset": "us" },
+    { "domain": "anthropic.auth0.com", "ruleset": "us" },
+    { "domain": "anthropic-com.ghost.io", "ruleset": "us" },
+    { "domain": "statsig.anthropic.com", "ruleset": "us" },
+    { "domain": "http-intake.logs.us5.datadoghq.com", "ruleset": "us" },
+    { "domain": "browser-intake-us5-datadoghq.com", "ruleset": "us" },
+    { "domain": "o1158394.ingest.us.sentry.io", "ruleset": "us" },
+    { "domain": "api.statsig.com", "ruleset": "us" },
+    { "domain": "events.statsigapi.net", "ruleset": "us" },
+    { "domain": "api.statsigcdn.com", "ruleset": "us" },
+    { "domain": "cdn.sift.com", "ruleset": "us" },
+    { "domain": "api3.siftscience.com", "ruleset": "us" },
+    { "domain": "widget.intercom.io", "ruleset": "us" },
+    { "domain": "js.intercomcdn.com", "ruleset": "us" },
+    { "domain": "static.intercomassets.com", "ruleset": "us" },
+    { "domain": "nexus-websocket-a.intercom-chat.com", "ruleset": "us" },
+    { "domain": "cdn.usefathom.com", "ruleset": "us" },
+    { "ip": "160.79.104.1", "ruleset": "us" },
+    { "ip": "2607:6bc0::1", "ruleset": "us" },
+    { "domain": "www.binance.com", "ruleset": "global" }
   ]
 }

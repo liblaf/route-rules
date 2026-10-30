@@ -6,23 +6,21 @@
 
 Mihomo must evaluate these sets in this order:
 
-1. `tailscale` → the outbound that reaches the Tailscale tailnet
-2. `lan` → `DIRECT`
-3. `cn` → `DIRECT`
-4. `crypto` → a globally supported non-US region
-5. `openai` → the proxy selected for OpenAI services
-6. `anthropic` → the proxy selected for Anthropic services
-7. `us` → a United States proxy
-8. `global` → the normal proxy pool
-9. unmatched traffic → the normal proxy pool
+1. `tailnet` → the outbound that reaches resources through the Tailnet
+2. `tailscale` → ordinary `DIRECT` for Tailscale's official public services
+3. `lan` → `DIRECT`
+4. `cn` → `DIRECT`
+5. `us` → a United States proxy
+6. `global` → the normal proxy pool
+7. unmatched traffic → the normal proxy pool
 
-The dedicated `openai` and `anthropic` sets let you select a separate outbound for each service. `us` retains its existing coverage of both services, so configurations using only `us` continue to work.
+OpenAI and Anthropic coverage is merged into `us`, including the maintained [Claude supporting-service domains](config/sources/anthropic.domain.txt) and [API inbound IP ranges](config/sources/anthropic.ipcidr.txt). Requests from other applications to those shared telemetry, support, and analytics domains also follow the `us` outbound. Consumers of the former `openai` or `anthropic` providers should use the `us` providers and their domain, IP-CIDR, and classical companions where present.
 
-`anthropic` also includes shared telemetry, feature-flag, fraud-detection, support-widget, and analytics destinations from the [supporting-service list](config/sources/anthropic.domain.txt). Requests from other applications to these shared services follow the Claude outbound too. Keep `openai` first so its known Sentry endpoint retains the OpenAI outbound. For one consistent Claude egress address, select a fixed proxy rather than a load-balancing group.
-
-Evaluate both `tailscale` providers before `lan`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. Keep domain and classical providers ahead of public IP-CIDR providers after these private-destination rules. This lets an explicit service decision such as `us` or `crypto` take precedence over the geographic location of a CDN address.
+Evaluate both `tailnet` providers before `lan`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. Evaluate the public `tailscale` domain provider before country and `global` providers too. Keep domain and classical providers ahead of public IP-CIDR providers after these rules. This lets `us` take precedence over the geographic location of a CDN address.
 
 The set exclusions in [`config/rulesets.json`](config/rulesets.json) are applied during generation. IP exclusions are exact CIDR set subtraction. A domain rule is removed only when an earlier rule covers its entire match space; partial domain differences cannot be represented by Mihomo and are resolved by the evaluation order above.
+
+`tailnet` preserves the existing `+.ts.net` grouping and the four exact custom service domains. [MagicDNS](https://tailscale.com/docs/features/magicdns) uses names under `<tailnet>.ts.net`, and [Funnel](https://tailscale.com/docs/features/tailscale-funnel#requirements-and-limitations) also uses that namespace for public access. A `.ts.net` suffix alone does not prove that an endpoint requires a private route. Consumers can narrow this provider to their own tailnet and shared device domains, or place specific public Funnel exceptions ahead of it.
 
 ## Generated files
 
@@ -32,7 +30,9 @@ For each non-empty behavior, the `mihomo` branch contains:
 - `<name>.ipcidr.mrs` and its auditable `<name>.ipcidr.list` input.
 - `<name>.classical.list` when an upstream contains keyword, regular-expression, or partial-wildcard rules that MRS cannot represent faithfully.
 
-`tailscale` and `anthropic` have both domain and IP-CIDR artifacts. `crypto` and `openai` currently have no IP source, so no empty IP-CIDR artifacts are fabricated for them. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
+`tailnet` has both domain and IP-CIDR artifacts. `tailscale` currently has no IP source, so no empty IP-CIDR artifact is fabricated for it. Classical companions are emitted only for rules that need them; the maintained `tailnet` and `tailscale` sources need none. The build fails instead of silently dropping malformed input, unsupported source syntax, missing selected V2Fly lists, assertion failures, or MRS round-trip differences.
+
+The Tailnet/public split produces `tailnet.domain.{list,mrs}`, `tailnet.ipcidr.{list,mrs}`, and `tailscale.domain.{list,mrs}`. See the [consumer migration guide](docs/tailscale-tailnet-migration.md) for provider, outbound, and DNS changes in sub-store and native Mihomo profiles.
 
 The GitHub Pages site lets you browse each generated ruleset and test a literal domain or IP address against them. It uses the generated lists in the browser and does not perform DNS lookups. Results are displayed in the configured evaluation priority; unsupported regular-expression classical rules are listed as unevaluated.
 
@@ -69,13 +69,11 @@ Use all non-empty companions for full source fidelity. GitHub Raw and jsDelivr l
 
 The declarative source map is in [`config/rulesets.json`](config/rulesets.json). It combines:
 
-- `tailscale`: Tailscale [MagicDNS names](https://tailscale.com/docs/features/magicdns) under `.ts.net` and its official [device address ranges](https://tailscale.com/docs/reference/reserved-ip-addresses). Public control-plane destinations such as `tailscale.com` and `tailscale.io` stay outside this set.
+- `tailnet`: the existing `+.ts.net` [MagicDNS grouping](https://tailscale.com/docs/features/magicdns), exact custom service names in the [domain source](config/sources/tailnet.domain.txt), and Tailscale's official [device address ranges](https://tailscale.com/docs/reference/reserved-ip-addresses) in the [CIDR source](config/sources/tailnet.ipcidr.txt).
+- `tailscale`: `+.tailscale.com` and `+.tailscale.io` in the [public-service domain source](config/sources/tailscale.domain.txt), based on Tailscale's official [DNS allowlist guidance](https://tailscale.com/docs/reference/troubleshooting/network-configuration/tailscale-domains-sites-unreachable). Both suffixes are excluded from later sets, including `global`. This domain-only group covers public service and DERP hostnames under those suffixes; IP-only DERP traffic needs a separate consumer policy.
 - `lan`: SukkaW LAN, V2Fly `private`, and selected IANA local-address prefixes.
-- `cn`: dnsmasq-china-list, china-operator-ip, selected SukkaW direct/domestic lists, selected V2Fly lists plus every `@cn` entry, and local overrides.
-- `crypto`: V2Fly `category-cryptocurrency`.
-- `openai`: V2Fly `openai`, covering OpenAI, ChatGPT, and Sora domains and supporting services.
-- `anthropic`: V2Fly `anthropic`, [local supporting-service domains](config/sources/anthropic.domain.txt) reviewed against [Claude Code network requirements](https://code.claude.com/docs/en/network-config), the [Net.Coffee list](https://ip.net.coffee/claude/site.html), the [NodeSeek discussion](https://www.nodeseek.com/post-682343-1), and the [V2EX configuration](https://www.v2ex.com/t/1206031), plus [official API inbound IPv4/IPv6 ranges](https://platform.claude.com/docs/en/api/ip-addresses) in the [local CIDR source](config/sources/anthropic.ipcidr.txt).
-- `us`: selected V2Fly AI/Apple lists and SukkaW AI/Apple Services domain and IP rules.
+- `cn`: dnsmasq-china-list, china-operator-ip, selected SukkaW direct/domestic lists, selected V2Fly lists, and local overrides.
+- `us`: selected V2Fly AI/Apple lists, including OpenAI, Anthropic, and category-ai lists; SukkaW AI/Apple Services domain and IP rules; and the maintained Claude supporting-service domain and API inbound IP sources.
 - `global`: V2Fly `geolocation-!cn` and SukkaW Telegram/global domain and IP rules.
 
 Add reviewed CN exceptions to [`config/overrides/cn.domain.txt`](config/overrides/cn.domain.txt). An override is omitted automatically when another CN source already covers it.
