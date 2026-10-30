@@ -152,9 +152,14 @@ DOMAIN-REGEX,(^|\.)zztt[1-6][0-9]\.com$
 DOMAIN-REGEX,(^|\.)zzz[1-9][0-9]\.top$
 DOMAIN-REGEX,.+\.awsdns-[0-9][0-9]\.(co\.uk|com|net|org)$
 DOMAIN-REGEX,.+\.dkr\.ecr\.[^\.]+\.amazonaws\.com$
+DOMAIN-REGEX,^(.+\.)*zh\.okaapps\.com$
 DOMAIN-REGEX,^[0-9]+vod-adaptive\.akamaized\.net$
+DOMAIN-REGEX,^cdn\d-epicgames-\d+\.file\.myqcloud\.com$
 DOMAIN-REGEX,^chatgpt-async-webps-prod-\S+-\d+\.webpubsub\.azure\.com$
+DOMAIN-REGEX,^epicgames-download\d-\d+\.file\.myqcloud\.com$
 DOMAIN-REGEX,^epicgames-download\d\.akamaized\.net$
 DOMAIN-REGEX,^ewcdn[0-9]+\.nowe\.com$
 DOMAIN-REGEX,^hses[1-7]?\.akamaized\.net$
+DOMAIN-REGEX,^r+[0-9]+(---|\.)sn-(2x3|ni5|j5o)\w{5}\.googlevideo\.com$
+DOMAIN-REGEX,^r+[0-9]+(---|\.)sn-(2x3|ni5|j5o)\w{5}\.xn--ngstr-lra8j\.com$
 DOMAIN-REGEX,javdb\d+\.com$
