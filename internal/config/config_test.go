@@ -64,7 +64,7 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 		"gaoyifan/china-operator-ip:china46.txt", "SukkaW/Surge:apple_cn",
 		"SukkaW/Surge:direct", "SukkaW/Surge:domestic-domain",
 		"SukkaW/Surge:domestic-ip", "SukkaW/Surge:microsoft_cdn",
-		"v2fly/domain-list-community:{cn,elsevier,sciencedirect}", "custom:cn", "Cloudflare:tunnel",
+		"v2fly/domain-list-community:{cn,elsevier,sciencedirect}", "custom:cn", "Cloudflare:tunnel", "custom:direct",
 	}
 	var directSources []string
 	for _, src := range cfg.RuleSets[1].Sources {
@@ -75,7 +75,7 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 	}
 	wantLocalSources := map[string][]Source{
 		"tailnet": {{Kind: "domain-file", Path: "sources/tailnet.domain.txt"}, {Kind: "cidr-file", Path: "sources/tailnet.ipcidr.txt"}},
-		"direct":  {{Kind: "domain-file", Path: "sources/tailscale.domain.txt"}, {Kind: "domain-file", Path: "overrides/cn.domain.txt", OptionalIfCovered: true}, {Kind: "clash-file", Path: "sources/cloudflared.classical.txt"}},
+		"direct":  {{Kind: "domain-file", Path: "sources/tailscale.domain.txt"}, {Kind: "domain-file", Path: "overrides/cn.domain.txt", OptionalIfCovered: true}, {Kind: "clash-file", Path: "sources/cloudflared.classical.txt"}, {Kind: "clash-file", Path: "sources/direct.classical.txt"}},
 		"us":      {{Kind: "domain-file", Path: "sources/anthropic.domain.txt"}, {Kind: "cidr-file", Path: "sources/anthropic.ipcidr.txt"}},
 	}
 	for i, set := range cfg.RuleSets {
