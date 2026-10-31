@@ -9,8 +9,7 @@ const DOMAIN_TYPES = new Set([
   "DOMAIN-REGEX",
 ]);
 const IP_TYPES = new Set(["IP-CIDR", "IP-CIDR6"]);
-const UNSUPPORTED_REASON =
-  "This rule needs request context that this checker does not have.";
+const UNSUPPORTED_REASON = "This rule needs request context that this checker does not have.";
 
 function inputError() {
   return new Error("Enter a valid domain name or IP address.");
@@ -18,28 +17,17 @@ function inputError() {
 
 function normalizeDomain(value) {
   const input = value.trim().replace(/\.$/, "").toLowerCase();
-  if (
-    !input ||
-    input.length > 253 ||
-    input.includes("..") ||
-    /[\s\\/@:?#%]/.test(input)
-  )
+  if (!input || input.length > 253 || input.includes("..") || /[\s\\/@:?#%]/.test(input))
     throw inputError();
-  if (/^[0-9.]+$/.test(input) || /^0x[0-9a-f]+$/i.test(input))
-    throw inputError();
+  if (/^[0-9.]+$/.test(input) || /^0x[0-9a-f]+$/i.test(input)) throw inputError();
   let hostname;
   try {
     hostname = new URL(`http://${input}`).hostname;
   } catch {
     throw inputError();
   }
-  if (!hostname || hostname.includes(":") || parseIpv4(hostname) !== null)
-    throw inputError();
-  if (
-    !hostname
-      .split(".")
-      .every((label) => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))
-  )
+  if (!hostname || hostname.includes(":") || parseIpv4(hostname) !== null) throw inputError();
+  if (!hostname.split(".").every((label) => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label)))
     throw inputError();
   return hostname;
 }
@@ -73,18 +61,15 @@ function parseIp(value) {
   if (halves.length > 2) return null;
   const left = halves[0] ? halves[0].split(":") : [];
   const right = halves.length === 2 && halves[1] ? halves[1].split(":") : [];
-  if (left.concat(right).some((group) => !/^[0-9a-f]{1,4}$/.test(group)))
-    return null;
+  if (left.concat(right).some((group) => !/^[0-9a-f]{1,4}$/.test(group))) return null;
   if (
     (halves.length === 1 && left.length !== 8) ||
     (halves.length === 2 && left.length + right.length >= 8)
   )
     return null;
-  const groups = [
-    ...left,
-    ...Array(8 - left.length - right.length).fill("0"),
-    ...right,
-  ].map((group) => Number.parseInt(group, 16));
+  const groups = [...left, ...Array(8 - left.length - right.length).fill("0"), ...right].map(
+    (group) => Number.parseInt(group, 16),
+  );
   let numeric = 0n;
   for (const group of groups) numeric = (numeric << 16n) | BigInt(group);
   return { family: 6, numeric, value: formatIpv6(groups) };
@@ -93,7 +78,7 @@ function parseIp(value) {
 function formatIpv6(groups) {
   let start = -1;
   let length = 0;
-  for (let index = 0; index < groups.length; ) {
+  for (let index = 0; index < groups.length;) {
     if (groups[index] !== 0) {
       index += 1;
       continue;
@@ -123,8 +108,7 @@ function parseCidr(value) {
   const width = ip.family === 4 ? 32 : 128;
   const prefix = Number(prefixText);
   if (prefix > width) return null;
-  const mask =
-    prefix === 0 ? 0n : ((1n << BigInt(prefix)) - 1n) << BigInt(width - prefix);
+  const mask = prefix === 0 ? 0n : ((1n << BigInt(prefix)) - 1n) << BigInt(width - prefix);
   return { ...ip, prefix, mask, network: ip.numeric & mask };
 }
 
@@ -141,10 +125,7 @@ function globMatches(pattern, value) {
   for (const character of pattern) {
     if (character === "*") source += ".*";
     else if (character === "?") source += ".";
-    else
-      source += /[|\\{}()[\]^$+?.]/.test(character)
-        ? `\\${character}`
-        : character;
+    else source += /[|\\{}()[\]^$+?.]/.test(character) ? `\\${character}` : character;
   }
   return new RegExp(`^${source}$`).test(value);
 }
@@ -169,8 +150,7 @@ function unsupported(type, value, raw, line, reason = UNSUPPORTED_REASON) {
 
 function regexForBrowser(value) {
   // Mihomo uses Go's RE2. Do not reinterpret its Go-only extensions in JS.
-  if (/\\(?:A|C|z|Q|E|p|P|a)|\\x\{|\[\[:|\(\?[a-zA-Z-]+:|\(\?P[<=]/.test(value))
-    return null;
+  if (/\\(?:A|C|z|Q|E|p|P|a)|\\x\{|\[\[:|\(\?[a-zA-Z-]+:|\(\?P[<=]/.test(value)) return null;
   try {
     return new RegExp(value);
   } catch {
@@ -198,13 +178,7 @@ function domainEntry(value, raw, line) {
           supported: true,
           wholeLabel: true,
         }
-      : unsupported(
-          "DOMAIN-WILDCARD",
-          raw,
-          raw,
-          line,
-          "Invalid domain wildcard syntax.",
-        );
+      : unsupported("DOMAIN-WILDCARD", raw, raw, line, "Invalid domain wildcard syntax.");
   }
   return {
     type: "DOMAIN",
@@ -224,16 +198,14 @@ function classicalEntry(raw, line) {
   const payload = separator < 0 ? "" : raw.slice(separator + 1).trim();
   // A regex may contain commas (for example `{0,5}`), whereas target-IP
   // rules can carry comma-separated options such as `no-resolve`.
-  const trimmed =
-    type === "DOMAIN-REGEX" ? payload : payload.split(",", 1)[0].trim();
+  const trimmed = type === "DOMAIN-REGEX" ? payload : payload.split(",", 1)[0].trim();
   if (IP_TYPES.has(type)) {
     const cidr = parseCidr(trimmed);
     return cidr
       ? { type, value: trimmed, raw, line, supported: true, cidr }
       : unsupported(type, trimmed, raw, line, "Invalid IP-CIDR rule.");
   }
-  if (!DOMAIN_TYPES.has(type))
-    return unsupported(type || "UNKNOWN", trimmed, raw, line);
+  if (!DOMAIN_TYPES.has(type)) return unsupported(type || "UNKNOWN", trimmed, raw, line);
   try {
     if (type === "DOMAIN")
       return {
@@ -278,10 +250,8 @@ function classicalEntry(raw, line) {
 }
 
 export function parseRules(text, behavior) {
-  if (typeof text !== "string")
-    throw new TypeError("Ruleset text must be a string.");
-  if (!BEHAVIORS.has(behavior))
-    throw new TypeError("Unknown ruleset behavior.");
+  if (typeof text !== "string") throw new TypeError("Ruleset text must be a string.");
+  if (!BEHAVIORS.has(behavior)) throw new TypeError("Unknown ruleset behavior.");
   return text.split(/\r?\n/).flatMap((source, offset) => {
     const raw = source.trim();
     const line = offset + 1;
@@ -308,9 +278,7 @@ export function parseRules(text, behavior) {
 export function parseQuery(input) {
   if (typeof input !== "string") throw inputError();
   const ip = parseIp(input);
-  return ip
-    ? { kind: "ip", ...ip }
-    : { kind: "domain", value: normalizeDomain(input) };
+  return ip ? { kind: "ip", ...ip } : { kind: "domain", value: normalizeDomain(input) };
 }
 
 export function matchRules(entries, query) {
@@ -329,11 +297,8 @@ export function matchRules(entries, query) {
       );
     if (entry.type === "DOMAIN") return query.value === entry.value;
     if (entry.type === "DOMAIN-SUFFIX")
-      return (
-        query.value === entry.value || query.value.endsWith(`.${entry.value}`)
-      );
-    if (entry.type === "DOMAIN-KEYWORD")
-      return query.value.includes(entry.value);
+      return query.value === entry.value || query.value.endsWith(`.${entry.value}`);
+    if (entry.type === "DOMAIN-KEYWORD") return query.value.includes(entry.value);
     if (entry.type === "DOMAIN-WILDCARD")
       return entry.wholeLabel
         ? wholeLabelWildcardMatches(entry.value, query.value)

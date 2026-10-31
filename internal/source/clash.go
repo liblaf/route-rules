@@ -9,24 +9,12 @@ import (
 )
 
 var ignoredClashKinds = map[string]struct{}{
-	"AND":          {},
-	"DST-PORT":     {},
-	"FINAL":        {},
-	"GEOIP":        {},
-	"GEOSITE":      {},
-	"IP-ASN":       {},
-	"IN-PORT":      {},
-	"MATCH":        {},
-	"NETWORK":      {},
-	"NOT":          {},
-	"OR":           {},
-	"PROCESS-NAME": {},
-	"PROCESS-PATH": {},
-	"RULE-SET":     {},
-	"SRC-IP-CIDR":  {},
-	"SRC-PORT":     {},
-	"URL-REGEX":    {},
-	"USER-AGENT":   {},
+	"FINAL":      {},
+	"MATCH":      {},
+	"RULE-SET":   {},
+	"SUB-RULE":   {},
+	"URL-REGEX":  {},
+	"USER-AGENT": {},
 }
 
 func parseClash(payload string) (Result, error) {
@@ -36,12 +24,14 @@ func parseClash(payload string) (Result, error) {
 		if line == "" || line == "payload:" {
 			continue
 		}
-		parts := strings.SplitN(line, ",", 3)
+		parts := strings.SplitN(line, ",", 2)
 		if len(parts) < 2 {
 			return Result{}, fmt.Errorf("line %d: malformed Clash rule %q", number+1, line)
 		}
 		kind := strings.ToUpper(strings.TrimSpace(parts[0]))
-		value := strings.TrimSpace(parts[1])
+		remainder := strings.TrimSpace(parts[1])
+		value, options, _ := strings.Cut(remainder, ",")
+		value = strings.TrimSpace(value)
 		result.InputRules++
 		switch kind {
 		case "DOMAIN":
@@ -64,14 +54,14 @@ func parseClash(payload string) (Result, error) {
 				}
 				result.Rules.Domains = append(result.Rules.Domains, rule)
 			} else {
-				rule, err := rules.NewClassicalRule(kind, value)
+				rule, err := rules.NewClassicalRule(kind, remainder)
 				if err != nil {
 					return Result{}, fmt.Errorf("line %d: %w", number+1, err)
 				}
 				result.Rules.Classical = append(result.Rules.Classical, rule)
 			}
-		case "DOMAIN-KEYWORD", "DOMAIN-REGEX":
-			rule, err := rules.NewClassicalRule(kind, value)
+		case "DOMAIN-KEYWORD", "DOMAIN-REGEX", "DST-PORT":
+			rule, err := rules.NewClassicalRule(kind, remainder)
 			if err != nil {
 				return Result{}, fmt.Errorf("line %d: %w", number+1, err)
 			}
@@ -84,12 +74,31 @@ func parseClash(payload string) (Result, error) {
 			if kind == "IP-CIDR" && !prefix.Addr().Is4() || kind == "IP-CIDR6" && !prefix.Addr().Is6() {
 				return Result{}, fmt.Errorf("line %d: %s has wrong address family", number+1, kind)
 			}
-			result.Rules.Prefixes = append(result.Rules.Prefixes, prefix.Masked())
-		default:
-			if _, ignored := ignoredClashKinds[kind]; !ignored {
-				return Result{}, fmt.Errorf("line %d: unknown Clash rule kind %q", number+1, kind)
+			isSource := false
+			for _, option := range strings.Split(options, ",") {
+				if strings.TrimSpace(option) == "src" {
+					isSource = true
+				}
 			}
-			result.Ignored[kind]++
+			if isSource {
+				rule, err := rules.NewClassicalRule(kind, remainder)
+				if err != nil {
+					return Result{}, fmt.Errorf("line %d: %w", number+1, err)
+				}
+				result.Rules.Classical = append(result.Rules.Classical, rule)
+			} else {
+				result.Rules.Prefixes = append(result.Rules.Prefixes, prefix.Masked())
+			}
+		default:
+			if _, ignored := ignoredClashKinds[kind]; ignored {
+				result.Ignored[kind]++
+				continue
+			}
+			rule, err := rules.NewClassicalRule(kind, remainder)
+			if err != nil {
+				return Result{}, fmt.Errorf("line %d: %w", number+1, err)
+			}
+			result.Rules.Classical = append(result.Rules.Classical, rule)
 		}
 	}
 	return result, nil

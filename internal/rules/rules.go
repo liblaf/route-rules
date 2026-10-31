@@ -1,5 +1,7 @@
 package rules
 
+import "net/netip"
+
 type Collection struct {
 	Domains   DomainSet
 	Classical ClassicalSet
@@ -22,6 +24,14 @@ func (collection Collection) Excluding(earlier Collection) Collection {
 
 func (collection Collection) MatchesDomain(domain string) bool {
 	return collection.Domains.Matches(domain) || collection.Classical.Matches(domain)
+}
+
+// Matches evaluates the available domain, destination IP, and destination port.
+// A zero destination port means that no port metadata was supplied.
+func (collection Collection) Matches(domain string, address netip.Addr, destinationPort uint16) bool {
+	return domain != "" && collection.MatchesDomain(domain) ||
+		address.IsValid() && collection.Prefixes.Contains(address) ||
+		destinationPort != 0 && collection.Classical.MatchesDestinationPort(destinationPort)
 }
 
 func (collection *Collection) Append(other Collection) {

@@ -41,15 +41,15 @@ func TestConverterRoundTripsMRS(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	classicalSource := filepath.Join(temporary, "classical.list")
-	if err := os.WriteFile(classicalSource, []byte("DOMAIN-REGEX,^api[0-9]+\\.example\\.com$\n"), 0o644); err != nil {
+	classicalSource := filepath.Join(temporary, "classical.txt")
+	if err := os.WriteFile(classicalSource, []byte("DOMAIN-REGEX,^api[0-9]+\\.example\\.com$\nDST-PORT,7844\nPROCESS-NAME,cloudflared\nAND,((DST-PORT,7844),(NETWORK,UDP))\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := converter.ValidateClassical(context.Background(), classicalSource); err != nil {
 		t.Fatal(err)
 	}
-	invalidClassicalSource := filepath.Join(temporary, "invalid-classical.list")
-	if err := os.WriteFile(invalidClassicalSource, []byte("MYSTERY,example.com\n"), 0o644); err != nil {
+	invalidClassicalSource := filepath.Join(temporary, "invalid-classical.txt")
+	if err := os.WriteFile(invalidClassicalSource, []byte("DST-PORT,7844\nMYSTERY,example.com\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	err = converter.ValidateClassical(context.Background(), invalidClassicalSource)

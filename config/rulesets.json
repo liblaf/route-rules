@@ -1,7 +1,7 @@
 {
   "repository": "liblaf/route-rules",
   "fallback": "global",
-  "priority": ["tailnet", "tailscale", "lan", "cn", "us", "global"],
+  "priority": ["tailnet", "direct", "us", "global"],
   "v2fly_url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
   "ignore_domains": ["7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe"],
   "rulesets": [
@@ -21,20 +21,14 @@
       ]
     },
     {
-      "name": "tailscale",
+      "name": "direct",
       "exclude": ["tailnet"],
       "sources": [
         {
           "name": "Tailscale:public-services",
           "kind": "domain-file",
           "path": "sources/tailscale.domain.txt"
-        }
-      ]
-    },
-    {
-      "name": "lan",
-      "exclude": ["tailnet", "tailscale"],
-      "sources": [
+        },
         {
           "name": "SukkaW/Surge:lan-domain",
           "kind": "clash",
@@ -57,13 +51,7 @@
             "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry-1.csv",
             "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry-1.csv"
           ]
-        }
-      ]
-    },
-    {
-      "name": "cn",
-      "exclude": ["tailnet", "tailscale", "lan"],
-      "sources": [
+        },
         {
           "name": "felixonmars/dnsmasq-china-list:accelerated-domains.china.conf",
           "kind": "dnsmasq",
@@ -109,12 +97,17 @@
           "kind": "domain-file",
           "path": "overrides/cn.domain.txt",
           "optional_if_covered": true
+        },
+        {
+          "name": "Cloudflare:tunnel",
+          "kind": "clash-file",
+          "path": "sources/cloudflared.classical.txt"
         }
       ]
     },
     {
       "name": "us",
-      "exclude": ["tailnet", "tailscale", "lan", "cn"],
+      "exclude": ["tailnet", "direct"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-gemini,openai}",
@@ -161,7 +154,7 @@
     },
     {
       "name": "global",
-      "exclude": ["tailnet", "tailscale", "lan", "cn"],
+      "exclude": ["tailnet", "direct"],
       "sources": [
         {
           "name": "v2fly/domain-list-community:geolocation-!cn",
@@ -199,35 +192,35 @@
     { "domain": "qbt.liblaf.me", "ruleset": "tailnet" },
     { "ip": "100.64.0.1", "ruleset": "tailnet", "exclusive": true },
     { "ip": "fd7a:115c:a1e0::1", "ruleset": "tailnet", "exclusive": true },
-    { "domain": "tailscale.com", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "tailscale.com", "ruleset": "direct", "exclusive": true },
     {
       "domain": "login.tailscale.com",
-      "ruleset": "tailscale",
+      "ruleset": "direct",
       "exclusive": true
     },
     {
       "domain": "controlplane.tailscale.com",
-      "ruleset": "tailscale",
+      "ruleset": "direct",
       "exclusive": true
     },
     {
       "domain": "derp1-all.tailscale.com",
-      "ruleset": "tailscale",
+      "ruleset": "direct",
       "exclusive": true
     },
-    { "domain": "tailscale.io", "ruleset": "tailscale", "exclusive": true },
+    { "domain": "tailscale.io", "ruleset": "direct", "exclusive": true },
     {
       "domain": "controlplane.tailscale.io",
-      "ruleset": "tailscale",
+      "ruleset": "direct",
       "exclusive": true
     },
-    { "domain": "localhost", "ruleset": "lan" },
-    { "domain": "dl.acm.org", "ruleset": "cn" },
-    { "domain": "www.elsevier.com", "ruleset": "cn" },
-    { "domain": "www.sciencedirect.com", "ruleset": "cn" },
-    { "domain": "ieeexplore.ieee.org", "ruleset": "cn" },
-    { "domain": "www.scopus.com", "ruleset": "cn" },
-    { "domain": "shop.pockyt.io", "ruleset": "cn" },
+    { "domain": "localhost", "ruleset": "direct" },
+    { "domain": "dl.acm.org", "ruleset": "direct" },
+    { "domain": "www.elsevier.com", "ruleset": "direct" },
+    { "domain": "www.sciencedirect.com", "ruleset": "direct" },
+    { "domain": "ieeexplore.ieee.org", "ruleset": "direct" },
+    { "domain": "www.scopus.com", "ruleset": "direct" },
+    { "domain": "shop.pockyt.io", "ruleset": "direct" },
     { "domain": "cdn.jsdelivr.net", "ruleset": "global" },
     { "domain": "dl.google.com", "ruleset": "global" },
     { "domain": "dl.l.google.com", "ruleset": "global" },
@@ -260,6 +253,33 @@
     { "domain": "cdn.usefathom.com", "ruleset": "us" },
     { "ip": "160.79.104.1", "ruleset": "us" },
     { "ip": "2607:6bc0::1", "ruleset": "us" },
-    { "domain": "www.binance.com", "ruleset": "global" }
+    { "domain": "www.binance.com", "ruleset": "global" },
+    {
+      "ip": "198.41.192.7",
+      "destination_port": 7844,
+      "ruleset": "direct",
+      "exclusive": true
+    },
+    {
+      "ip": "2606:4700:a0::1",
+      "destination_port": 7844,
+      "ruleset": "direct",
+      "exclusive": true
+    },
+    {
+      "domain": "region1.v2.argotunnel.com",
+      "destination_port": 7844,
+      "ruleset": "direct"
+    },
+    {
+      "ip": "198.41.192.7",
+      "destination_port": 443,
+      "ruleset": "global"
+    },
+    {
+      "domain": "api.cloudflare.com",
+      "destination_port": 443,
+      "ruleset": "global"
+    }
   ]
 }

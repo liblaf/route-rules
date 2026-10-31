@@ -126,7 +126,7 @@ func Write(ctx context.Context, outputDir string, cfg config.Config, built build
 		}
 
 		if len(ruleset.Rules.Classical) != 0 {
-			name := ruleset.Name + ".classical.list"
+			name := ruleset.Name + ".classical.txt"
 			path := filepath.Join(staging, name)
 			lines := make([]string, 0, len(ruleset.Rules.Classical))
 			for _, rule := range ruleset.Rules.Classical {
@@ -296,7 +296,7 @@ func writeGeneratedREADME(path string, manifest Manifest) error {
 	fmt.Fprintf(&text, "Evaluation order: `%s`, then fallback `%s`.\n\n", strings.Join(manifest.Priority, "` → `"), manifest.Fallback)
 	text.WriteString("| Artifact | Rules | Size | GitHub | jsDelivr |\n|---|---:|---:|---|---|\n")
 	for _, artifact := range manifest.Artifacts {
-		if artifact.Format != "mrs" {
+		if artifact.Format != "mrs" && artifact.Behavior != "classical" {
 			continue
 		}
 		fmt.Fprintf(&text, "| `%s` | %d | %s | [download](%s) | [download](%s) |\n", artifact.Path, artifact.RuleCount, humanSize(artifact.Bytes), artifact.GitHubURL, artifact.JSDelivr)

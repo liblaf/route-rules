@@ -1,0 +1,4 @@
+# Cloudflare Tunnel: QUIC over UDP and HTTP/2 over TCP use destination port 7844.
+# Source: https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/
+# Applies to all traffic destined for this port, regardless of process or hostname.
+DST-PORT,7844

@@ -107,19 +107,18 @@ func verifyAssertions(cfg config.Config, built Result) error {
 	for _, assertion := range cfg.Assertions {
 		kind := "domain"
 		target := assertion.Domain
-		matchesTarget := func(collection rules.Collection) bool {
-			return collection.MatchesDomain(assertion.Domain)
-		}
+		var address netip.Addr
 		if assertion.IP != "" {
 			kind = "IP"
 			target = assertion.IP
-			address, err := netip.ParseAddr(assertion.IP)
+			var err error
+			address, err = netip.ParseAddr(assertion.IP)
 			if err != nil {
 				panic("validated assertion has an invalid IP address")
 			}
-			matchesTarget = func(collection rules.Collection) bool {
-				return collection.Prefixes.Contains(address)
-			}
+		}
+		if assertion.DestinationPort != 0 {
+			target = fmt.Sprintf("%s port %d", target, assertion.DestinationPort)
 		}
 
 		matches := make([]string, 0)
@@ -128,7 +127,7 @@ func verifyAssertions(cfg config.Config, built Result) error {
 			if !exists {
 				panic("priority references an unbuilt ruleset")
 			}
-			if matchesTarget(collection) {
+			if collection.Matches(assertion.Domain, address, assertion.DestinationPort) {
 				matches = append(matches, name)
 			}
 		}

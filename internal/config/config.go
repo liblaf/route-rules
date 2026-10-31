@@ -41,10 +41,11 @@ type Source struct {
 }
 
 type Assertion struct {
-	Domain    string `json:"domain"`
-	IP        string `json:"ip"`
-	RuleSet   string `json:"ruleset"`
-	Exclusive bool   `json:"exclusive"`
+	Domain          string `json:"domain"`
+	IP              string `json:"ip"`
+	DestinationPort uint16 `json:"destination_port,omitempty"`
+	RuleSet         string `json:"ruleset"`
+	Exclusive       bool   `json:"exclusive"`
 }
 
 func Load(path string) (Config, error) {
@@ -155,7 +156,7 @@ func validateSource(source Source) error {
 		if hasURL || !hasURLs || hasPath || hasSelection {
 			return fmt.Errorf("kind iana-local requires urls")
 		}
-	case "domain-file", "cidr-file":
+	case "domain-file", "cidr-file", "clash-file":
 		if hasURL || hasURLs || !hasPath || hasSelection {
 			return fmt.Errorf("kind %s requires a path", source.Kind)
 		}

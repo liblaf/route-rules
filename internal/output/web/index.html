@@ -78,7 +78,7 @@
   <h2>Downloads</h2>
   <div class="scroll"><table>
     <thead><tr><th>Artifact</th><th>Behavior</th><th>Rules</th><th>Size</th><th>Downloads</th></tr></thead>
-    <tbody>{{range .Artifacts}}{{if eq .Format "mrs"}}<tr>
+    <tbody>{{range .Artifacts}}{{if or (eq .Format "mrs") (eq .Behavior "classical")}}<tr>
       <td><code>{{.Path}}</code></td><td>{{.Behavior}}</td><td>{{.RuleCount}}</td><td>{{size .Bytes}}</td>
       <td class="links"><a href="{{.GitHubURL}}">GitHub</a> · <a href="{{.JSDelivr}}">jsDelivr</a></td>
     </tr>{{end}}{{end}}</tbody>
@@ -98,7 +98,7 @@
   {{range .RuleSets}}<details><summary><code>{{.Name}}</code> — {{len .Sources}} sources</summary>
     <ul>{{range .Sources}}<li><strong>{{.Name}}</strong>: {{.InputRules}} input; {{.Accepted.Domain}} domain, {{.Accepted.Classical}} classical, {{.Accepted.IPCIDR}} IP-CIDR accepted{{if .OmittedAsCovered}}; {{.OmittedAsCovered}} custom rules already covered{{end}}{{range .Fetches}}<br><span class="muted"><a href="{{.URL}}">source</a>{{if .LastModified}} · modified {{.LastModified}}{{end}} · {{size .Bytes}}</span>{{end}}</li>{{end}}</ul>
   </details>{{end}}
-  <p class="muted">Machine-readable build metadata is available in <a href="stats.json">stats.json</a>. Keyword, regular-expression, and partial-wildcard rules that MRS cannot encode are preserved in <code>*.classical.list</code> companions.</p>
+  <p class="muted">Machine-readable build metadata is available in <a href="stats.json">stats.json</a>. Rules that domain/IP-CIDR MRS cannot encode, including keyword, regular-expression, partial-wildcard, port, process, ASN, and logical rules, are preserved in <code>*.classical.txt</code> companions. Rules that need additional context are listed as unevaluated by the domain/IP checker.</p>
   <script>
     const generatedAtElement = document.querySelector("#generated-at");
     const generatedRelativeElement = document.querySelector("#generated-relative");

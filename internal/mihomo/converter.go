@@ -3,7 +3,10 @@ package mihomo
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"fmt"
+	"net"
+	"net/http"
 	"net/netip"
 	"os"
 	"os/exec"
@@ -86,56 +89,122 @@ func (converter Converter) ConvertIPCIDR(ctx context.Context, sourcePath, target
 }
 
 // ValidateClassical starts an isolated Mihomo instance because `mihomo -t`
-// validates provider declarations without loading their payloads. Provider
-// parse failures are logged during startup; a clean timeout is the expected
-// result after Mihomo has remained running with the provider loaded.
+// validates provider declarations without loading their payloads. Validation
+// succeeds only after the controller reports that every rule was loaded.
 func (converter Converter) ValidateClassical(ctx context.Context, sourcePath string) error {
 	payload, err := os.ReadFile(sourcePath)
 	if err != nil {
 		return fmt.Errorf("read classical ruleset: %w", err)
 	}
-	if len(payload) == 0 {
+	expected := 0
+	for _, line := range strings.Split(string(payload), "\n") {
+		if line = strings.TrimSpace(line); line != "" && !strings.HasPrefix(line, "#") {
+			expected++
+		}
+	}
+	if expected == 0 {
 		return fmt.Errorf("refuse to validate an empty classical ruleset")
 	}
 
-	directory, err := os.MkdirTemp(filepath.Dir(sourcePath), ".classical-check-")
+	// A short temporary path keeps the controller socket below Unix path limits.
+	directory, err := os.MkdirTemp("", "rr-classical-")
 	if err != nil {
 		return fmt.Errorf("create classical validation directory: %w", err)
 	}
 	defer func() { _ = os.RemoveAll(directory) }()
-	rulesPath := filepath.Join(directory, "rules.list")
+	rulesPath := filepath.Join(directory, "rules.txt")
 	if err := os.WriteFile(rulesPath, payload, 0o644); err != nil {
 		return fmt.Errorf("write classical validation rules: %w", err)
 	}
 	configPath := filepath.Join(directory, "config.yaml")
-	config := "rule-providers:\n" +
+	socketPath := filepath.Join(directory, "controller.sock")
+	config := fmt.Sprintf("external-controller-unix: %q\n", socketPath) +
+		"rule-providers:\n" +
 		"  validation:\n" +
 		"    type: file\n" +
 		"    behavior: classical\n" +
 		"    format: text\n" +
-		"    path: ./rules.list\n" +
+		"    path: ./rules.txt\n" +
 		"rules:\n" +
 		"  - RULE-SET,validation,DIRECT\n"
 	if err := os.WriteFile(configPath, []byte(config), 0o644); err != nil {
 		return fmt.Errorf("write classical validation config: %w", err)
 	}
-	validationContext, cancel := context.WithTimeout(ctx, 750*time.Millisecond)
+	logPath := filepath.Join(directory, "mihomo.log")
+	logFile, err := os.Create(logPath)
+	if err != nil {
+		return fmt.Errorf("create classical validation log: %w", err)
+	}
+	defer logFile.Close()
+	validationContext, cancel := context.WithTimeout(ctx, 45*time.Second)
 	defer cancel()
 	command := exec.CommandContext(validationContext, converter.path, "-d", directory, "-f", configPath)
-	output, err := command.CombinedOutput()
-	if validationContext.Err() == context.DeadlineExceeded {
-		if strings.Contains(strings.ToLower(string(output)), "error") {
-			return fmt.Errorf("validate classical ruleset with %s: %s", converter.path, strings.TrimSpace(string(output)))
+	command.Stdout, command.Stderr = logFile, logFile
+	if err := command.Start(); err != nil {
+		return fmt.Errorf("start classical validation: %w", err)
+	}
+	done := make(chan error, 1)
+	go func() { done <- command.Wait() }()
+	stopped := false
+	defer func() {
+		if !stopped {
+			cancel()
+			<-done
 		}
-		return nil
+	}()
+	transport := &http.Transport{DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+		return (&net.Dialer{}).DialContext(ctx, "unix", socketPath)
+	}}
+	defer transport.CloseIdleConnections()
+	client := &http.Client{Transport: transport, Timeout: time.Second}
+	failure := func(err error) error {
+		log, _ := os.ReadFile(logPath)
+		return fmt.Errorf("validate classical ruleset with %s: %w: %s", converter.path, err, strings.TrimSpace(string(log)))
 	}
-	if ctx.Err() != nil {
-		return ctx.Err()
+	ticker := time.NewTicker(25 * time.Millisecond)
+	defer ticker.Stop()
+	for {
+		select {
+		case err := <-done:
+			stopped = true
+			if err == nil {
+				err = fmt.Errorf("validation process exited before its provider loaded")
+			}
+			return failure(err)
+		case <-validationContext.Done():
+			return failure(validationContext.Err())
+		case <-ticker.C:
+			request, err := http.NewRequestWithContext(validationContext, http.MethodGet, "http://mihomo/providers/rules", nil)
+			if err != nil {
+				return failure(err)
+			}
+			response, err := client.Do(request)
+			if err != nil {
+				continue
+			}
+			var status struct {
+				Providers map[string]struct {
+					RuleCount int       `json:"ruleCount"`
+					UpdatedAt time.Time `json:"updatedAt"`
+				} `json:"providers"`
+			}
+			err = json.NewDecoder(response.Body).Decode(&status)
+			response.Body.Close()
+			if response.StatusCode != http.StatusOK || err != nil {
+				continue
+			}
+			provider, exists := status.Providers["validation"]
+			if !exists {
+				continue
+			}
+			if provider.RuleCount == expected {
+				return nil
+			}
+			if !provider.UpdatedAt.IsZero() {
+				return failure(fmt.Errorf("loaded %d of %d classical rules", provider.RuleCount, expected))
+			}
+		}
 	}
-	if err != nil {
-		return fmt.Errorf("validate classical ruleset with %s: %w: %s", converter.path, err, strings.TrimSpace(string(output)))
-	}
-	return fmt.Errorf("classical validation process exited unexpectedly: %s", strings.TrimSpace(string(output)))
 }
 
 func (converter Converter) convert(ctx context.Context, behavior, format, sourcePath, targetPath string) error {

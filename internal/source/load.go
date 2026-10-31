@@ -39,6 +39,8 @@ func (loader *Loader) Load(ctx context.Context, baseDir string, source config.So
 	switch source.Kind {
 	case "clash":
 		result, err = loader.loadClash(ctx, source.URL)
+	case "clash-file":
+		result, err = loadClashFile(baseDir, source.Path)
 	case "dnsmasq":
 		result, err = loader.loadDNSMasq(ctx, source.URL)
 	case "cidr":
@@ -69,6 +71,14 @@ func (loader *Loader) loadClash(ctx context.Context, url string) (Result, error)
 	result, err := parseClash(string(payload))
 	result.Fetches = []FetchMetadata{metadata}
 	return result, err
+}
+
+func loadClashFile(baseDir, path string) (Result, error) {
+	payload, err := os.ReadFile(filepath.Join(baseDir, filepath.Clean(path)))
+	if err != nil {
+		return Result{}, err
+	}
+	return parseClash(string(payload))
 }
 
 func (loader *Loader) loadDNSMasq(ctx context.Context, url string) (Result, error) {
