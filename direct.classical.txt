@@ -32,6 +32,8 @@ PROCESS-NAME,WebTorrent
 PROCESS-NAME,WebTorrent Helper
 PROCESS-NAME,amuled
 PROCESS-NAME,aria2c
+PROCESS-NAME,auth-thu
+PROCESS-NAME,chsrc
 PROCESS-NAME,clash
 PROCESS-NAME,cloudflared
 PROCESS-NAME,fdm
@@ -40,6 +42,7 @@ PROCESS-NAME,privoxy
 PROCESS-NAME,qBittorrent
 PROCESS-NAME,qbittorrent*
 PROCESS-NAME,qbittorrent-nox
+PROCESS-NAME,rate-mirrors
 PROCESS-NAME,ss-local
 PROCESS-NAME,tailscaled
 PROCESS-NAME,transmission-daemon

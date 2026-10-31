@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T11:54:58Z",
+  "generated_at": "2026-10-31T14:37:13Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailnet",
@@ -294,21 +294,31 @@
             "classical": 1,
             "ipcidr": 0
           }
+        },
+        {
+          "name": "custom:direct",
+          "kind": "clash-file",
+          "input_rules": 3,
+          "accepted": {
+            "domain": 0,
+            "classical": 3,
+            "ipcidr": 0
+          }
         }
       ],
       "before_optimization": {
         "domain": 116913,
-        "classical": 51,
+        "classical": 54,
         "ipcidr": 9673
       },
       "after_optimization": {
         "domain": 110177,
-        "classical": 51,
+        "classical": 54,
         "ipcidr": 9656
       },
       "final": {
         "domain": 110176,
-        "classical": 51,
+        "classical": 54,
         "ipcidr": 9695
       },
       "excluded": [
@@ -545,8 +555,8 @@
       "ruleset": "direct",
       "behavior": "classical",
       "format": "text",
-      "rule_count": 51,
-      "bytes": 1339,
+      "rule_count": 54,
+      "bytes": 1406,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.classical.txt",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.classical.txt"
     },
