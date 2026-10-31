@@ -50,9 +50,7 @@ function filterEntries() {
   const text = find("entry-filter").value.trim().toLowerCase();
   const type = find("entry-type").value;
   filtered = entries.filter(
-    (entry) =>
-      (!type || entry.type === type) &&
-      entry.value.toLowerCase().includes(text),
+    (entry) => (!type || entry.type === type) && entry.value.toLowerCase().includes(text),
   );
   page = 0;
   renderPage();
@@ -75,9 +73,7 @@ async function browse(name) {
     );
     find("entry-filter").value = "";
     const links = meta.artifacts
-      .filter(
-        (artifact) => artifact.ruleset === name && artifact.format === "text",
-      )
+      .filter((artifact) => artifact.ruleset === name && artifact.format === "text")
       .map((artifact) => {
         const link = element("a", artifact.path);
         link.href = store.artifactUrl(artifact);
@@ -113,11 +109,7 @@ function renderMatches(query, results) {
     const heading = element("h3", result.name);
     if (index === 0)
       heading.append(
-        element(
-          "span",
-          unchecked.length ? "First confirmed match" : "First match",
-          "badge",
-        ),
+        element("span", unchecked.length ? "First confirmed match" : "First match", "badge"),
       );
     card.append(heading, browseLink(result.name));
     const details = element("details");
@@ -131,10 +123,7 @@ function renderMatches(query, results) {
     const list = element("ul", undefined, "match-entries");
     for (const entry of result.matches) {
       const item = element("li");
-      item.append(
-        element("span", entry.type, "rule-type"),
-        element("code", entry.value),
-      );
+      item.append(element("span", entry.type, "rule-type"), element("code", entry.value));
       list.append(item);
     }
     details.append(list);
@@ -227,9 +216,7 @@ async function initialize() {
   status("explorer-status", "Loading ruleset information…");
   try {
     meta = await store.loadMeta();
-    find("ruleset-select").replaceChildren(
-      ...meta.priority.map((name) => new Option(name, name)),
-    );
+    find("ruleset-select").replaceChildren(...meta.priority.map((name) => new Option(name, name)));
     find("ruleset-select").disabled = false;
     find("match-query").disabled = false;
     find("match-submit").disabled = false;
@@ -237,21 +224,13 @@ async function initialize() {
     find("explorer-status").hidden = true;
     await browse(meta.priority[0]);
   } catch (error) {
-    status(
-      "explorer-status",
-      `Unable to load ruleset information. ${error.message}`,
-      true,
-    );
+    status("explorer-status", `Unable to load ruleset information. ${error.message}`, true);
     find("load-retry").hidden = false;
   }
 }
 
-find("ruleset-select").addEventListener("change", (event) =>
-  browse(event.target.value),
-);
-find("browse-retry").addEventListener("click", () =>
-  browse(find("ruleset-select").value),
-);
+find("ruleset-select").addEventListener("change", (event) => browse(event.target.value));
+find("browse-retry").addEventListener("click", () => browse(find("ruleset-select").value));
 find("load-retry").addEventListener("click", initialize);
 find("entry-filter").addEventListener("input", filterEntries);
 find("entry-type").addEventListener("change", filterEntries);

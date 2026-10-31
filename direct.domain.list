@@ -1028,9 +1028,13 @@
 +.1-luxury.com
 +.1-sakuracat.com
 +.1-yuan.net
++.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
 +.1.biz
 +.1.cc
++.10.in-addr.arpa
 +.100-tong.com
++.100.100.in-addr.arpa
++.100.51.198.in-addr.arpa
 +.100.com
 +.100.me
 +.100.travel
@@ -1162,6 +1166,7 @@
 +.100zd.com
 +.100zhuang.com
 +.100zp.com
++.101.100.in-addr.arpa
 +.101.com
 +.10100.com
 +.10101111.com
@@ -1182,6 +1187,7 @@
 +.101jiajiao.com
 +.101weiqi.com
 +.101yx.com
++.102.100.in-addr.arpa
 +.1024fuli.com
 +.1024g.com
 +.1024ie.com
@@ -1192,16 +1198,22 @@
 +.1026jz.com
 +.102no.com
 +.102pay.com
++.103.100.in-addr.arpa
 +.103153.com
 +.10333.com
 +.10349.com
++.104.100.in-addr.arpa
++.105.100.in-addr.arpa
 +.1059.net
++.106.100.in-addr.arpa
 +.10625fffd42119ce.com
 +.10639888.com
 +.1065m.com
 +.10666114.net
++.107.100.in-addr.arpa
 +.1073.com
 +.107788.com
++.108.100.in-addr.arpa
 +.1088hg41.com
 +.108addf0811012.beer
 +.108ai.com
@@ -1210,6 +1222,7 @@
 +.108qi.com
 +.108sq.com
 +.108tian.com
++.109.100.in-addr.arpa
 +.109.com
 +.109360.com
 +.10966.net
@@ -1234,12 +1247,14 @@
 +.10soo.com
 +.10tianqi.com
 +.10yan.com
++.110.100.in-addr.arpa
 +.110.com
 +.11000011.com
 +.110ask.com
 +.110disk.net
 +.110route.com
 +.110tm.com
++.111.100.in-addr.arpa
 +.111.com
 +.111111111.com
 +.111237.com
@@ -1254,6 +1269,7 @@
 +.111867.com
 +.111com.net
 +.111yao.com
++.112.100.in-addr.arpa
 +.112112.com
 +.112192.com
 +.1122.com
@@ -1262,12 +1278,15 @@
 +.1128job.com
 +.112seo.com
 +.112wan.com
++.113.0.203.in-addr.arpa
++.113.100.in-addr.arpa
 +.11315.com
 +.1133.cc
 +.11343.com
 +.113989.com
 +.113dh.com
 +.114-91.com
++.114.100.in-addr.arpa
 +.114.tel
 +.1145858.com
 +.11467.com
@@ -1310,6 +1329,7 @@
 +.114zhibo.com
 +.114zpw.com
 +.114zw.org
++.115.100.in-addr.arpa
 +.115.com
 +.115155.xyz
 +.1156.com
@@ -1324,6 +1344,7 @@
 +.115meta.com
 +.115vod.com
 +.115wg.com
++.116.100.in-addr.arpa
 +.1166.com
 +.1168.tv
 +.11684.com
@@ -1333,10 +1354,12 @@
 +.116daohang.com
 +.116kj.com
 +.116yx.com
++.117.100.in-addr.arpa
 +.117915.com
 +.117a6af992d4208e.com
 +.117trip.com
 +.117y.com
++.118.100.in-addr.arpa
 +.118114.net
 +.118360.com
 +.1188.com
@@ -1345,6 +1368,7 @@
 +.118pan.com
 +.118ttc.com
 +.118wa.com
++.119.100.in-addr.arpa
 +.1190119.com
 +.119120.org
 +.11951.com
@@ -1380,6 +1404,7 @@
 +.11wow.com
 +.11xotn7p.com
 +.11yinyuan.com
++.120.100.in-addr.arpa
 +.120.net
 +.120918.com
 +.120ask.com
@@ -1400,6 +1425,7 @@
 +.120spd.com
 +.120sun.com
 +.120x.net
++.121.100.in-addr.arpa
 +.121034.com
 +.121121.net
 +.1212.com
@@ -1411,6 +1437,7 @@
 +.121mai.com
 +.121mu.com
 +.121wty.com
++.122.100.in-addr.arpa
 +.122521.com
 +.12272.vip
 +.12291.com
@@ -1419,6 +1446,7 @@
 +.122cn.net
 +.122w.net
 +.123-789.com
++.123.100.in-addr.arpa
 +.123.cc
 +.12301.cc
 +.1230539.com
@@ -1528,7 +1556,9 @@
 +.123yiche.com
 +.123ypw.com
 +.123yx.com
++.124.100.in-addr.arpa
 +.124866.xyz
++.125.100.in-addr.arpa
 +.125.la
 +.125180.com
 +.12530.com
@@ -1545,6 +1575,7 @@
 +.125visa.com
 +.125y.com
 +.125yan.com
++.126.100.in-addr.arpa
 +.126.com
 +.126.fm
 +.126.link
@@ -1553,7 +1584,9 @@
 +.126disk.com
 +.126job.net
 +.126qiye.com
++.127.100.in-addr.arpa
 +.127.com
++.127.in-addr.arpa
 +.127.net
 +.127z.com
 +.128456.com
@@ -1753,6 +1786,7 @@
 +.15xdd.com
 +.15yl.com
 +.15yunmall.com
++.16.172.in-addr.arpa
 +.160.com
 +.1606c348011042.beer
 +.160dyf.com
@@ -1834,6 +1868,7 @@
 +.166dns.com
 +.16757.com
 +.16768.com
++.168.192.in-addr.arpa
 +.168.com
 +.16816.com
 +.168267xz.com
@@ -1904,6 +1939,7 @@
 +.16tz.com
 +.16wl.cc
 +.16xx8.com
++.17.172.in-addr.arpa
 +.170.com
 +.17025.org
 +.170601.xyz
@@ -2191,6 +2227,7 @@
 +.17zwd.com
 +.17zyxy.com
 +.17zyxy.net
++.18.172.in-addr.arpa
 +.18.cm
 +.18023.com
 +.18095.com
@@ -2288,6 +2325,7 @@
 +.18zhuanqian.com
 +.18zp.com
 +.18zw.com
++.19.172.in-addr.arpa
 +.19.com
 +.190.vip
 +.1900.live
@@ -2561,7 +2599,9 @@
 +.1zu.com
 +.2-class.com
 +.2-mm.net
++.2.0.192.in-addr.arpa
 +.2.biz
++.20.172.in-addr.arpa
 +.20001104.com
 +.2000200.com
 +.200022.xyz
@@ -2630,6 +2670,7 @@
 +.20xy.cc
 +.20z.com
 +.21-sun.com
++.21.172.in-addr.arpa
 +.210189.com
 +.210997.com
 +.210z.com
@@ -2759,6 +2800,7 @@
 +.21yq.com
 +.21ytv.com
 +.21zbs.com
++.22.172.in-addr.arpa
 +.22.com
 +.220840.com
 +.220c.com
@@ -2817,6 +2859,7 @@
 +.22tj.com
 +.22vape.com
 +.22vd.com
++.23.172.in-addr.arpa
 +.230890.com
 +.231083.com
 +.231122.com
@@ -2902,6 +2945,7 @@
 +.23ye.com
 +.23yy.com
 +.23zw.com
++.24.172.in-addr.arpa
 +.24198ef3f855c8ff.com
 +.2424ph.com
 +.246546.com
@@ -2926,6 +2970,7 @@
 +.24th.com
 +.24timemap.com
 +.24u7tos.com
++.25.172.in-addr.arpa
 +.250.cc
 +.2500.tv
 +.2500city.com
@@ -2940,7 +2985,9 @@
 +.25395.vip
 +.253952.com
 +.253u.com
++.254.169.in-addr.arpa
 +.254game.com
++.255.255.255.255.in-addr.arpa
 +.2551aa29811031.beer
 +.255616.com
 +.25565.net
@@ -2979,6 +3026,7 @@
 +.25xz.com
 +.25yi.com
 +.25yz.com
++.26.172.in-addr.arpa
 +.260.net
 +.260068.com
 +.263-mail.net
@@ -3022,6 +3070,7 @@
 +.26joy.com
 +.26ks.cc
 +.26s.com
++.27.172.in-addr.arpa
 +.270326012f82.icu
 +.270top.com
 +.27195.vip
@@ -3042,6 +3091,7 @@
 +.27l.com
 +.27tj.com
 +.27ws.com
++.28.172.in-addr.arpa
 +.28.bet
 +.281010.com
 +.28126.cc
@@ -3071,6 +3121,7 @@
 +.28yt.com
 +.28z9.com
 +.28zhe.com
++.29.172.in-addr.arpa
 +.29029.com
 +.2903866.net
 +.291315.com
@@ -3225,6 +3276,7 @@
 +.3-3.me
 +.3-hospital-cqmu.com
 +.3.biz
++.30.172.in-addr.arpa
 +.30.net
 +.3000.com
 +.300033.info
@@ -3266,6 +3318,7 @@
 +.30th-feb.com
 +.30vps.com
 +.30w.co
++.31.172.in-addr.arpa
 +.310game.com
 +.310s-2520.com
 +.310tv.com
@@ -6530,6 +6583,7 @@
 +.63u.net
 +.63yx.com
 +.63yy.com
++.64.100.in-addr.arpa
 +.641.com
 +.642online.com
 +.64365.com
@@ -6549,6 +6603,7 @@
 +.64ma.com
 +.64mv.com
 +.64pay.com
++.65.100.in-addr.arpa
 +.6501111.com
 +.65119.com
 +.651700.com
@@ -6573,6 +6628,7 @@
 +.65ec0ea7f04562ad.com
 +.65liuxue.com
 +.65mhxy.com
++.66.100.in-addr.arpa
 +.6600.org
 +.66016.com
 +.660378.com
@@ -6707,6 +6763,7 @@
 +.66zhang.com
 +.66zhizu.com
 +.66zhuang.com
++.67.100.in-addr.arpa
 +.67.com
 +.67017.com
 +.670e13a8f11042.beer
@@ -6740,6 +6797,7 @@
 +.67wanwan.com
 +.67wx.com
 +.67y.com
++.68.100.in-addr.arpa
 +.68.com
 +.68.gy
 +.68.vip
@@ -6785,6 +6843,7 @@
 +.68u.co
 +.68websoft.com
 +.68zhan.net
++.69.100.in-addr.arpa
 +.69090.com
 +.6912s.com
 +.6917.com
@@ -6946,6 +7005,7 @@
 +.7-meeting.com
 +.7-mi.net
 +.7-wx.com
++.70.100.in-addr.arpa
 +.70.cc
 +.700618.com
 +.70098.com
@@ -6971,6 +7031,7 @@
 +.70ppt.com
 +.70ym.com
 +.70yx.com
++.71.100.in-addr.arpa
 +.71.am
 +.71.am.com
 +.71.net
@@ -7023,6 +7084,7 @@
 +.71xe.com
 +.71xk.com
 +.71ywl.com
++.72.100.in-addr.arpa
 +.72.chat
 +.72.com
 +.72017.net
@@ -7078,6 +7140,7 @@
 +.72y.co
 +.72yun.com
 +.72zhan.com
++.73.100.in-addr.arpa
 +.730d60bec10281.beer
 +.731.tv
 +.73110010.com
@@ -7101,6 +7164,7 @@
 +.73ea00c7710272.beer
 +.73so.com
 +.73zw8.com
++.74.100.in-addr.arpa
 +.74.com
 +.7415.com
 +.741b0fca410271.beer
@@ -7121,6 +7185,7 @@
 +.74dns.com
 +.74f11ac633122c20.com
 +.74hao.com
++.75.100.in-addr.arpa
 +.75111.com
 +.75111.net
 +.75122d9a05f7a5a7.com
@@ -7144,6 +7209,7 @@
 +.75pk.com
 +.75txt.com
 +.75ww.com
++.76.100.in-addr.arpa
 +.7618.com
 +.7631.com
 +.7651.com
@@ -7168,6 +7234,7 @@
 +.76pay.com
 +.76y.com
 +.76zu.com
++.77.100.in-addr.arpa
 +.77005163.xyz
 +.770539.com
 +.7711.com
@@ -7268,6 +7335,7 @@
 +.77zhangh.com
 +.77zhanghao.com
 +.77zn.com
++.78.100.in-addr.arpa
 +.78.link
 +.781203.com
 +.78126dh.com
@@ -7303,6 +7371,7 @@
 +.78plat.com
 +.78v.com
 +.78yx.net
++.79.100.in-addr.arpa
 +.79.biz
 +.790.com
 +.790a8f76c10301.beer
@@ -7481,8 +7550,11 @@
 +.7zm.com
 +.7zz6.com
 +.7zzy.com
++.8.b.d.0.1.0.0.2.ip6.arpa
 +.8.biz
++.8.e.f.ip6.arpa
 +.8.xyz
++.80.100.in-addr.arpa
 +.80000.cc
 +.8000yi.com
 +.800507.com
@@ -7569,6 +7641,7 @@
 +.80xg.com
 +.80xs.la
 +.80zw.info
++.81.100.in-addr.arpa
 +.8100ab16d11021.beer
 +.810840.com
 +.81138183c1024.beer
@@ -7622,6 +7695,7 @@
 +.81xy.com
 +.81zhongwenx.com
 +.81zw.com
++.82.100.in-addr.arpa
 +.8203app.com
 +.8207hh.net
 +.8207uu.net
@@ -7652,6 +7726,7 @@
 +.82ip.com
 +.82ky.com
 +.82pk.com
++.83.100.in-addr.arpa
 +.830096.com
 +.83124.com
 +.83133.com
@@ -7679,6 +7754,7 @@
 +.83kxs.com
 +.83mo7n9giq.com
 +.83x.cc
++.84.100.in-addr.arpa
 +.84.com
 +.84.vc
 +.84008.com
@@ -7697,6 +7773,7 @@
 +.84ke.com
 +.84ktv.com
 +.84ny.com
++.85.100.in-addr.arpa
 +.850718.xyz
 +.85229666.com
 +.85253000.com
@@ -7715,6 +7792,7 @@
 +.85sc.com
 +.85xt.com
 +.86-import.com
++.86.100.in-addr.arpa
 +.86.cc
 +.860029.com
 +.860527.com
@@ -7780,6 +7858,7 @@
 +.86xq.com
 +.86y.org
 +.86yqy.com
++.87.100.in-addr.arpa
 +.87.vip
 +.870.com
 +.870818.com
@@ -7816,6 +7895,7 @@
 +.87vr.com
 +.87yy.com
 +.88-z.com
++.88.100.in-addr.arpa
 +.88.com
 +.880.net
 +.8800.org
@@ -7930,6 +8010,7 @@
 +.88ysg.com
 +.88zha.com
 +.88zjzy.com
++.89.100.in-addr.arpa
 +.89006006.com
 +.8910.io
 +.89178.com
@@ -8070,8 +8151,10 @@
 +.9-xin.com
 +.9-zhuce.com
 +.9.biz
++.9.e.f.ip6.arpa
 +.9.plus
 +.9.xyz
++.90.100.in-addr.arpa
 +.90.cc
 +.900.la
 +.900.vc
@@ -8107,6 +8190,7 @@
 +.90yk.com
 +.90zm.net
 +.91-box.com
++.91.100.in-addr.arpa
 +.91.com
 +.91.plus
 +.9100.ink
@@ -8335,6 +8419,7 @@
 +.91zhongkao.com
 +.91zhuti.com
 +.91znyx.com
++.92.100.in-addr.arpa
 +.92.net
 +.920uc.com
 +.921.com
@@ -8401,6 +8486,7 @@
 +.92zc.com
 +.92zhiqu.com
 +.92zuqu.com
++.93.100.in-addr.arpa
 +.930a48879eaa652b.com
 +.930hh.com
 +.9312.net
@@ -8443,6 +8529,7 @@
 +.93yo.com
 +.93you.com
 +.93zp.com
++.94.100.in-addr.arpa
 +.94001.vip
 +.940177.com
 +.940304.xyz
@@ -8485,6 +8572,7 @@
 +.94you.net
 +.94ys.com
 +.95-1.vip
++.95.100.in-addr.arpa
 +.95.com
 +.95001111.com
 +.95007.com
@@ -8563,6 +8651,7 @@
 +.95xiu.com
 +.95ye.com
 +.95yijing.com
++.96.100.in-addr.arpa
 +.960123.com
 +.960638.com
 +.96090090.com
@@ -8640,6 +8729,7 @@
 +.96xz.com
 +.96yx.com
 +.96zxue.com
++.97.100.in-addr.arpa
 +.97.biz
 +.97.cc
 +.9700hg.com
@@ -8686,6 +8776,7 @@
 +.97wyw.com
 +.97xdj.net
 +.97zm.com
++.98.100.in-addr.arpa
 +.98.com
 +.98.ma
 +.980.ag
@@ -8744,6 +8835,7 @@
 +.98yl.com
 +.98zhibo.com
 +.98znz.com
++.99.100.in-addr.arpa
 +.99.com
 +.99113guoji.com
 +.99114.com
@@ -9076,6 +9168,7 @@
 +.a-startech.com
 +.a-sy.com
 +.a-xun.com
++.a.e.f.ip6.arpa
 +.a049636971024.beer
 +.a04d48409e40ca3f.com
 +.a0598.com
@@ -12412,6 +12505,7 @@
 +.asty664.com
 +.asujp.com
 +.asusgo.com
++.asusrouter.com
 +.asussmart.com
 +.asusw.net
 +.asvm.net
@@ -13027,6 +13121,7 @@
 +.b-raymedia.com
 +.b.biz
 +.b.c2r.ts.cdn.office.net
++.b.e.f.ip6.arpa
 +.b01.net
 +.b041e427810281.beer
 +.b07cceaf011012.beer
@@ -26190,6 +26285,7 @@
 +.d-wolves.com
 +.d.cg
 +.d.design
++.d.f.ip6.arpa
 +.d00.net
 +.d03jd.com
 +.d05512bf210292.beer
@@ -32286,6 +32382,7 @@
 +.examda.com
 +.examebook.com
 +.examk.com
++.example
 +.exampx.com
 +.examw.com
 +.exands.com
@@ -44460,6 +44557,7 @@
 +.hiwechats.com
 +.hiweixiu.com
 +.hiwelcom.com
++.hiwifi.com
 +.hiwiyi.com
 +.hiwms.com
 +.hiworld.com
@@ -45289,6 +45387,8 @@
 +.holy58.com
 +.holymalls.com
 +.holyxiongan.com
++.home
++.home.arpa
 +.home0311.com
 +.home0538.com
 +.home0668.com
@@ -46679,6 +46779,7 @@
 +.huaweils.com
 +.huaweimarine.com
 +.huaweimarketplace.com
++.huaweimobilewifi.com
 +.huaweimossel.com
 +.huaweioneaccess.com
 +.huaweirtc.com
@@ -50166,6 +50267,7 @@
 +.interchinawater.com
 +.interface003.com
 +.interiorous.com
++.internal
 +.internationalbrand.net
 +.internbird.com
 +.internetke.com
@@ -50199,6 +50301,7 @@
 +.inuorui.com
 +.inuu6.com
 +.inuyasha.love
++.invalid
 +.invaluablu.com
 +.inveno.com
 +.inverter.so
@@ -56892,6 +56995,7 @@
 +.kirin-tech.com
 +.kirinmach.com
 +.kirkcloud.com
++.kis.v2.scr.kaspersky-labs.com
 +.kiscoca.com
 +.kisdee.com
 +.kisence.com
@@ -58257,6 +58361,7 @@
 +.lampbi.com
 +.lampouomo.com
 +.lamyu.com
++.lan
 +.lan-bridge.com
 +.lan-lin.com
 +.lan-ning.com
@@ -59093,6 +59198,7 @@
 +.leihuo.net
 +.leijue.net
 +.leijun.com
++.leike.cc
 +.leikeji.com
 +.leileiluoluo.com
 +.leilong158.com
@@ -60837,8 +60943,11 @@
 +.loac.cc
 +.loadingbay.com
 +.loansliml.com
++.local
 +.local-ip.online
 +.local.hk
++.localdomain
++.localhost
 +.localxcafe.com
 +.locatran.com
 +.locez.com
@@ -70817,6 +70926,7 @@
 +.peijian8.net
 +.peilian.com
 +.peiluming.com
++.peiluyou.com
 +.peipusci.com
 +.peise.net
 +.peisebiao.com
@@ -71026,6 +71136,7 @@
 +.phezzan.com
 +.phhongyu.com
 +.phicomm.com
++.phicomm.me
 +.philanthropy.xin
 +.philipswechat.com
 +.philisense.com
@@ -71521,6 +71632,7 @@
 +.plctlab.com
 +.plentypolymer.com
 +.plesk-cn.com
++.plex.direct
 +.plex2.com
 +.plexpt.com
 +.plfrog.com
@@ -76240,8 +76352,12 @@
 +.roushidongwu.com
 +.rousin.com
 +.route78asia.com
++.router
++.router.ctc
 +.router.tw
 +.routerclub.com
++.routerlogin.com
++.routerlogin.net
 +.routeryun.com
 +.routewize.com
 +.routuan.com
@@ -85573,6 +85689,8 @@
 +.tailingood.com
 +.taillkang.com
 +.tailong.com
++.tailscale.com
++.tailscale.io
 +.taimei.com
 +.taimi100.com
 +.taimls.com
@@ -86668,6 +86786,7 @@
 +.tencity.com
 +.tendacn.com
 +.tendata.net
++.tendawifi.com
 +.tendbcluster.com
 +.tendbcluster.net
 +.tendcloud.com
@@ -86796,6 +86915,7 @@
 +.tesiro.com
 +.tesolsh.com
 +.tesoon.com
++.test
 +.test-cignacmb.com
 +.testbird.com
 +.testcoo.com
@@ -88574,6 +88694,11 @@
 +.tpkey.com
 +.tplcd100.com
 +.tplife.com
++.tplinkap.net
++.tplinkmodem.net
++.tplinkplclogin.net
++.tplinkrepeater.net
++.tplinkwifi.net
 +.tplogincn.com
 +.tpooo.com
 +.tpoxiaozhan.com
@@ -90091,6 +90216,7 @@
 +.uhut.com
 +.uhzcdn.com
 +.ui-lab.com
++.ui.direct
 +.ui100day.com
 +.ui63.com
 +.uibep.com
@@ -110016,23 +110142,35 @@
 127.skk.moe
 api.blipsandchitz.me
 appleintelligencefeedback.care.apple.com
+aterm.me
 captive.apple.com
 cn.download.nvidia.com
 config.ubnt.com
+console.gl-inet.com
 dl.ubnt.com
 end-api.shallow.ink
 end.shallow.ink
 gs-loc-cn.apple.com
+homerouter.cpe
 hotspot.cslwifi.com
 i.dell.com
 injections.adguard.org
+instant.arubanetworks.com
 izattime.qcomgeo2.com
+local.adguard.org
 mirrorlist.cdn.skk.moe
+mobile.hotspot
+ntt.setup
+pi.hole
 public.localsend.org
+repeater.asus.com
 res-1.cdn.office.net
 res-2.cdn.office.net
 res-h3.public.cdn.office.net
 res.cdn.office.net
+router.asus.com
+setmeup.arubanetworks.com
 statics.teams.cdn.office.net
 time.xtracloud.net
+unifi
 xtratime.qcomgeo2.com

@@ -5,10 +5,9 @@ export const DEFAULT_BASE_URL = new URL("./", import.meta.url);
 const TEXT_BEHAVIORS = new Set(["domain", "ipcidr", "classical"]);
 
 function requestError(url, error) {
-  return new Error(
-    `Fetch ${url}: ${error instanceof Error ? error.message : String(error)}`,
-    { cause: error },
-  );
+  return new Error(`Fetch ${url}: ${error instanceof Error ? error.message : String(error)}`, {
+    cause: error,
+  });
 }
 
 async function fetchText(fetcher, url) {
@@ -19,9 +18,7 @@ async function fetchText(fetcher, url) {
     throw requestError(url, error);
   }
   if (!response || !response.ok) {
-    const status = response
-      ? `${response.status} ${response.statusText}`.trim()
-      : "no response";
+    const status = response ? `${response.status} ${response.statusText}`.trim() : "no response";
     throw new Error(`Fetch ${url}: HTTP ${status}`);
   }
   try {
@@ -32,11 +29,7 @@ async function fetchText(fetcher, url) {
 }
 
 function validateMeta(metadata) {
-  if (
-    !metadata ||
-    typeof metadata !== "object" ||
-    !Array.isArray(metadata.artifacts)
-  ) {
+  if (!metadata || typeof metadata !== "object" || !Array.isArray(metadata.artifacts)) {
     throw new TypeError("stats.json must contain an artifacts array.");
   }
   if (
@@ -46,9 +39,7 @@ function validateMeta(metadata) {
     typeof metadata.fallback !== "string" ||
     !metadata.fallback
   ) {
-    throw new TypeError(
-      "stats.json must contain a ruleset priority and fallback.",
-    );
+    throw new TypeError("stats.json must contain a ruleset priority and fallback.");
   }
   return metadata;
 }
@@ -76,8 +67,7 @@ export function createRulesetStore({
   baseUrl = DEFAULT_BASE_URL,
   fetcher = globalThis.fetch,
 } = {}) {
-  if (typeof fetcher !== "function")
-    throw new TypeError("A fetch function is required.");
+  if (typeof fetcher !== "function") throw new TypeError("A fetch function is required.");
   const base = new URL(baseUrl);
   const metadataURL = new URL("stats.json", base);
   let metadataRequest;
@@ -116,36 +106,26 @@ export function createRulesetStore({
           .filter((artifact) => artifact.ruleset === rulesetName)
           .map(validateArtifact);
         if (!artifacts.length)
-          throw new Error(
-            `Ruleset ${rulesetName} is not present in stats.json.`,
-          );
+          throw new Error(`Ruleset ${rulesetName} is not present in stats.json.`);
 
         const browserArtifacts = artifacts.filter((artifact) =>
           TEXT_BEHAVIORS.has(artifact.behavior),
         );
-        const textArtifacts = browserArtifacts.filter(
-          (artifact) => artifact.format === "text",
-        );
+        const textArtifacts = browserArtifacts.filter((artifact) => artifact.format === "text");
         const binaryBehaviors = new Set(
           browserArtifacts
             .filter((artifact) => artifact.format === "mrs")
             .map((artifact) => artifact.behavior),
         );
-        const textBehaviors = new Set(
-          textArtifacts.map((artifact) => artifact.behavior),
-        );
-        const uncovered = [...binaryBehaviors].filter(
-          (behavior) => !textBehaviors.has(behavior),
-        );
+        const textBehaviors = new Set(textArtifacts.map((artifact) => artifact.behavior));
+        const uncovered = [...binaryBehaviors].filter((behavior) => !textBehaviors.has(behavior));
         if (uncovered.length) {
           throw new Error(
             `Ruleset ${rulesetName} has no text artifact for ${uncovered.join(", ")}; it cannot be checked in the browser.`,
           );
         }
         if (!textArtifacts.length)
-          throw new Error(
-            `Ruleset ${rulesetName} has no text artifacts to browse.`,
-          );
+          throw new Error(`Ruleset ${rulesetName} has no text artifacts to browse.`);
 
         const groups = await Promise.all(
           textArtifacts.map(async (artifact) => {
