@@ -64,7 +64,9 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 		"gaoyifan/china-operator-ip:china46.txt", "SukkaW/Surge:apple_cn",
 		"SukkaW/Surge:direct", "SukkaW/Surge:domestic-domain",
 		"SukkaW/Surge:domestic-ip", "SukkaW/Surge:microsoft_cdn",
-		"v2fly/domain-list-community:{cn,elsevier,sciencedirect}", "custom:cn", "Cloudflare:tunnel", "custom:direct",
+		"v2fly/domain-list-community:{cn,elsevier,sciencedirect}",
+		"v2fly/domain-list-community:{apple,steam}@cn",
+		"custom:cn", "Cloudflare:tunnel", "custom:direct",
 	}
 	var directSources []string
 	for _, src := range cfg.RuleSets[1].Sources {

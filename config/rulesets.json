@@ -93,6 +93,12 @@
           "lists": ["cn", "elsevier", "sciencedirect"]
         },
         {
+          "name": "v2fly/domain-list-community:{apple,steam}@cn",
+          "kind": "v2fly",
+          "lists": ["apple", "steam"],
+          "require_attributes": ["cn"]
+        },
+        {
           "name": "custom:cn",
           "kind": "domain-file",
           "path": "overrides/cn.domain.txt",
@@ -226,6 +232,16 @@
     { "domain": "ieeexplore.ieee.org", "ruleset": "direct" },
     { "domain": "www.scopus.com", "ruleset": "direct" },
     { "domain": "shop.pockyt.io", "ruleset": "direct" },
+    { "domain": "iosapps.itunes.apple.com", "ruleset": "direct" },
+    { "domain": "osxapps.itunes.apple.com", "ruleset": "direct" },
+    { "domain": "swcdn.apple.com", "ruleset": "direct" },
+    { "domain": "updates.cdn-apple.com", "ruleset": "direct" },
+    {
+      "domain": "alibaba.cdn.steampipe.steamcontent.com",
+      "ruleset": "direct"
+    },
+    { "domain": "apple.news", "ruleset": "us" },
+    { "domain": "store.steampowered.com", "ruleset": "global" },
     { "domain": "cdn.jsdelivr.net", "ruleset": "global" },
     { "domain": "dl.google.com", "ruleset": "global" },
     { "domain": "dl.l.google.com", "ruleset": "global" },

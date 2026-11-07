@@ -14,6 +14,8 @@ Mihomo must evaluate these sets in this order:
 
 OpenAI and Anthropic coverage is merged into `us`, including the maintained [Claude supporting-service domains](config/sources/anthropic.domain.txt) and [API inbound IP ranges](config/sources/anthropic.ipcidr.txt). Requests from other applications to those shared telemetry, support, and analytics domains also follow the `us` outbound. Consumers of the former `openai` or `anthropic` providers should use the `us` providers and their domain, IP-CIDR, and classical companions where present.
 
+Apple and Steam domains tagged `@cn` in V2Fly are included in `direct` for their mainland endpoints, including App Store downloads, software updates, and Steam's mainland download CDN.
+
 Evaluate both `tailnet` providers before `direct`: Tailscale's IPv4 range overlaps the shared-address space and its IPv6 range is inside the broader ULA space. After the `tailnet` rules, evaluate domain and classical providers in priority order before public IP-CIDR providers. This lets `us` take precedence over the geographic location of a CDN address.
 
 The set exclusions in [`config/rulesets.json`](config/rulesets.json) are applied during generation. IP exclusions are exact CIDR set subtraction. A domain rule is removed only when an earlier rule covers its entire match space; partial domain differences cannot be represented by Mihomo and are resolved by the evaluation order above.
