@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-07T20:18:34Z",
+  "generated_at": "2026-11-08T20:35:40Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailnet",
@@ -109,9 +109,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3770748,
-              "etag": "\"0x8DF3D061CDF4C8E\"",
-              "last_modified": "Sat, 07 Nov 2026 19:34:17 GMT"
+              "bytes": 3770777,
+              "etag": "\"0x8DF3D351097B14A\"",
+              "last_modified": "Sun, 08 Nov 2026 01:10:23 GMT"
             }
           ]
         },
@@ -268,9 +268,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3770748,
-              "etag": "\"0x8DF3D061CDF4C8E\"",
-              "last_modified": "Sat, 07 Nov 2026 19:34:17 GMT"
+              "bytes": 3770777,
+              "etag": "\"0x8DF3D351097B14A\"",
+              "last_modified": "Sun, 08 Nov 2026 01:10:23 GMT"
             }
           ]
         },
@@ -286,9 +286,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3770748,
-              "etag": "\"0x8DF3D061CDF4C8E\"",
-              "last_modified": "Sat, 07 Nov 2026 19:34:17 GMT"
+              "bytes": 3770777,
+              "etag": "\"0x8DF3D351097B14A\"",
+              "last_modified": "Sun, 08 Nov 2026 01:10:23 GMT"
             }
           ]
         },
@@ -358,9 +358,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3770748,
-              "etag": "\"0x8DF3D061CDF4C8E\"",
-              "last_modified": "Sat, 07 Nov 2026 19:34:17 GMT"
+              "bytes": 3770777,
+              "etag": "\"0x8DF3D351097B14A\"",
+              "last_modified": "Sun, 08 Nov 2026 01:10:23 GMT"
             }
           ]
         },
@@ -488,9 +488,9 @@
           "fetches": [
             {
               "url": "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml",
-              "bytes": 3770748,
-              "etag": "\"0x8DF3D061CDF4C8E\"",
-              "last_modified": "Sat, 07 Nov 2026 19:34:17 GMT"
+              "bytes": 3770777,
+              "etag": "\"0x8DF3D351097B14A\"",
+              "last_modified": "Sun, 08 Nov 2026 01:10:23 GMT"
             }
           ]
         },
