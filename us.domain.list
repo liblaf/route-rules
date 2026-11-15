@@ -1655,6 +1655,7 @@ beatselectronicsllc.tt.omtrdc.net
 browser-intake-datadoghq.com
 browser-intake-us5-datadoghq.com
 cdn.usefathom.com
+cloud.zed.dev
 cloudaicompanion.googleapis.com
 configuration-lb.ls-apple.com.akadns.net
 copilot-proxy.githubusercontent.com
@@ -1663,6 +1664,7 @@ copilot-telemetry.githubusercontent.com
 copilot-workspace.githubnext.com
 copilotprodattachments.blob.core.windows.net
 daily-cloudcode-pa.googleapis.com
+daily-cloudcode-pa.sandbox.googleapis.com
 geminiweb-pa.clients.google.com
 geminiweb-pa.clients6.google.com
 notary-submissions-prod.s3-accelerate.amazonaws.com

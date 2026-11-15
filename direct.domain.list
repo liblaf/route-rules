@@ -18164,6 +18164,7 @@
 +.capsuleshanghai.com
 +.captain-cro.com
 +.captainbi.com
++.captive.apple.com
 +.capturetheflag.fun
 +.capvision.com
 +.capwhale.com
@@ -110237,7 +110238,6 @@ aterm.me
 bag-cdn.itunes-apple.com.akadns.net
 bag.itunes.apple.com
 bookkeeper.itunes.apple.com
-captive.apple.com
 cdn-cn.apple-mapkit.com
 cdn-cn1.apple-mapkit.com
 cdn-cn2.apple-mapkit.com
@@ -110277,6 +110277,7 @@ communities.apple.com
 config.ubnt.com
 configuration.apple.com
 configuration.apple.com.akadns.net
+configuration.ls.apple.com
 console.gl-inet.com
 crl-lb.apple.com.akadns.net
 crl.apple.com
@@ -110372,9 +110373,11 @@ misc-assets.itunes.apple.com
 ml.cdn-apple.com
 mobile.hotspot
 music.apple.com
+musicstatus.itunes.apple.com
 musicstatus.music.apple.com
 mvod.itunes.apple.com
 myapp.itunes.apple.com
+mzstorekit.itunes.apple.com
 np-edge.itunes.apple.com
 ntt.setup
 ocsp.apple.com
