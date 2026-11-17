@@ -1,6 +1,6 @@
 # Mihomo rule sets
 
-Generated at 2026-11-17T13:27:53Z. Do not edit this branch manually.
+Generated at 2026-11-17T23:33:44Z. Do not edit this branch manually.
 
 Evaluation order: `tailnet` → `direct` → `us` → `global`, then fallback `global`.
 
