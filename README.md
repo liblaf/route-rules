@@ -1,6 +1,6 @@
 # Mihomo rule sets
 
-Generated at 2026-11-17T00:18:11Z. Do not edit this branch manually.
+Generated at 2026-11-17T13:27:53Z. Do not edit this branch manually.
 
 Evaluation order: `tailnet` → `direct` → `us` → `global`, then fallback `global`.
 
@@ -8,7 +8,7 @@ Evaluation order: `tailnet` → `direct` → `us` → `global`, then fallback `g
 |---|---:|---:|---|---|
 | `direct.classical.txt` | 54 | 1.4 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.classical.txt) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.classical.txt) |
 | `direct.domain.mrs` | 110482 | 520.1 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.domain.mrs) |
-| `direct.ipcidr.mrs` | 9705 | 36.8 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.ipcidr.mrs) |
+| `direct.ipcidr.mrs` | 9706 | 36.9 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.ipcidr.mrs) |
 | `global.classical.txt` | 165 | 6.7 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.classical.txt) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.classical.txt) |
 | `global.domain.mrs` | 19139 | 141.5 KiB | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs) |
 | `global.ipcidr.mrs` | 13 | 152 B | [download](https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.ipcidr.mrs) | [download](https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.ipcidr.mrs) |
