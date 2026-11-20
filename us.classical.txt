@@ -4,7 +4,11 @@ DOMAIN-REGEX,^chatgpt-async-webps-prod-\S+-\d+\.webpubsub\.azure\.com$
 IP-ASN,399358
 PROCESS-NAME,CoreLocationAgent
 PROCESS-NAME,WeatherWidget
+PROCESS-NAME,agy
+PROCESS-NAME,antigravity
 PROCESS-NAME,apsd
+PROCESS-NAME,claude
+PROCESS-NAME,codex
 PROCESS-NAME,com.apple.Maps
 PROCESS-NAME,com.apple.geod
 PROCESS-NAME,findmydevice-user-agent

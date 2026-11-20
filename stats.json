@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T23:06:31Z",
+  "generated_at": "2026-11-20T08:31:13Z",
   "repository": "liblaf/route-rules",
   "priority": [
     "tailnet",
@@ -275,12 +275,12 @@
           ]
         },
         {
-          "name": "v2fly/domain-list-community:{apple,steam}@cn",
+          "name": "v2fly/domain-list-community:{apple,google,steam}@cn",
           "kind": "v2fly",
-          "input_rules": 319,
+          "input_rules": 442,
           "accepted": {
-            "domain": 319,
-            "classical": 0,
+            "domain": 440,
+            "classical": 2,
             "ipcidr": 0
           },
           "fetches": [
@@ -325,18 +325,18 @@
         }
       ],
       "before_optimization": {
-        "domain": 117391,
-        "classical": 54,
+        "domain": 117512,
+        "classical": 56,
         "ipcidr": 9694
       },
       "after_optimization": {
-        "domain": 110490,
-        "classical": 54,
+        "domain": 110603,
+        "classical": 56,
         "ipcidr": 9677
       },
       "final": {
-        "domain": 110489,
-        "classical": 54,
+        "domain": 110602,
+        "classical": 56,
         "ipcidr": 9716
       },
       "excluded": [
@@ -347,12 +347,12 @@
       "name": "us",
       "sources": [
         {
-          "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-deepmind,google-gemini,openai}",
+          "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google,google-deepmind,google-gemini,openai}",
           "kind": "v2fly",
-          "input_rules": 2154,
+          "input_rules": 3120,
           "accepted": {
-            "domain": 1802,
-            "classical": 1,
+            "domain": 2600,
+            "classical": 3,
             "ipcidr": 0
           },
           "fetches": [
@@ -363,6 +363,16 @@
               "last_modified": "Wed, 18 Nov 2026 14:15:31 GMT"
             }
           ]
+        },
+        {
+          "name": "custom:us",
+          "kind": "clash-file",
+          "input_rules": 4,
+          "accepted": {
+            "domain": 0,
+            "classical": 4,
+            "ipcidr": 0
+          }
         },
         {
           "name": "custom:anthropic-supporting-services",
@@ -454,18 +464,18 @@
         }
       ],
       "before_optimization": {
-        "domain": 1892,
-        "classical": 12,
+        "domain": 2690,
+        "classical": 18,
         "ipcidr": 422
       },
       "after_optimization": {
-        "domain": 1818,
-        "classical": 12,
+        "domain": 2615,
+        "classical": 18,
         "ipcidr": 421
       },
       "final": {
-        "domain": 1688,
-        "classical": 12,
+        "domain": 2454,
+        "classical": 16,
         "ipcidr": 421
       },
       "excluded": [
@@ -557,8 +567,8 @@
         "ipcidr": 13
       },
       "final": {
-        "domain": 19139,
-        "classical": 165,
+        "domain": 19121,
+        "classical": 163,
         "ipcidr": 13
       },
       "excluded": [
@@ -573,8 +583,8 @@
       "ruleset": "direct",
       "behavior": "classical",
       "format": "text",
-      "rule_count": 54,
-      "bytes": 1406,
+      "rule_count": 56,
+      "bytes": 1552,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.classical.txt",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.classical.txt"
     },
@@ -583,8 +593,8 @@
       "ruleset": "direct",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 110489,
-      "bytes": 1618518,
+      "rule_count": 110602,
+      "bytes": 1620956,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.domain.list"
     },
@@ -593,8 +603,8 @@
       "ruleset": "direct",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 110489,
-      "bytes": 532274,
+      "rule_count": 110602,
+      "bytes": 533267,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/direct.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/direct.domain.mrs"
     },
@@ -623,8 +633,8 @@
       "ruleset": "global",
       "behavior": "classical",
       "format": "text",
-      "rule_count": 165,
-      "bytes": 6865,
+      "rule_count": 163,
+      "bytes": 6719,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.classical.txt",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.classical.txt"
     },
@@ -633,8 +643,8 @@
       "ruleset": "global",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 19139,
-      "bytes": 324608,
+      "rule_count": 19121,
+      "bytes": 324286,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.list"
     },
@@ -643,8 +653,8 @@
       "ruleset": "global",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 19139,
-      "bytes": 144905,
+      "rule_count": 19121,
+      "bytes": 144695,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/global.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/global.domain.mrs"
     },
@@ -713,8 +723,8 @@
       "ruleset": "us",
       "behavior": "classical",
       "format": "text",
-      "rule_count": 12,
-      "bytes": 372,
+      "rule_count": 16,
+      "bytes": 453,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.classical.txt",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.classical.txt"
     },
@@ -723,8 +733,8 @@
       "ruleset": "us",
       "behavior": "domain",
       "format": "text",
-      "rule_count": 1688,
-      "bytes": 33556,
+      "rule_count": 2454,
+      "bytes": 44856,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.domain.list",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.domain.list"
     },
@@ -733,8 +743,8 @@
       "ruleset": "us",
       "behavior": "domain",
       "format": "mrs",
-      "rule_count": 1688,
-      "bytes": 17470,
+      "rule_count": 2454,
+      "bytes": 23614,
       "github_url": "https://raw.githubusercontent.com/liblaf/route-rules/mihomo/us.domain.mrs",
       "jsdelivr_url": "https://cdn.jsdelivr.net/gh/liblaf/route-rules@mihomo/us.domain.mrs"
     },
