@@ -93,9 +93,9 @@
           "lists": ["cn", "elsevier", "sciencedirect"]
         },
         {
-          "name": "v2fly/domain-list-community:{apple,steam}@cn",
+          "name": "v2fly/domain-list-community:{apple,google,steam}@cn",
           "kind": "v2fly",
-          "lists": ["apple", "steam"],
+          "lists": ["apple", "google", "steam"],
           "require_attributes": ["cn"]
         },
         {
@@ -121,16 +121,22 @@
       "exclude": ["tailnet", "direct"],
       "sources": [
         {
-          "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google-deepmind,google-gemini,openai}",
+          "name": "v2fly/domain-list-community:{anthropic,apple,category-ai-!cn,google,google-deepmind,google-gemini,openai}",
           "kind": "v2fly",
           "lists": [
             "anthropic",
             "apple",
             "category-ai-!cn",
+            "google",
             "google-deepmind",
             "google-gemini",
             "openai"
           ]
+        },
+        {
+          "name": "custom:us",
+          "kind": "clash-file",
+          "path": "sources/us.classical.txt"
         },
         {
           "name": "custom:anthropic-supporting-services",
@@ -244,8 +250,9 @@
     { "domain": "apple.news", "ruleset": "us" },
     { "domain": "store.steampowered.com", "ruleset": "global" },
     { "domain": "cdn.jsdelivr.net", "ruleset": "global" },
-    { "domain": "dl.google.com", "ruleset": "global" },
-    { "domain": "dl.l.google.com", "ruleset": "global" },
+    { "domain": "dl.google.com", "ruleset": "direct" },
+    { "domain": "dl.l.google.com", "ruleset": "direct" },
+    { "domain": "www.google.com", "ruleset": "us" },
     { "domain": "flame.is.tue.mpg.de", "ruleset": "global" },
     { "domain": "api.openai.com", "ruleset": "us" },
     { "domain": "chatgpt.com", "ruleset": "us" },

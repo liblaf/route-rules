@@ -1,0 +1,4 @@
+PROCESS-NAME,codex
+PROCESS-NAME,claude
+PROCESS-NAME,antigravity
+PROCESS-NAME,agy
