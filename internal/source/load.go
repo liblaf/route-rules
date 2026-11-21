@@ -203,18 +203,20 @@ func (loader *Loader) loadV2Fly(ctx context.Context, source config.Source) (Resu
 		loader.v2flyFetch = metadata
 	}
 
-	requested := make(map[string]struct{}, len(source.Lists))
-	for _, name := range source.Lists {
-		requested[name] = struct{}{}
+	var remaining map[string]struct{}
+	if !source.AllLists {
+		remaining = make(map[string]struct{}, len(source.Lists))
+		for _, name := range source.Lists {
+			remaining[name] = struct{}{}
+		}
 	}
-	found := make(map[string]struct{}, len(requested))
 	result := Result{Ignored: make(map[string]int), Fetches: []FetchMetadata{loader.v2flyFetch}}
 	for _, list := range loader.v2fly.Lists {
 		if !source.AllLists {
-			if _, selected := requested[list.Name]; !selected {
+			if _, selected := remaining[list.Name]; !selected {
 				continue
 			}
-			found[list.Name] = struct{}{}
+			delete(remaining, list.Name)
 		}
 		for _, encoded := range list.Rules {
 			kind, value, attributes, err := parseV2FlyRule(encoded)
@@ -254,9 +256,12 @@ func (loader *Loader) loadV2Fly(ctx context.Context, source config.Source) (Resu
 				return Result{}, fmt.Errorf("list %q: unsupported V2Fly rule kind %q", list.Name, kind)
 			}
 		}
+		if !source.AllLists && len(remaining) == 0 {
+			break
+		}
 	}
-	for name := range requested {
-		if _, exists := found[name]; !exists {
+	for _, name := range source.Lists {
+		if _, missing := remaining[name]; missing {
 			return Result{}, fmt.Errorf("V2Fly list %q not found", name)
 		}
 	}
@@ -264,15 +269,19 @@ func (loader *Loader) loadV2Fly(ctx context.Context, source config.Source) (Resu
 }
 
 func parseV2FlyRule(encoded string) (string, string, map[string]struct{}, error) {
-	separator := strings.IndexByte(encoded, ':')
-	if separator <= 0 || separator == len(encoded)-1 {
+	kind, rest, ok := strings.Cut(encoded, ":")
+	if !ok || kind == "" || rest == "" {
 		return "", "", nil, fmt.Errorf("malformed V2Fly rule %q", encoded)
 	}
-	kind := encoded[:separator]
-	parts := strings.Split(encoded[separator+1:], ":@")
-	value := parts[0]
-	attributes := make(map[string]struct{}, len(parts)-1)
-	for _, attribute := range parts[1:] {
+	value, attrTail, hasAttrs := strings.Cut(rest, ":@")
+	if value == "" {
+		return "", "", nil, fmt.Errorf("malformed V2Fly rule %q", encoded)
+	}
+	if !hasAttrs {
+		return kind, value, nil, nil
+	}
+	attributes := make(map[string]struct{})
+	for attribute := range strings.SplitSeq(attrTail, ",@") {
 		if attribute == "" {
 			return "", "", nil, fmt.Errorf("empty attribute in V2Fly rule %q", encoded)
 		}

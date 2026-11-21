@@ -143,7 +143,7 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 		set := &cfg.RuleSets[i]
 		var fixtures []config.Source
 		for j, src := range set.Sources {
-			if src.Kind == "domain-file" || src.Kind == "cidr-file" || src.Kind == "clash-file" {
+			if src.Path != "" {
 				payload, err := os.ReadFile(filepath.Join(originalBase, src.Path))
 				if err != nil {
 					t.Fatal(err)

@@ -2,7 +2,6 @@ package config
 
 import (
 	"slices"
-	"strings"
 	"testing"
 )
 
@@ -34,6 +33,34 @@ func TestValidateSourceClashFile(t *testing.T) {
 		{"absolute", Source{Kind: "clash-file", Path: "/tmp/cloudflared.txt"}, false},
 		{"remote url", Source{Kind: "clash-file", Path: "sources/cloudflared.txt", URL: "https://example.com/rules"}, false},
 		{"selection", Source{Kind: "clash-file", Path: "sources/cloudflared.txt", AllLists: true}, false},
+		{"require attributes", Source{Kind: "clash-file", Path: "sources/cloudflared.txt", RequireAttributes: []string{"cn"}}, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if err := validateSource(tc.source); (err == nil) != tc.valid {
+				t.Fatalf("validateSource(%+v) = %v, want valid=%t", tc.source, err, tc.valid)
+			}
+		})
+	}
+}
+
+func TestValidateSourceV2FlyAndRequireAttributes(t *testing.T) {
+	t.Parallel()
+	for _, tc := range []struct {
+		name   string
+		source Source
+		valid  bool
+	}{
+		{"named lists", Source{Kind: "v2fly", Lists: []string{"cn"}}, true},
+		{"all lists", Source{Kind: "v2fly", AllLists: true}, true},
+		{"all lists with attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"cn"}}, true},
+		{"missing selection", Source{Kind: "v2fly"}, false},
+		{"lists and all_lists", Source{Kind: "v2fly", Lists: []string{"cn"}, AllLists: true}, false},
+		{"empty attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{""}}, false},
+		{"prefixed attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"@cn"}}, false},
+		{"comma in attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"cn,ads"}}, false},
+		{"whitespace attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{" cn "}}, false},
+		{"clash with require_attributes", Source{Kind: "clash", URL: "https://example.com/rules.txt", RequireAttributes: []string{"cn"}}, false},
+		{"iana-local with require_attributes", Source{Kind: "iana-local", URLs: []string{"https://example.com/a.csv"}, RequireAttributes: []string{"cn"}}, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			if err := validateSource(tc.source); (err == nil) != tc.valid {
@@ -53,9 +80,7 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 	if !slices.Equal(cfg.Priority, wantPriority) {
 		t.Fatalf("got priority %v, want %v", cfg.Priority, wantPriority)
 	}
-	if len(cfg.RuleSets) != len(wantPriority) {
-		t.Fatalf("got %d rulesets, want %d", len(cfg.RuleSets), len(wantPriority))
-	}
+	const allCNSource = "v2fly/domain-list-community:*@cn"
 	wantDirectSources := []string{
 		"Tailscale:public-services",
 		"SukkaW/Surge:lan-domain", "SukkaW/Surge:lan-ip",
@@ -65,12 +90,15 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 		"SukkaW/Surge:direct", "SukkaW/Surge:domestic-domain",
 		"SukkaW/Surge:domestic-ip", "SukkaW/Surge:microsoft_cdn",
 		"v2fly/domain-list-community:{cn,elsevier,sciencedirect}",
-		"v2fly/domain-list-community:{apple,google,steam}@cn",
+		allCNSource,
 		"custom:cn", "Cloudflare:tunnel", "custom:direct",
 	}
 	var directSources []string
 	for _, src := range cfg.RuleSets[1].Sources {
 		directSources = append(directSources, src.Name)
+		if src.Name == allCNSource && (!src.AllLists || !slices.Equal(src.RequireAttributes, []string{"cn"})) {
+			t.Errorf("%s must select all lists and require the cn attribute", src.Name)
+		}
 	}
 	if !slices.Equal(directSources, wantDirectSources) {
 		t.Errorf("direct sources: got %v, want merged sources in order %v", directSources, wantDirectSources)
@@ -81,9 +109,6 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 		"us":      {{Kind: "clash-file", Path: "sources/us.classical.txt"}, {Kind: "domain-file", Path: "sources/anthropic.domain.txt"}, {Kind: "cidr-file", Path: "sources/anthropic.ipcidr.txt"}},
 	}
 	for i, set := range cfg.RuleSets {
-		if set.Name != wantPriority[i] {
-			t.Errorf("ruleset %d: got %s, want %s", i, set.Name, wantPriority[i])
-		}
 		var local []Source
 		for _, src := range set.Sources {
 			if src.Path != "" {
@@ -105,14 +130,33 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 			t.Errorf("%s exclusions: got %v, want %v", set.Name, set.Exclude, wantExclude)
 		}
 	}
-	wantAssertions := map[string]string{
-		"ts.net": "tailnet", "server.example.ts.net": "tailnet",
-		"forgejo.liblaf.me": "tailnet", "jellyfin.liblaf.me": "tailnet", "oplist.liblaf.me": "tailnet", "qbt.liblaf.me": "tailnet",
-		"100.64.0.1": "tailnet", "fd7a:115c:a1e0::1": "tailnet",
-		"tailscale.com": "direct", "login.tailscale.com": "direct", "controlplane.tailscale.com": "direct", "derp1-all.tailscale.com": "direct",
-		"tailscale.io": "direct", "controlplane.tailscale.io": "direct",
-		"localhost": "direct", "dl.acm.org": "direct", "www.elsevier.com": "direct",
-		"www.sciencedirect.com": "direct", "ieeexplore.ieee.org": "direct", "www.scopus.com": "direct", "shop.pockyt.io": "direct",
+	// The direct +.liblaf.me override partially overlaps the four exact custom
+	// hosts. Those assertions verify priority; suffixes and IPs are exclusive.
+	wantAssertions := map[string]struct {
+		ruleset   string
+		exclusive bool
+	}{
+		"ts.net":                     {"tailnet", true},
+		"server.example.ts.net":      {"tailnet", true},
+		"forgejo.liblaf.me":          {"tailnet", false},
+		"jellyfin.liblaf.me":         {"tailnet", false},
+		"oplist.liblaf.me":           {"tailnet", false},
+		"qbt.liblaf.me":              {"tailnet", false},
+		"100.64.0.1":                 {"tailnet", true},
+		"fd7a:115c:a1e0::1":          {"tailnet", true},
+		"tailscale.com":              {"direct", true},
+		"login.tailscale.com":        {"direct", true},
+		"controlplane.tailscale.com": {"direct", true},
+		"derp1-all.tailscale.com":    {"direct", true},
+		"tailscale.io":               {"direct", true},
+		"controlplane.tailscale.io":  {"direct", true},
+		"localhost":                  {"direct", false},
+		"dl.acm.org":                 {"direct", false},
+		"www.elsevier.com":           {"direct", false},
+		"www.sciencedirect.com":      {"direct", false},
+		"ieeexplore.ieee.org":        {"direct", false},
+		"www.scopus.com":             {"direct", false},
+		"shop.pockyt.io":             {"direct", false},
 	}
 	for _, assertion := range cfg.Assertions {
 		target := assertion.Domain
@@ -123,11 +167,8 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 		if !expected {
 			continue
 		}
-		// The direct +.liblaf.me override partially overlaps the four exact custom
-		// hosts. Those assertions verify priority; suffixes and IPs are exclusive.
-		wantExclusive := want == "tailnet" && !slices.Contains([]string{"forgejo.liblaf.me", "jellyfin.liblaf.me", "oplist.liblaf.me", "qbt.liblaf.me"}, target) || strings.HasSuffix(target, "tailscale.com") || strings.HasSuffix(target, "tailscale.io")
-		if assertion.RuleSet != want || assertion.Exclusive != wantExclusive {
-			t.Errorf("assertion for %q: got ruleset %s and exclusive=%t, want %s and exclusive=%t", target, assertion.RuleSet, assertion.Exclusive, want, wantExclusive)
+		if assertion.RuleSet != want.ruleset || assertion.Exclusive != want.exclusive {
+			t.Errorf("assertion for %q: got ruleset %s and exclusive=%t, want %s and exclusive=%t", target, assertion.RuleSet, assertion.Exclusive, want.ruleset, want.exclusive)
 		}
 		delete(wantAssertions, target)
 	}

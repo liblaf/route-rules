@@ -73,15 +73,53 @@ func TestParseClashRejectsUnknownKind(t *testing.T) {
 
 func TestParseV2FlyRuleAttributes(t *testing.T) {
 	t.Parallel()
-	kind, value, attributes, err := parseV2FlyRule("domain:example.cn:@cn")
+	kind, value, attributes, err := parseV2FlyRule("domain:example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if kind != "domain" || value != "example.com" || attributes != nil {
+		t.Fatalf("untagged rule: got kind=%q value=%q attributes=%v", kind, value, attributes)
+	}
+
+	kind, value, attributes, err = parseV2FlyRule("domain:example.cn:@cn")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if kind != "domain" || value != "example.cn" {
 		t.Fatalf("got kind=%q value=%q", kind, value)
 	}
-	if _, exists := attributes["cn"]; !exists {
-		t.Fatal("cn attribute was not parsed")
+	if _, exists := attributes["cn"]; !exists || len(attributes) != 1 {
+		t.Fatalf("single attribute was not parsed: %v", attributes)
+	}
+
+	kind, value, attributes, err = parseV2FlyRule("full:firebase-settings.crashlytics.com:@cn,@telemetry")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if kind != "full" || value != "firebase-settings.crashlytics.com" {
+		t.Fatalf("multi-tag rule: got kind=%q value=%q", kind, value)
+	}
+	for _, want := range []string{"cn", "telemetry"} {
+		if _, exists := attributes[want]; !exists {
+			t.Fatalf("attribute %q missing from %v", want, attributes)
+		}
+	}
+	if len(attributes) != 2 {
+		t.Fatalf("got %d attributes, want 2: %v", len(attributes), attributes)
+	}
+
+	for _, bad := range []string{
+		"badrule",
+		"domain:",
+		":example.cn",
+		"domain::@cn",
+		"domain:example.cn:@",
+		"domain:example.cn:@cn,@",
+		"domain:example.cn:@,@cn",
+	} {
+		if _, _, _, err := parseV2FlyRule(bad); err == nil {
+			t.Errorf("malformed V2Fly rule %q did not fail", bad)
+		}
 	}
 }
 

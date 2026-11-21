@@ -144,7 +144,6 @@ func (set DomainSet) Optimized() DomainSet {
 // set. Partial suffix differences cannot be represented by Mihomo's domain
 // rules and remain safe because consumers must evaluate sets in priority order.
 func (set DomainSet) Excluding(earlier DomainSet) DomainSet {
-	earlier = earlier.Optimized()
 	suffixes := make(map[string]DomainRule)
 	wildcards := make(map[string]DomainRule)
 	exacts := make(map[string]struct{})
@@ -156,6 +155,8 @@ func (set DomainSet) Excluding(earlier DomainSet) DomainSet {
 			suffixes[rule.Value] = rule
 		case DomainWildcard:
 			wildcards[rule.Value] = rule
+		default:
+			panic(fmt.Sprintf("unknown domain kind %d", rule.Kind))
 		}
 	}
 

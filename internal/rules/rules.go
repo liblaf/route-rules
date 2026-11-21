@@ -19,7 +19,7 @@ func (collection Collection) Excluding(earlier Collection) Collection {
 	collection.Domains = collection.Domains.Excluding(earlier.Domains)
 	collection.Classical = collection.Classical.Excluding(earlier.Classical)
 	collection.Prefixes = collection.Prefixes.Excluding(earlier.Prefixes)
-	return collection.Optimized()
+	return collection
 }
 
 func (collection Collection) MatchesDomain(domain string) bool {

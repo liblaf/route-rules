@@ -139,25 +139,32 @@ func validateSource(source Source) error {
 	hasURL := source.URL != ""
 	hasURLs := len(source.URLs) != 0
 	hasPath := source.Path != ""
-	hasSelection := len(source.Lists) != 0 || source.AllLists
+	hasLists := len(source.Lists) != 0
+	hasSelection := hasLists || source.AllLists
+	hasAttributes := len(source.RequireAttributes) != 0
 	switch source.Kind {
 	case "clash", "dnsmasq", "cidr":
-		if !hasURL || hasURLs || hasPath || hasSelection {
+		if !hasURL || hasURLs || hasPath || hasSelection || hasAttributes {
 			return fmt.Errorf("kind %q requires exactly one url", source.Kind)
 		}
 	case "v2fly":
-		if hasURL || hasURLs || hasPath || len(source.Lists) == 0 && !source.AllLists {
+		if hasURL || hasURLs || hasPath || !hasSelection {
 			return fmt.Errorf("kind v2fly requires lists or all_lists")
 		}
-		if source.AllLists && len(source.Lists) != 0 {
+		if source.AllLists && hasLists {
 			return fmt.Errorf("kind v2fly cannot combine lists and all_lists")
 		}
+		for _, attribute := range source.RequireAttributes {
+			if attribute == "" || strings.TrimSpace(attribute) != attribute || strings.ContainsAny(attribute, ",@:") {
+				return fmt.Errorf("kind v2fly has invalid required attribute %q", attribute)
+			}
+		}
 	case "iana-local":
-		if hasURL || !hasURLs || hasPath || hasSelection {
+		if hasURL || !hasURLs || hasPath || hasSelection || hasAttributes {
 			return fmt.Errorf("kind iana-local requires urls")
 		}
 	case "domain-file", "cidr-file", "clash-file":
-		if hasURL || hasURLs || !hasPath || hasSelection {
+		if hasURL || hasURLs || !hasPath || hasSelection || hasAttributes {
 			return fmt.Errorf("kind %s requires a path", source.Kind)
 		}
 		if !isLocalPath(source.Path) {

@@ -93,9 +93,9 @@
           "lists": ["cn", "elsevier", "sciencedirect"]
         },
         {
-          "name": "v2fly/domain-list-community:{apple,google,steam}@cn",
+          "name": "v2fly/domain-list-community:*@cn",
           "kind": "v2fly",
-          "lists": ["apple", "google", "steam"],
+          "all_lists": true,
           "require_attributes": ["cn"]
         },
         {

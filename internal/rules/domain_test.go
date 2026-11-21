@@ -22,10 +22,19 @@ func TestDomainSetOptimized(t *testing.T) {
 
 func TestDomainSetExcludingDropsOnlyFullyCoveredRules(t *testing.T) {
 	t.Parallel()
-	earlier := DomainSet{mustDomain(t, DomainExact, "api.example.com")}
+	earlier := DomainSet{
+		mustDomain(t, DomainExact, "api.example.com"),
+		mustDomain(t, DomainExact, "api.example.com"),
+		mustDomain(t, DomainSuffix, "sub.covered.test"),
+		mustDomain(t, DomainSuffix, "covered.test"),
+		mustDomain(t, DomainWildcard, "*.covered.test"),
+	}
 	later := DomainSet{
 		mustDomain(t, DomainExact, "api.example.com"),
 		mustDomain(t, DomainSuffix, "example.com"),
+		mustDomain(t, DomainExact, "a.covered.test"),
+		mustDomain(t, DomainSuffix, "deep.sub.covered.test"),
+		mustDomain(t, DomainWildcard, "*.deep.covered.test"),
 	}
 	actual := domainRuleTexts(later.Excluding(earlier))
 	want := []string{"+.example.com"}
