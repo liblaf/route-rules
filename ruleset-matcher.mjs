@@ -9,25 +9,37 @@ const DOMAIN_TYPES = new Set([
   "DOMAIN-REGEX",
 ]);
 const IP_TYPES = new Set(["IP-CIDR", "IP-CIDR6"]);
-const UNSUPPORTED_REASON = "This rule needs request context that this checker does not have.";
+const ASCII_DOMAIN_RE =
+  /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/;
+const NUMERIC_LAST_LABEL_RE = /(?:^|\.)(?:[0-9]+|0x[0-9a-f]*)$/;
+const GO_ONLY_REGEX_RE = /\\(?:A|C|z|Q|E|p|P|a)|\\x\{|\[\[:|\(\?[a-zA-Z-]+:|\(\?P[<=]/;
 
-function inputError() {
-  return new Error("Enter a valid domain name or IP address.");
-}
+export const supportsBehavior = (behavior) => BEHAVIORS.has(behavior);
+export const matchesQueryKind = (behavior, kind) =>
+  behavior === "classical" || behavior === (kind === "ip" ? "ipcidr" : "domain");
+
+const inputError = () => new Error("Enter a valid domain name or IP address.");
 
 function normalizeDomain(value) {
-  const input = value.trim().replace(/\.$/, "").toLowerCase();
-  if (!input || input.length > 253 || input.includes("..") || /[\s\\/@:?#%]/.test(input))
+  let input = value.trim().toLowerCase();
+  if (input.endsWith(".")) input = input.slice(0, -1);
+  if (!input || input.length > 253) throw inputError();
+  if (ASCII_DOMAIN_RE.test(input) && !input.includes("xn--") && !NUMERIC_LAST_LABEL_RE.test(input))
+    return input;
+  if (input.includes("..") || /[\s\\/@:?#%]/.test(input) || /^[0-9.]+$|^0x[0-9a-f]+$/.test(input))
     throw inputError();
-  if (/^[0-9.]+$/.test(input) || /^0x[0-9a-f]+$/i.test(input)) throw inputError();
   let hostname;
   try {
     hostname = new URL(`http://${input}`).hostname;
   } catch {
     throw inputError();
   }
-  if (!hostname || hostname.includes(":") || parseIpv4(hostname) !== null) throw inputError();
-  if (!hostname.split(".").every((label) => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label)))
+  if (
+    !hostname ||
+    hostname.includes(":") ||
+    parseIpv4(hostname) !== null ||
+    !ASCII_DOMAIN_RE.test(hostname)
+  )
     throw inputError();
   return hostname;
 }
@@ -45,59 +57,29 @@ function parseIpv4(value) {
   return numeric;
 }
 
+function parseIpv6(input) {
+  if (!input.includes(":") || !/^[0-9a-f:.]+$/.test(input)) return null;
+  let canonical;
+  try {
+    const { hostname } = new URL(`http://[${input}]/`);
+    if (!hostname.startsWith("[") || !hostname.endsWith("]")) return null;
+    canonical = hostname.slice(1, -1);
+  } catch {
+    return null;
+  }
+  const [leftText, rightText] = canonical.split("::");
+  const left = leftText ? leftText.split(":") : [];
+  const right = rightText ? rightText.split(":") : [];
+  let numeric = 0n;
+  for (const group of [...left, ...Array(8 - left.length - right.length).fill("0"), ...right])
+    numeric = (numeric << 16n) | BigInt(Number.parseInt(group, 16));
+  return { family: 6, numeric, value: canonical };
+}
+
 function parseIp(value) {
   const input = value.trim().toLowerCase();
   const ipv4 = parseIpv4(input);
-  if (ipv4 !== null) return { family: 4, numeric: ipv4, value: input };
-  if (!input || input.includes("%")) return null;
-  let ipv6 = input;
-  if (ipv6.includes(".")) {
-    const separator = ipv6.lastIndexOf(":");
-    const tail = separator < 0 ? null : parseIpv4(ipv6.slice(separator + 1));
-    if (tail === null) return null;
-    ipv6 = `${ipv6.slice(0, separator + 1)}${(tail >> 16n).toString(16)}:${(tail & 0xffffn).toString(16)}`;
-  }
-  const halves = ipv6.split("::");
-  if (halves.length > 2) return null;
-  const left = halves[0] ? halves[0].split(":") : [];
-  const right = halves.length === 2 && halves[1] ? halves[1].split(":") : [];
-  if (left.concat(right).some((group) => !/^[0-9a-f]{1,4}$/.test(group))) return null;
-  if (
-    (halves.length === 1 && left.length !== 8) ||
-    (halves.length === 2 && left.length + right.length >= 8)
-  )
-    return null;
-  const groups = [...left, ...Array(8 - left.length - right.length).fill("0"), ...right].map(
-    (group) => Number.parseInt(group, 16),
-  );
-  let numeric = 0n;
-  for (const group of groups) numeric = (numeric << 16n) | BigInt(group);
-  return { family: 6, numeric, value: formatIpv6(groups) };
-}
-
-function formatIpv6(groups) {
-  let start = -1;
-  let length = 0;
-  for (let index = 0; index < groups.length;) {
-    if (groups[index] !== 0) {
-      index += 1;
-      continue;
-    }
-    let end = index;
-    while (end < groups.length && groups[end] === 0) end += 1;
-    if (end - index > length) [start, length] = [index, end - index];
-    index = end;
-  }
-  if (length < 2) return groups.map((group) => group.toString(16)).join(":");
-  const before = groups
-    .slice(0, start)
-    .map((group) => group.toString(16))
-    .join(":");
-  const after = groups
-    .slice(start + length)
-    .map((group) => group.toString(16))
-    .join(":");
-  return `${before}::${after}`.replace(/^::$/, "::");
+  return ipv4 !== null ? { family: 4, numeric: ipv4, value: input } : parseIpv6(input);
 }
 
 function parseCidr(value) {
@@ -112,167 +94,91 @@ function parseCidr(value) {
   return { ...ip, prefix, mask, network: ip.numeric & mask };
 }
 
-function isWholeLabelWildcard(value) {
-  return (
-    value.includes("*") &&
-    !value.includes("?") &&
-    value.split(".").every((label) => !/[?*]/.test(label) || label === "*")
+function compileGlob(pattern) {
+  const source = pattern.replace(/[|\\{}()[\]^$+.*?]/g, (ch) =>
+    ch === "*" ? ".*" : ch === "?" ? "." : `\\${ch}`,
   );
+  return new RegExp(`^${source}$`);
 }
 
-function globMatches(pattern, value) {
-  let source = "";
-  for (const character of pattern) {
-    if (character === "*") source += ".*";
-    else if (character === "?") source += ".";
-    else source += /[|\\{}()[\]^$+?.]/.test(character) ? `\\${character}` : character;
+function unsupported(type, value, queryKinds) {
+  const kinds =
+    queryKinds ??
+    (type.startsWith("DOMAIN") ? ["domain"] : IP_TYPES.has(type) ? ["ip"] : ["domain", "ip"]);
+  return { type, value, supported: false, queryKinds: kinds };
+}
+
+function cidrEntry(type, value, target = value) {
+  const cidr = parseCidr(target);
+  return cidr ? { type, value, supported: true, cidr } : unsupported(type, value);
+}
+
+function domainEntry(raw) {
+  if (raw.includes("*")) {
+    let value = raw.toLowerCase();
+    if (value.endsWith(".")) value = value.slice(0, -1);
+    const labels = value.split(".");
+    const valid =
+      !/[\s,/]/.test(value) &&
+      labels.every((label) => label && (label === "*" || !/[?*]/.test(label)));
+    return valid
+      ? { type: "DOMAIN-WILDCARD", value, supported: true, labels }
+      : unsupported("DOMAIN-WILDCARD", raw);
   }
-  return new RegExp(`^${source}$`).test(value);
-}
-
-function wholeLabelWildcardMatches(pattern, value) {
-  const expected = pattern.split(".");
-  const actual = value.split(".");
-  return (
-    expected.length === actual.length &&
-    expected.every((label, index) => label === "*" || label === actual[index])
-  );
-}
-
-function unsupported(type, value, raw, line, reason = UNSUPPORTED_REASON) {
-  const queryKinds = type.startsWith("DOMAIN")
-    ? ["domain"]
-    : IP_TYPES.has(type)
-      ? ["ip"]
-      : ["domain", "ip"];
-  return { type, value, raw, line, supported: false, reason, queryKinds };
-}
-
-function regexForBrowser(value) {
-  // Mihomo uses Go's RE2. Do not reinterpret its Go-only extensions in JS.
-  if (/\\(?:A|C|z|Q|E|p|P|a)|\\x\{|\[\[:|\(\?[a-zA-Z-]+:|\(\?P[<=]/.test(value)) return null;
   try {
-    return new RegExp(value);
+    return raw.startsWith("+.")
+      ? { type: "DOMAIN-SUFFIX", value: normalizeDomain(raw.slice(2)), supported: true }
+      : { type: "DOMAIN", value: normalizeDomain(raw), supported: true };
   } catch {
-    return null;
+    return unsupported("DOMAIN", raw);
   }
 }
 
-function domainEntry(value, raw, line) {
-  if (value.startsWith("+."))
-    return {
-      type: "DOMAIN-SUFFIX",
-      value: normalizeDomain(value.slice(2)),
-      raw,
-      line,
-      supported: true,
-    };
-  if (value.includes("*")) {
-    const normalized = value.trim().toLowerCase();
-    return isWholeLabelWildcard(normalized)
-      ? {
-          type: "DOMAIN-WILDCARD",
-          value: normalized,
-          raw,
-          line,
-          supported: true,
-          wholeLabel: true,
-        }
-      : unsupported("DOMAIN-WILDCARD", raw, raw, line, "Invalid domain wildcard syntax.");
-  }
-  return {
-    type: "DOMAIN",
-    value: normalizeDomain(value),
-    raw,
-    line,
-    supported: true,
-  };
-}
-
-function classicalEntry(raw, line) {
-  const separator = raw.indexOf(",");
-  const type = raw
-    .slice(0, separator < 0 ? raw.length : separator)
-    .trim()
-    .toUpperCase();
-  const payload = separator < 0 ? "" : raw.slice(separator + 1).trim();
-  // A regex may contain commas (for example `{0,5}`), whereas target-IP
-  // rules can carry comma-separated options such as `no-resolve`.
-  const trimmed = type === "DOMAIN-REGEX" ? payload : payload.split(",", 1)[0].trim();
+function classicalEntry(raw) {
+  const comma = raw.indexOf(",");
+  const type = (comma < 0 ? raw : raw.slice(0, comma)).trim().toUpperCase();
+  const payload = comma < 0 ? "" : raw.slice(comma + 1).trim();
   if (IP_TYPES.has(type)) {
-    const cidr = parseCidr(trimmed);
-    return cidr
-      ? { type, value: trimmed, raw, line, supported: true, cidr }
-      : unsupported(type, trimmed, raw, line, "Invalid IP-CIDR rule.");
+    const [first, ...options] = payload.split(",");
+    if (options.some((opt) => opt.trim().toLowerCase() === "src"))
+      return unsupported(type, payload, ["domain", "ip"]);
+    return cidrEntry(type, payload, first.trim());
   }
-  if (!DOMAIN_TYPES.has(type)) return unsupported(type || "UNKNOWN", trimmed, raw, line);
+  if (!DOMAIN_TYPES.has(type)) return unsupported(type || "UNKNOWN", payload);
+  // Regexes may contain commas (e.g. `{0,5}`); other directives put their target before the first comma.
+  const target = type === "DOMAIN-REGEX" ? payload : payload.split(",", 1)[0].trim();
+  if (!target) return unsupported(type, target);
   try {
-    if (type === "DOMAIN")
-      return {
-        type,
-        value: normalizeDomain(trimmed),
-        raw,
-        line,
-        supported: true,
-      };
-    if (type === "DOMAIN-SUFFIX")
-      return {
-        type,
-        value: normalizeDomain(trimmed),
-        raw,
-        line,
-        supported: true,
-      };
-    if (type === "DOMAIN-KEYWORD")
-      return { type, value: trimmed.toLowerCase(), raw, line, supported: true };
-    if (type === "DOMAIN-WILDCARD")
-      return {
-        type,
-        value: trimmed.toLowerCase(),
-        raw,
-        line,
-        supported: true,
-        wholeLabel: false,
-      };
-    const regex = regexForBrowser(trimmed);
-    return regex
-      ? { type, value: trimmed, raw, line, supported: true, regex }
-      : unsupported(
-          type,
-          trimmed,
-          raw,
-          line,
-          "This Go regular expression cannot be matched safely in the browser.",
-        );
+    if (type === "DOMAIN" || type === "DOMAIN-SUFFIX")
+      return { type, value: normalizeDomain(target), supported: true };
+    if (type === "DOMAIN-KEYWORD") return { type, value: target.toLowerCase(), supported: true };
+    if (type === "DOMAIN-WILDCARD") {
+      const value = target.toLowerCase();
+      return { type, value, supported: true, regex: compileGlob(value) };
+    }
+    if (GO_ONLY_REGEX_RE.test(target)) return unsupported(type, target);
+    return { type, value: target, supported: true, regex: new RegExp(target) };
   } catch {
-    return unsupported(type, trimmed, raw, line, "Invalid domain rule.");
+    return unsupported(type, target);
   }
 }
 
 export function parseRules(text, behavior) {
   if (typeof text !== "string") throw new TypeError("Ruleset text must be a string.");
-  if (!BEHAVIORS.has(behavior)) throw new TypeError("Unknown ruleset behavior.");
-  return text.split(/\r?\n/).flatMap((source, offset) => {
-    const raw = source.trim();
-    const line = offset + 1;
-    if (!raw || raw.startsWith("#")) return [];
-    if (behavior === "domain") {
-      try {
-        return [domainEntry(raw, raw, line)];
-      } catch {
-        return [unsupported("DOMAIN", raw, raw, line, "Invalid domain rule.")];
-      }
-    }
-    if (behavior === "ipcidr") {
-      const cidr = parseCidr(raw);
-      return [
-        cidr
-          ? { type: "IP-CIDR", value: raw, raw, line, supported: true, cidr }
-          : unsupported("IP-CIDR", raw, raw, line, "Invalid IP-CIDR rule."),
-      ];
-    }
-    return [classicalEntry(raw, line)];
-  });
+  if (!supportsBehavior(behavior)) throw new TypeError("Unknown ruleset behavior.");
+  const entries = [];
+  for (const line of text.split(/\r?\n/)) {
+    const raw = line.trim();
+    if (!raw || raw.startsWith("#")) continue;
+    entries.push(
+      behavior === "domain"
+        ? domainEntry(raw)
+        : behavior === "ipcidr"
+          ? cidrEntry("IP-CIDR", raw)
+          : classicalEntry(raw),
+    );
+  }
+  return entries;
 }
 
 export function parseQuery(input) {
@@ -281,29 +187,39 @@ export function parseQuery(input) {
   return ip ? { kind: "ip", ...ip } : { kind: "domain", value: normalizeDomain(input) };
 }
 
+function entryMatches(entry, query) {
+  if (query.kind === "ip")
+    return (
+      entry.cidr?.family === query.family &&
+      (query.numeric & entry.cidr.mask) === entry.cidr.network
+    );
+  if (entry.type === "DOMAIN") return query.value === entry.value;
+  if (entry.type === "DOMAIN-SUFFIX")
+    return query.value === entry.value || query.value.endsWith(`.${entry.value}`);
+  if (entry.type === "DOMAIN-KEYWORD") return query.value.includes(entry.value);
+  if (entry.type === "DOMAIN-WILDCARD") {
+    if (!entry.labels) return entry.regex.test(query.value);
+    const actual = query.value.split(".");
+    return (
+      entry.labels.length === actual.length &&
+      entry.labels.every((label, i) => label === "*" || label === actual[i])
+    );
+  }
+  return entry.type === "DOMAIN-REGEX" && entry.regex.test(query.value);
+}
+
 export function matchRules(entries, query) {
   if (!Array.isArray(entries)) throw new TypeError("Rules must be an array.");
   if (!query || (query.kind !== "domain" && query.kind !== "ip"))
     throw new TypeError("Query must be parsed first.");
-  const unsupported = entries.filter(
-    (entry) => !entry.supported && entry.queryKinds.includes(query.kind),
-  );
-  const matches = entries.filter((entry) => {
-    if (!entry.supported) return false;
-    if (query.kind === "ip")
-      return (
-        entry.cidr?.family === query.family &&
-        (query.numeric & entry.cidr.mask) === entry.cidr.network
-      );
-    if (entry.type === "DOMAIN") return query.value === entry.value;
-    if (entry.type === "DOMAIN-SUFFIX")
-      return query.value === entry.value || query.value.endsWith(`.${entry.value}`);
-    if (entry.type === "DOMAIN-KEYWORD") return query.value.includes(entry.value);
-    if (entry.type === "DOMAIN-WILDCARD")
-      return entry.wholeLabel
-        ? wholeLabelWildcardMatches(entry.value, query.value)
-        : globMatches(entry.value, query.value);
-    return entry.type === "DOMAIN-REGEX" && entry.regex.test(query.value);
-  });
-  return { matches, unsupported };
+  const matches = [];
+  const unsupportedEntries = [];
+  for (const entry of entries) {
+    if (!entry.supported) {
+      if (entry.queryKinds.includes(query.kind)) unsupportedEntries.push(entry);
+    } else if (entryMatches(entry, query)) {
+      matches.push(entry);
+    }
+  }
+  return { matches, unsupported: unsupportedEntries };
 }
