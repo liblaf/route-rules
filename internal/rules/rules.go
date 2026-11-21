@@ -8,34 +8,36 @@ type Collection struct {
 	Prefixes  PrefixSet
 }
 
-func (collection Collection) Optimized() Collection {
-	collection.Domains = collection.Domains.Optimized()
-	collection.Classical = collection.Classical.Optimized()
-	collection.Prefixes = collection.Prefixes.Optimized()
-	return collection
+func (c Collection) Optimized() Collection {
+	return Collection{
+		Domains:   c.Domains.Optimized(),
+		Classical: c.Classical.Optimized(),
+		Prefixes:  c.Prefixes.Optimized(),
+	}
 }
 
-func (collection Collection) Excluding(earlier Collection) Collection {
-	collection.Domains = collection.Domains.Excluding(earlier.Domains)
-	collection.Classical = collection.Classical.Excluding(earlier.Classical)
-	collection.Prefixes = collection.Prefixes.Excluding(earlier.Prefixes)
-	return collection
+func (c Collection) Excluding(earlier Collection) Collection {
+	return Collection{
+		Domains:   c.Domains.Excluding(earlier.Domains),
+		Classical: c.Classical.Excluding(earlier.Classical),
+		Prefixes:  c.Prefixes.Excluding(earlier.Prefixes),
+	}
 }
 
-func (collection Collection) MatchesDomain(domain string) bool {
-	return collection.Domains.Matches(domain) || collection.Classical.Matches(domain)
+func (c Collection) MatchesDomain(domain string) bool {
+	return c.Domains.Matches(domain) || c.Classical.Matches(domain)
 }
 
 // Matches evaluates the available domain, destination IP, and destination port.
 // A zero destination port means that no port metadata was supplied.
-func (collection Collection) Matches(domain string, address netip.Addr, destinationPort uint16) bool {
-	return domain != "" && collection.MatchesDomain(domain) ||
-		address.IsValid() && collection.Prefixes.Contains(address) ||
-		destinationPort != 0 && collection.Classical.MatchesDestinationPort(destinationPort)
+func (c Collection) Matches(domain string, addr netip.Addr, dstPort uint16) bool {
+	return domain != "" && c.MatchesDomain(domain) ||
+		addr.IsValid() && c.Prefixes.Contains(addr) ||
+		dstPort != 0 && c.Classical.MatchesDestinationPort(dstPort)
 }
 
-func (collection *Collection) Append(other Collection) {
-	collection.Domains = append(collection.Domains, other.Domains...)
-	collection.Classical = append(collection.Classical, other.Classical...)
-	collection.Prefixes = append(collection.Prefixes, other.Prefixes...)
+func (c *Collection) Append(other Collection) {
+	c.Domains = append(c.Domains, other.Domains...)
+	c.Classical = append(c.Classical, other.Classical...)
+	c.Prefixes = append(c.Prefixes, other.Prefixes...)
 }

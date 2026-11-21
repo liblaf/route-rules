@@ -119,7 +119,7 @@ test("failed requests are evicted so a later request retries", async () => {
 test("rejects incomplete binary coverage and inaccurate artifact counts", async () => {
   const incomplete = createRulesetStore({
     baseUrl: "https://rules.example/mihomo/",
-    fetcher: async (url) =>
+    fetcher: async () =>
       response(
         JSON.stringify({
           ...metadata,
@@ -168,4 +168,54 @@ test("malformed metadata is rejected and can be retried", async () => {
   });
   await assert.rejects(store.loadMeta(), /ruleset priority and fallback/);
   assert.deepEqual(await store.loadMeta(), metadata);
+});
+
+test("query loading skips unrelated fetches and textArtifacts ignores unknown behaviors", async () => {
+  const requests = [];
+  const store = createRulesetStore({
+    baseUrl: "https://rules.example/mihomo/",
+    fetcher: async (url) => {
+      requests.push(url);
+      if (url.endsWith("stats.json"))
+        return response(
+          JSON.stringify({
+            ...metadata,
+            artifacts: [
+              ...metadata.artifacts,
+              {
+                path: "global.custom.txt",
+                ruleset: "global",
+                behavior: "custom",
+                format: "text",
+                rule_count: 1,
+              },
+            ],
+          }),
+        );
+      if (url.endsWith("global.domain.list")) return response("example.com\n+.example.org\n");
+      if (url.endsWith("global.ipcidr.list")) return response("192.0.2.0/24\n");
+      if (url.endsWith("global.classical.txt")) return response("DST-PORT,7844\n");
+      throw new Error(`unexpected request ${url}`);
+    },
+  });
+
+  const artifacts = await store.textArtifacts("global");
+  assert.deepEqual(
+    artifacts.map((artifact) => artifact.path),
+    ["global.domain.list", "global.ipcidr.list", "global.classical.txt"],
+  );
+  const ipEntries = await store.loadRulesForQuery("global", "ip");
+  assert.deepEqual(
+    ipEntries.map((entry) => entry.type),
+    ["IP-CIDR", "DST-PORT"],
+  );
+  assert.ok(!requests.some((url) => url.endsWith("global.domain.list")));
+  const domainEntries = await store.loadRulesForQuery("global", "domain");
+  assert.deepEqual(
+    domainEntries.map((entry) => entry.type),
+    ["DOMAIN", "DOMAIN-SUFFIX", "DST-PORT"],
+  );
+  const allEntries = await store.loadRules("global");
+  assert.equal(allEntries.length, 4);
+  assert.equal(requests.length, 4);
 });

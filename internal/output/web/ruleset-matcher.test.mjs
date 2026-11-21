@@ -4,7 +4,7 @@ import test from "node:test";
 import { matchRules, parseQuery, parseRules } from "./ruleset-matcher.mjs";
 
 test("domain rules preserve exact, suffix, and whole-label wildcard semantics", () => {
-  const rules = parseRules("example.com\n+.example.org\n*.example.net", "domain");
+  const rules = parseRules("example.com\n+.example.org\n*.example.net.", "domain");
   assert.equal(matchRules(rules, parseQuery("example.com")).matches.length, 1);
   assert.equal(matchRules(rules, parseQuery("api.example.org")).matches.length, 1);
   assert.equal(matchRules(rules, parseQuery("EXAMPLE.ORG.")).matches.length, 1);
@@ -12,6 +12,12 @@ test("domain rules preserve exact, suffix, and whole-label wildcard semantics", 
   assert.equal(matchRules(rules, parseQuery("api.example.com")).matches.length, 0);
   assert.equal(matchRules(rules, parseQuery("a.b.example.net")).matches.length, 0);
   assert.equal(matchRules(rules, parseQuery("a.example.net")).matches.length, 1);
+  assert.equal(
+    parseRules("*.example..com\n.*.example.com\n*.bad domain.com", "domain").every(
+      (entry) => !entry.supported,
+    ),
+    true,
+  );
 });
 
 test("classical rules match keyword, glob, and JS-compatible Go regex", () => {
@@ -55,6 +61,52 @@ test("CIDR matching supports IPv4, IPv6, boundaries, and mapped IPv4", () => {
       .length,
     1,
   );
+  assert.equal(parseQuery("2001:db8:0:0:1:0:0:1").value, "2001:db8::1:0:0:1");
+  assert.equal(parseQuery("::").value, "::");
+  assert.equal(parseQuery("::1").value, "::1");
+  assert.equal(parseQuery("1::").value, "1::");
+  assert.equal(parseQuery("0:0:0:0:0:0:0:1").value, "::1");
+  assert.equal(parseQuery("2001:DB8::1").value, "2001:db8::1");
+  assert.throws(() => parseQuery("2001:db8::1%eth0"), /valid domain name or IP address/);
+  assert.throws(() => parseQuery("::ffff:001.2.3.4"), /valid domain name or IP address/);
+  assert.throws(() => parseQuery("1:2:3:4:5:6:7::8"), /valid domain name or IP address/);
+  assert.throws(() => parseQuery("192.0.2.1:80"), /valid domain name or IP address/);
+});
+
+test("classical rules preserve full payloads and treat src CIDR rules as contextual", () => {
+  const rules = parseRules(
+    [
+      "IP-CIDR,192.0.2.0/24,no-resolve",
+      "IP-CIDR,198.51.100.0/24,no-resolve,src",
+      "IP-CIDR6,2001:db8::/32,src",
+      "AND,((NETWORK,UDP),(DST-PORT,7844))",
+      "IP-ASN,13335,no-resolve,src",
+    ].join("\n"),
+    "classical",
+  );
+  assert.deepEqual(
+    rules.map(({ type, value }) => [type, value]),
+    [
+      ["IP-CIDR", "192.0.2.0/24,no-resolve"],
+      ["IP-CIDR", "198.51.100.0/24,no-resolve,src"],
+      ["IP-CIDR6", "2001:db8::/32,src"],
+      ["AND", "((NETWORK,UDP),(DST-PORT,7844))"],
+      ["IP-ASN", "13335,no-resolve,src"],
+    ],
+  );
+  const destMatch = matchRules(rules, parseQuery("192.0.2.10"));
+  assert.equal(destMatch.matches.length, 1);
+  assert.equal(destMatch.matches[0].value, "192.0.2.0/24,no-resolve");
+  assert.deepEqual(
+    destMatch.unsupported.map(({ type }) => type),
+    ["IP-CIDR", "IP-CIDR6", "AND", "IP-ASN"],
+  );
+  const srcIpCheck = matchRules(rules, parseQuery("198.51.100.10"));
+  assert.equal(srcIpCheck.matches.length, 0);
+  assert.equal(srcIpCheck.unsupported.length, 4);
+  const domainCheck = matchRules(rules, parseQuery("example.com"));
+  assert.equal(domainCheck.matches.length, 0);
+  assert.equal(domainCheck.unsupported.length, 4);
 });
 
 test("unsafe regexes and contextual rules are explicitly disclosed", () => {
@@ -98,4 +150,8 @@ test("unsupported entries only affect their applicable query kind", () => {
   assert.equal(matchRules(rules, parseQuery("192.0.2.1")).unsupported.length, 0);
   assert.equal(matchRules(rules, parseQuery("example.com")).unsupported.length, 1);
   assert.equal(parseRules("DOMAIN-REGEX,\\Qexample\\E", "classical")[0].supported, false);
+  assert.equal(
+    parseRules("DOMAIN-KEYWORD,\nDOMAIN-REGEX,\n", "classical").every((e) => !e.supported),
+    true,
+  );
 });

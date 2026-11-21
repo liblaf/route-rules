@@ -1,9 +1,10 @@
 package rules
 
 import (
+	"cmp"
 	"fmt"
 	"net/netip"
-	"sort"
+	"slices"
 )
 
 type PrefixSet []netip.Prefix
@@ -17,79 +18,77 @@ func (set PrefixSet) Contains(address netip.Addr) bool {
 	return false
 }
 
+func (set PrefixSet) Texts() []string {
+	result := make([]string, len(set))
+	for index, prefix := range set {
+		result[index] = prefix.String()
+	}
+	return result
+}
+
 func (set PrefixSet) Optimized() PrefixSet {
-	unique := make(map[netip.Prefix]struct{}, len(set))
-	for _, prefix := range set {
+	if len(set) == 0 {
+		return nil
+	}
+	sorted := make(PrefixSet, len(set))
+	for index, prefix := range set {
 		if !prefix.IsValid() {
 			panic("invalid IP prefix")
 		}
-		unique[prefix.Masked()] = struct{}{}
+		sorted[index] = prefix.Masked()
 	}
+	slices.SortFunc(sorted, comparePrefix)
 
-	prefixes := prefixMapToSortedSlice(unique)
-	unique = make(map[netip.Prefix]struct{}, len(prefixes))
-	for _, prefix := range prefixes {
-		if !coveredByPrefixMap(unique, prefix) {
-			unique[prefix] = struct{}{}
+	stack := sorted[:0]
+	for _, prefix := range sorted {
+		if len(stack) > 0 && stack[len(stack)-1].Contains(prefix.Addr()) {
+			continue
+		}
+		stack = append(stack, prefix)
+		for len(stack) >= 2 {
+			left, right := stack[len(stack)-2], stack[len(stack)-1]
+			if left.Addr().BitLen() != right.Addr().BitLen() || left.Bits() != right.Bits() || left.Bits() == 0 {
+				break
+			}
+			parent := netip.PrefixFrom(left.Addr(), left.Bits()-1).Masked()
+			if parent != netip.PrefixFrom(right.Addr(), right.Bits()-1).Masked() {
+				break
+			}
+			stack = stack[:len(stack)-1]
+			stack[len(stack)-1] = parent
 		}
 	}
-
-	for _, addressBits := range []int{32, 128} {
-		for bits := addressBits; bits > 0; bits-- {
-			parents := make(map[netip.Prefix]uint8)
-			for prefix := range unique {
-				if prefix.Addr().BitLen() != addressBits || prefix.Bits() != bits {
-					continue
-				}
-				parent := netip.PrefixFrom(prefix.Addr(), bits-1).Masked()
-				if childIndex(prefix) == 0 {
-					parents[parent] |= 1
-				} else {
-					parents[parent] |= 2
-				}
-			}
-			for parent, children := range parents {
-				if children != 3 {
-					continue
-				}
-				left, right := prefixChildren(parent)
-				delete(unique, left)
-				delete(unique, right)
-				unique[parent] = struct{}{}
-			}
-		}
-	}
-	return prefixMapToSortedSlice(unique)
+	return stack
 }
 
 func (set PrefixSet) Excluding(earlier PrefixSet) PrefixSet {
-	work := append(PrefixSet(nil), set.Optimized()...)
+	base := set.Optimized()
 	cuts := earlier.Optimized()
-	for _, cut := range cuts {
-		next := make(PrefixSet, 0, len(work))
-		for _, prefix := range work {
-			next = append(next, subtractPrefix(prefix, cut)...)
-		}
-		work = next
+	if len(base) == 0 || len(cuts) == 0 {
+		return base
 	}
-	return work.Optimized()
+	result := make(PrefixSet, 0, len(base))
+	cutIndex := 0
+	for _, prefix := range base {
+		subtractSorted(prefix, cuts, &cutIndex, &result)
+	}
+	return result
 }
 
-func subtractPrefix(base, cut netip.Prefix) PrefixSet {
-	base = base.Masked()
-	cut = cut.Masked()
-	if base.Addr().BitLen() != cut.Addr().BitLen() || !prefixesOverlap(base, cut) {
-		return PrefixSet{base}
+func subtractSorted(current netip.Prefix, cuts PrefixSet, cutIndex *int, out *PrefixSet) {
+	for *cutIndex < len(cuts) && !current.Overlaps(cuts[*cutIndex]) && cuts[*cutIndex].Addr().Less(current.Addr()) {
+		*cutIndex++
 	}
-	if prefixContains(cut, base) {
-		return nil
+	if *cutIndex >= len(cuts) || !current.Overlaps(cuts[*cutIndex]) {
+		*out = append(*out, current)
+		return
 	}
-	if !prefixContains(base, cut) {
-		return PrefixSet{base}
+	if cuts[*cutIndex].Bits() <= current.Bits() {
+		return
 	}
-	left, right := prefixChildren(base)
-	result := subtractPrefix(left, cut)
-	return append(result, subtractPrefix(right, cut)...)
+	left, right := prefixChildren(current)
+	subtractSorted(left, cuts, cutIndex, out)
+	subtractSorted(right, cuts, cutIndex, out)
 }
 
 func prefixChildren(prefix netip.Prefix) (netip.Prefix, netip.Prefix) {
@@ -99,8 +98,7 @@ func prefixChildren(prefix netip.Prefix) (netip.Prefix, netip.Prefix) {
 	}
 	childBits := bits + 1
 	left := netip.PrefixFrom(prefix.Addr(), childBits).Masked()
-	rightAddress := setAddressBit(prefix.Addr(), bits)
-	right := netip.PrefixFrom(rightAddress, childBits).Masked()
+	right := netip.PrefixFrom(setAddressBit(prefix.Addr(), bits), childBits).Masked()
 	return left, right
 }
 
@@ -115,49 +113,6 @@ func setAddressBit(address netip.Addr, bit int) netip.Addr {
 	return netip.AddrFrom16(bytes)
 }
 
-func childIndex(prefix netip.Prefix) uint8 {
-	bit := prefix.Bits() - 1
-	address := prefix.Addr()
-	if address.Is4() {
-		bytes := address.As4()
-		return (bytes[bit/8] >> (7 - bit%8)) & 1
-	}
-	bytes := address.As16()
-	return (bytes[bit/8] >> (7 - bit%8)) & 1
-}
-
-func coveredByPrefixMap(prefixes map[netip.Prefix]struct{}, prefix netip.Prefix) bool {
-	for bits := prefix.Bits(); bits >= 0; bits-- {
-		candidate := netip.PrefixFrom(prefix.Addr(), bits).Masked()
-		if _, exists := prefixes[candidate]; exists {
-			return true
-		}
-	}
-	return false
-}
-
-func prefixesOverlap(left, right netip.Prefix) bool {
-	return left.Contains(right.Addr()) || right.Contains(left.Addr())
-}
-
-func prefixContains(outer, inner netip.Prefix) bool {
-	return outer.Bits() <= inner.Bits() && outer.Contains(inner.Addr())
-}
-
-func prefixMapToSortedSlice(prefixes map[netip.Prefix]struct{}) PrefixSet {
-	result := make(PrefixSet, 0, len(prefixes))
-	for prefix := range prefixes {
-		result = append(result, prefix)
-	}
-	sort.Slice(result, func(i, j int) bool {
-		left, right := result[i], result[j]
-		if left.Addr().BitLen() != right.Addr().BitLen() {
-			return left.Addr().BitLen() < right.Addr().BitLen()
-		}
-		if left.Addr() != right.Addr() {
-			return left.Addr().Less(right.Addr())
-		}
-		return left.Bits() < right.Bits()
-	})
-	return result
+func comparePrefix(left, right netip.Prefix) int {
+	return cmp.Or(left.Addr().Compare(right.Addr()), cmp.Compare(left.Bits(), right.Bits()))
 }

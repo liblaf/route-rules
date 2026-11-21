@@ -2,43 +2,40 @@ package rules
 
 import (
 	"fmt"
+	"slices"
 	"testing"
 )
 
 func TestDomainSetOptimized(t *testing.T) {
 	t.Parallel()
 	set := DomainSet{
-		mustDomain(t, DomainSuffix, "example.com"),
-		mustDomain(t, DomainSuffix, "api.example.com"),
-		mustDomain(t, DomainExact, "www.example.com"),
-		mustDomain(t, DomainExact, "only.example.net"),
-		mustDomain(t, DomainWildcard, "*.example.net"),
-		mustDomain(t, DomainWildcard, "*.covered.example.com"),
+		mustParseDomain(t, "+.example.com"),
+		mustParseDomain(t, "+.api.example.com"),
+		mustParseDomain(t, "www.example.com"),
+		mustParseDomain(t, "only.example.net"),
+		mustParseDomain(t, "*.example.net"),
+		mustParseDomain(t, "*.covered.example.com"),
 	}
-	actual := domainRuleTexts(set.Optimized())
-	want := []string{"*.example.net", "+.example.com"}
-	assertStrings(t, actual, want)
+	assertStrings(t, set.Optimized(), []string{"*.example.net", "+.example.com"})
 }
 
 func TestDomainSetExcludingDropsOnlyFullyCoveredRules(t *testing.T) {
 	t.Parallel()
 	earlier := DomainSet{
-		mustDomain(t, DomainExact, "api.example.com"),
-		mustDomain(t, DomainExact, "api.example.com"),
-		mustDomain(t, DomainSuffix, "sub.covered.test"),
-		mustDomain(t, DomainSuffix, "covered.test"),
-		mustDomain(t, DomainWildcard, "*.covered.test"),
+		mustParseDomain(t, "api.example.com"),
+		mustParseDomain(t, "api.example.com"),
+		mustParseDomain(t, "+.sub.covered.test"),
+		mustParseDomain(t, "+.covered.test"),
+		mustParseDomain(t, "*.covered.test"),
 	}
 	later := DomainSet{
-		mustDomain(t, DomainExact, "api.example.com"),
-		mustDomain(t, DomainSuffix, "example.com"),
-		mustDomain(t, DomainExact, "a.covered.test"),
-		mustDomain(t, DomainSuffix, "deep.sub.covered.test"),
-		mustDomain(t, DomainWildcard, "*.deep.covered.test"),
+		mustParseDomain(t, "api.example.com"),
+		mustParseDomain(t, "+.example.com"),
+		mustParseDomain(t, "a.covered.test"),
+		mustParseDomain(t, "+.deep.sub.covered.test"),
+		mustParseDomain(t, "*.deep.covered.test"),
 	}
-	actual := domainRuleTexts(later.Excluding(earlier))
-	want := []string{"+.example.com"}
-	assertStrings(t, actual, want)
+	assertStrings(t, later.Excluding(earlier), []string{"+.example.com"})
 }
 
 func TestPartialWildcardIsNotMRSCompatible(t *testing.T) {
@@ -54,16 +51,16 @@ func TestPartialWildcardIsNotMRSCompatible(t *testing.T) {
 func TestDomainOptimizationAndExclusionPreserveFirstMatchSemantics(t *testing.T) {
 	t.Parallel()
 	earlier := DomainSet{
-		mustDomain(t, DomainExact, "api.example.com"),
-		mustDomain(t, DomainWildcard, "*.internal.example"),
-		mustDomain(t, DomainSuffix, "direct.test"),
+		mustParseDomain(t, "api.example.com"),
+		mustParseDomain(t, "*.internal.example"),
+		mustParseDomain(t, "+.direct.test"),
 	}
 	later := DomainSet{
-		mustDomain(t, DomainSuffix, "example.com"),
-		mustDomain(t, DomainExact, "api.example.com"),
-		mustDomain(t, DomainSuffix, "sub.example.com"),
-		mustDomain(t, DomainWildcard, "*.internal.example"),
-		mustDomain(t, DomainExact, "other.test"),
+		mustParseDomain(t, "+.example.com"),
+		mustParseDomain(t, "api.example.com"),
+		mustParseDomain(t, "+.sub.example.com"),
+		mustParseDomain(t, "*.internal.example"),
+		mustParseDomain(t, "other.test"),
 	}
 	optimizedEarlier := earlier.Optimized()
 	optimizedLater := later.Excluding(optimizedEarlier)
@@ -76,32 +73,19 @@ func TestDomainOptimizationAndExclusionPreserveFirstMatchSemantics(t *testing.T)
 	}
 }
 
-func mustDomain(t *testing.T, kind DomainKind, value string) DomainRule {
+func mustParseDomain(t *testing.T, line string) string {
 	t.Helper()
-	rule, err := NewDomainRule(kind, value)
+	rule, err := ParseDomain(line)
 	if err != nil {
 		t.Fatal(err)
 	}
 	return rule
 }
 
-func domainRuleTexts(set DomainSet) []string {
-	result := make([]string, 0, len(set))
-	for _, rule := range set {
-		result = append(result, rule.Text())
-	}
-	return result
-}
-
 func assertStrings(t *testing.T, actual, expected []string) {
 	t.Helper()
-	if len(actual) != len(expected) {
+	if !slices.Equal(actual, expected) {
 		t.Fatalf("got %v, expected %v", actual, expected)
-	}
-	for index := range expected {
-		if actual[index] != expected[index] {
-			t.Fatalf("got %v, expected %v", actual, expected)
-		}
 	}
 }
 

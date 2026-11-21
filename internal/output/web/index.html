@@ -78,7 +78,7 @@
   <h2>Downloads</h2>
   <div class="scroll"><table>
     <thead><tr><th>Artifact</th><th>Behavior</th><th>Rules</th><th>Size</th><th>Downloads</th></tr></thead>
-    <tbody>{{range .Artifacts}}{{if or (eq .Format "mrs") (eq .Behavior "classical")}}<tr>
+    <tbody>{{range .Artifacts}}{{if isListedDownload .}}<tr>
       <td><code>{{.Path}}</code></td><td>{{.Behavior}}</td><td>{{.RuleCount}}</td><td>{{size .Bytes}}</td>
       <td class="links"><a href="{{.GitHubURL}}">GitHub</a> · <a href="{{.JSDelivr}}">jsDelivr</a></td>
     </tr>{{end}}{{end}}</tbody>

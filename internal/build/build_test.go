@@ -10,33 +10,32 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/liblaf/route-rules/internal/config"
 	"github.com/liblaf/route-rules/internal/rules"
 )
 
 func TestVerifyAssertionsUsesPriorityAndFallback(t *testing.T) {
 	t.Parallel()
-	lanRule, err := rules.NewDomainRule(rules.DomainSuffix, "local")
+	lanRule, err := rules.SuffixDomain("local")
 	if err != nil {
 		t.Fatal(err)
 	}
-	usRule, err := rules.NewDomainRule(rules.DomainSuffix, "openai.com")
+	usRule, err := rules.SuffixDomain("openai.com")
 	if err != nil {
 		t.Fatal(err)
 	}
-	cfg := config.Config{
+	cfg := Config{
 		Priority: []string{"lan", "us", "global"},
 		Fallback: "global",
-		Assertions: []config.Assertion{
+		Assertions: []Assertion{
 			{Domain: "router.local", RuleSet: "lan"},
 			{Domain: "api.openai.com", RuleSet: "us"},
 			{Domain: "unknown.example", RuleSet: "global"},
 		},
 	}
-	built := Result{byName: map[string]rules.Collection{
-		"lan":    {Domains: rules.DomainSet{lanRule}},
-		"us":     {Domains: rules.DomainSet{usRule}},
-		"global": {},
+	built := Result{RuleSets: []RuleSet{
+		{Name: "lan", Rules: rules.Collection{Domains: rules.DomainSet{lanRule}}},
+		{Name: "us", Rules: rules.Collection{Domains: rules.DomainSet{usRule}}},
+		{Name: "global"},
 	}}
 	if err := verifyAssertions(cfg, built); err != nil {
 		t.Fatal(err)
@@ -46,42 +45,38 @@ func TestVerifyAssertionsUsesPriorityAndFallback(t *testing.T) {
 func TestVerifyAssertionsSupportsExclusiveIPMembership(t *testing.T) {
 	t.Parallel()
 	tailnetPrefix := netip.MustParsePrefix("100.64.0.0/10")
-	cfg := config.Config{
-		Priority: []string{"tailnet", "lan"},
-		Fallback: "lan",
-		Assertions: []config.Assertion{
-			{IP: "100.64.0.1", RuleSet: "tailnet", Exclusive: true},
-		},
+	cfg := Config{
+		Priority:   []string{"tailnet", "lan"},
+		Fallback:   "lan",
+		Assertions: []Assertion{{IP: "100.64.0.1", RuleSet: "tailnet", Exclusive: true}},
 	}
-	built := Result{byName: map[string]rules.Collection{
-		"tailnet": {Prefixes: rules.PrefixSet{tailnetPrefix}},
-		"lan":     {},
+	built := Result{RuleSets: []RuleSet{
+		{Name: "tailnet", Rules: rules.Collection{Prefixes: rules.PrefixSet{tailnetPrefix}}},
+		{Name: "lan"},
 	}}
 	if err := verifyAssertions(cfg, built); err != nil {
 		t.Fatal(err)
 	}
-
-	built.byName["lan"] = rules.Collection{Prefixes: rules.PrefixSet{tailnetPrefix}}
-	err := verifyAssertions(cfg, built)
-	if err == nil || !strings.Contains(err.Error(), "expected exclusive membership") {
+	built.RuleSets[1].Rules = rules.Collection{Prefixes: rules.PrefixSet{tailnetPrefix}}
+	if err := verifyAssertions(cfg, built); err == nil || !strings.Contains(err.Error(), "expected exclusive membership") {
 		t.Fatalf("got error %v, expected exclusive-membership failure", err)
 	}
 }
 
 func TestVerifyAssertionsUsesDestinationPortAndPreservesFallback(t *testing.T) {
 	t.Parallel()
-	port, err := rules.NewClassicalRule("DST-PORT", "7844")
+	port, err := rules.NewClassical("DST-PORT", "7844")
 	if err != nil {
 		t.Fatal(err)
 	}
-	globalDomain, err := rules.NewDomainRule(rules.DomainSuffix, "argotunnel.com")
+	globalDomain, err := rules.SuffixDomain("argotunnel.com")
 	if err != nil {
 		t.Fatal(err)
 	}
-	cfg := config.Config{
+	cfg := Config{
 		Priority: []string{"direct", "global"},
 		Fallback: "global",
-		Assertions: []config.Assertion{
+		Assertions: []Assertion{
 			{IP: "198.41.192.7", DestinationPort: 7844, RuleSet: "direct", Exclusive: true},
 			{IP: "2606:4700:a0::1", DestinationPort: 7844, RuleSet: "direct", Exclusive: true},
 			{Domain: "region1.v2.argotunnel.com", DestinationPort: 7844, RuleSet: "direct"},
@@ -90,22 +85,19 @@ func TestVerifyAssertionsUsesDestinationPortAndPreservesFallback(t *testing.T) {
 			{Domain: "api.cloudflare.com", RuleSet: "global"},
 		},
 	}
-	built := Result{byName: map[string]rules.Collection{
-		"direct": {Classical: rules.ClassicalSet{port}},
-		"global": {Domains: rules.DomainSet{globalDomain}},
+	built := Result{RuleSets: []RuleSet{
+		{Name: "direct", Rules: rules.Collection{Classical: rules.ClassicalSet{port}}},
+		{Name: "global", Rules: rules.Collection{Domains: rules.DomainSet{globalDomain}}},
 	}}
 	if err := verifyAssertions(cfg, built); err != nil {
 		t.Fatal(err)
 	}
-	// A missing tunnel rule must fail the same assertions, even though global
-	// remains the fallback and contains the argotunnel domain suffix.
-	built.byName["direct"] = rules.Collection{}
+	built.RuleSets[0].Rules = rules.Collection{}
 	if err := verifyAssertions(cfg, built); err == nil {
 		t.Fatal("missing destination port rule passed tunnel assertions")
 	}
-	// Exclusive membership still checks all matching sets for port assertions.
-	built.byName["direct"] = rules.Collection{Classical: rules.ClassicalSet{port}}
-	built.byName["global"] = rules.Collection{Classical: rules.ClassicalSet{port}}
+	built.RuleSets[0].Rules = rules.Collection{Classical: rules.ClassicalSet{port}}
+	built.RuleSets[1].Rules = rules.Collection{Classical: rules.ClassicalSet{port}}
 	if err := verifyAssertions(cfg, built); err == nil || !strings.Contains(err.Error(), "expected exclusive membership") {
 		t.Fatalf("got %v, want overlapping destination port membership failure", err)
 	}
@@ -113,7 +105,7 @@ func TestVerifyAssertionsUsesDestinationPortAndPreservesFallback(t *testing.T) {
 
 func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 	t.Parallel()
-	cfg, err := config.Load("../../config/rulesets.json")
+	cfg, err := LoadConfig("../../config/rulesets.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -135,13 +127,11 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 	privateDomains := []string{"ts.net", "server.example.ts.net", "forgejo.liblaf.me", "jellyfin.liblaf.me", "oplist.liblaf.me", "qbt.liblaf.me"}
 	publicDomains := []string{"tailscale.com", "login.tailscale.com", "controlplane.tailscale.com", "derp1-all.tailscale.com", "tailscale.io", "controlplane.tailscale.io"}
 	privateIPs := []string{"100.64.0.1", "100.127.255.254", "fd7a:115c:a1e0::1", "fd7a:115c:a1e0:ffff::1"}
-	directDomains := append(append([]string{}, publicDomains...), "localhost", "router.local", "www.elsevier.com", "shop.pockyt.io")
-	// Copy every maintained local input, including the CN override and Anthropic
-	// additions. Replace each remote source independently so no network is used.
-	var unrelated []config.Assertion
+	directDomains := slices.Concat(publicDomains, []string{"localhost", "router.local", "www.elsevier.com", "shop.pockyt.io"})
+	var unrelated []Assertion
 	for i := range cfg.RuleSets {
 		set := &cfg.RuleSets[i]
-		var fixtures []config.Source
+		var fixtures []SourceConfig
 		for j, src := range set.Sources {
 			if src.Path != "" {
 				payload, err := os.ReadFile(filepath.Join(originalBase, src.Path))
@@ -159,20 +149,17 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 				payload += "+.liblaf.me\nshared.us.example\n"
 			}
 			write(path, payload)
-			fixtures = append(fixtures, config.Source{Name: src.Name, Kind: "domain-file", Path: path})
-			unrelated = append(unrelated, config.Assertion{Domain: keep, RuleSet: set.Name, Exclusive: true})
+			fixtures = append(fixtures, SourceConfig{Name: src.Name, Kind: "domain-file", Path: path})
+			unrelated = append(unrelated, Assertion{Domain: keep, RuleSet: set.Name, Exclusive: true})
 		}
 		if i > 0 {
 			path := "fixtures/" + set.Name + ".ipcidr.txt"
-			// Tailnet supernets test subtraction boundaries; LAN and CN ranges
-			// test the merged direct IP membership and lower-set exclusions.
 			write(path, "100.0.0.0/8\nfd7a:115c::/32\n10.0.0.0/8\n1.0.1.0/24\n")
-			fixtures = append(fixtures, config.Source{Name: "fixture-ips", Kind: "cidr-file", Path: path})
+			fixtures = append(fixtures, SourceConfig{Name: "fixture-ips", Kind: "cidr-file", Path: path})
 		}
 		set.Sources = fixtures
 	}
-	// These production assertions are backed by maintained files or fixtures.
-	cfg.Assertions = slices.DeleteFunc(cfg.Assertions, func(a config.Assertion) bool {
+	cfg.Assertions = slices.DeleteFunc(cfg.Assertions, func(a Assertion) bool {
 		return a.DestinationPort == 0 && a.RuleSet != "tailnet" && !slices.Contains(directDomains, a.Domain) && a.Domain != "claude.app" && a.Domain != "api.statsig.com" && a.IP != "160.79.104.1" && a.IP != "2607:6bc0::1"
 	})
 	cfg.Assertions = append(cfg.Assertions, unrelated...)
@@ -183,11 +170,13 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	portRule, err := rules.NewClassicalRule("DST-PORT", "7844")
+	tailnet := findRuleSet(t, built, "tailnet")
+	direct := findRuleSet(t, built, "direct")
+	portRule, err := rules.NewClassical("DST-PORT", "7844")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !slices.Contains(built.byName["direct"].Classical, portRule) {
+	if !slices.Contains(direct.Classical, portRule) {
 		t.Fatal("build lost maintained Cloudflare Tunnel destination port rule")
 	}
 	var tunnelSourceFound bool
@@ -207,16 +196,9 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 	if !tunnelSourceFound {
 		t.Fatal("build did not report maintained tunnel source")
 	}
-	tailnet := built.byName["tailnet"]
-	var texts []string
-	for _, domain := range tailnet.Domains {
-		texts = append(texts, domain.Text())
-	}
 	wantDomains := []string{"+.ts.net", "forgejo.liblaf.me", "jellyfin.liblaf.me", "oplist.liblaf.me", "qbt.liblaf.me"}
-	slices.Sort(texts)
-	slices.Sort(wantDomains)
-	if !slices.Equal(texts, wantDomains) || len(tailnet.Classical) != 0 {
-		t.Errorf("tailnet domain rules: got %v and classical %v, want %v", texts, tailnet.Classical, wantDomains)
+	if !slices.Equal(tailnet.Domains, wantDomains) || len(tailnet.Classical) != 0 {
+		t.Errorf("tailnet domain rules: got %v and classical %v, want %v", tailnet.Domains, tailnet.Classical, wantDomains)
 	}
 	wantPrefixes := rules.PrefixSet{netip.MustParsePrefix("100.64.0.0/10"), netip.MustParsePrefix("fd7a:115c:a1e0::/48")}
 	if !slices.Equal(tailnet.Prefixes, wantPrefixes) {
@@ -231,14 +213,12 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 		if tailnet.MatchesDomain("child." + domain) {
 			t.Errorf("exact custom domain matches child of %s", domain)
 		}
-		// The broader maintained override survives in direct; assertions above
-		// verify that the exact custom hosts still route to Tailnet first.
-		if !built.byName["direct"].MatchesDomain(domain) || !built.byName["direct"].MatchesDomain("child."+domain) {
+		if !direct.MatchesDomain(domain) || !direct.MatchesDomain("child."+domain) {
 			t.Errorf("direct lost the broader suffix covering %s", domain)
 		}
 	}
 	for _, domain := range directDomains {
-		if !built.byName["direct"].MatchesDomain(domain) {
+		if !direct.MatchesDomain(domain) {
 			t.Errorf("direct lacks merged domain %s", domain)
 		}
 	}
@@ -255,7 +235,7 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 		}
 	}
 	for _, set := range built.RuleSets[2:] {
-		for _, domain := range append(append([]string{}, privateDomains[2:]...), directDomains...) {
+		for _, domain := range slices.Concat(privateDomains[2:], directDomains) {
 			if set.Rules.MatchesDomain(domain) {
 				t.Errorf("%s retains excluded direct domain %s", set.Name, domain)
 			}
@@ -270,11 +250,10 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 		}
 	}
 	for _, ip := range []string{"10.0.0.1", "1.0.1.1", "100.0.0.1", "100.128.0.1", "fd7a:115c:a1df::1", "fd7a:115c:a1e1::1"} {
-		if !built.byName["direct"].Prefixes.Contains(netip.MustParseAddr(ip)) {
+		if !direct.Prefixes.Contains(netip.MustParseAddr(ip)) {
 			t.Errorf("direct lost unrelated IP %s", ip)
 		}
 	}
-	// Without exclusions, each group must contain the overlap supplied above.
 	cfg.Assertions = nil
 	for i := range cfg.RuleSets {
 		cfg.RuleSets[i].Exclude = nil
@@ -284,7 +263,7 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, set := range unexcluded.RuleSets[1:] {
-		for _, domain := range append(append([]string{}, privateDomains...), directDomains...) {
+		for _, domain := range slices.Concat(privateDomains, directDomains) {
 			if !set.Rules.MatchesDomain(domain) {
 				t.Errorf("control %s lacks fixture domain %s", set.Name, domain)
 			}
@@ -295,4 +274,15 @@ func TestProjectTailnetAndDirectExclusions(t *testing.T) {
 			}
 		}
 	}
+}
+
+func findRuleSet(t *testing.T, built Result, name string) rules.Collection {
+	t.Helper()
+	for _, set := range built.RuleSets {
+		if set.Name == name {
+			return set.Rules
+		}
+	}
+	t.Fatalf("ruleset %q not found in build result", name)
+	return rules.Collection{}
 }

@@ -2,50 +2,53 @@ package rules
 
 import (
 	"fmt"
-	"sort"
+	"slices"
 	"strings"
 )
 
-type DomainKind uint8
+// DomainSet stores canonical Mihomo domain rules: exact ("example.com"),
+// suffix ("+.example.com"), or whole-label wildcard ("*.example.com").
+type DomainSet []string
 
-const (
-	DomainExact DomainKind = iota
-	DomainSuffix
-	DomainWildcard
-)
-
-type DomainRule struct {
-	Kind  DomainKind
-	Value string
+func ExactDomain(value string) (string, error) {
+	value, err := validateDomain(value)
+	if err != nil {
+		return "", err
+	}
+	if strings.Contains(value, "*") {
+		return "", fmt.Errorf("wildcard in non-wildcard domain %q", value)
+	}
+	return value, nil
 }
 
-func NewDomainRule(kind DomainKind, value string) (DomainRule, error) {
-	value = strings.ToLower(strings.TrimSuffix(strings.TrimSpace(value), "."))
-	value = strings.TrimPrefix(value, "+.")
-	if value == "" || strings.ContainsAny(value, " \t\r\n,/") {
-		return DomainRule{}, fmt.Errorf("invalid domain %q", value)
+func SuffixDomain(value string) (string, error) {
+	value, err := ExactDomain(value)
+	if err != nil {
+		return "", err
 	}
-	if strings.HasPrefix(value, ".") || strings.HasSuffix(value, ".") || strings.Contains(value, "..") {
-		return DomainRule{}, fmt.Errorf("invalid domain %q", value)
-	}
-	if kind != DomainWildcard && strings.Contains(value, "*") {
-		return DomainRule{}, fmt.Errorf("wildcard in non-wildcard domain %q", value)
-	}
-	if kind == DomainWildcard && !IsWholeLabelWildcard(value) {
-		return DomainRule{}, fmt.Errorf("wildcard must occupy a complete label: %q", value)
-	}
-	return DomainRule{Kind: kind, Value: value}, nil
+	return "+." + value, nil
 }
 
-func ParseDomainLine(line string) (DomainRule, error) {
+func WildcardDomain(value string) (string, error) {
+	value, err := validateDomain(value)
+	if err != nil {
+		return "", err
+	}
+	if !IsWholeLabelWildcard(value) {
+		return "", fmt.Errorf("wildcard must occupy a complete label: %q", value)
+	}
+	return value, nil
+}
+
+func ParseDomain(line string) (string, error) {
 	line = strings.TrimSpace(line)
 	switch {
 	case strings.HasPrefix(line, "+."):
-		return NewDomainRule(DomainSuffix, strings.TrimPrefix(line, "+."))
+		return SuffixDomain(line[2:])
 	case strings.Contains(line, "*"):
-		return NewDomainRule(DomainWildcard, line)
+		return WildcardDomain(line)
 	default:
-		return NewDomainRule(DomainExact, line)
+		return ExactDomain(line)
 	}
 }
 
@@ -53,7 +56,7 @@ func IsWholeLabelWildcard(value string) bool {
 	if !strings.Contains(value, "*") || strings.Contains(value, "?") {
 		return false
 	}
-	for _, label := range strings.Split(value, ".") {
+	for label := range strings.SplitSeq(value, ".") {
 		if strings.ContainsAny(label, "*?") && label != "*" {
 			return false
 		}
@@ -61,32 +64,22 @@ func IsWholeLabelWildcard(value string) bool {
 	return true
 }
 
-func (r DomainRule) Text() string {
-	if r.Kind == DomainSuffix {
-		return "+." + r.Value
-	}
-	return r.Value
+func NormalizeDomain(domain string) string {
+	return strings.TrimPrefix(normalizeLookupDomain(domain), "+.")
 }
-
-func (r DomainRule) Matches(domain string) bool {
-	domain = normalizeLookupDomain(domain)
-	switch r.Kind {
-	case DomainExact:
-		return domain == r.Value
-	case DomainSuffix:
-		return domain == r.Value || strings.HasSuffix(domain, "."+r.Value)
-	case DomainWildcard:
-		return wildcardMatches(r.Value, domain)
-	default:
-		panic(fmt.Sprintf("unknown domain kind %d", r.Kind))
-	}
-}
-
-type DomainSet []DomainRule
 
 func (set DomainSet) Matches(domain string) bool {
+	domain = normalizeLookupDomain(domain)
 	for _, rule := range set {
-		if rule.Matches(domain) {
+		if suffix, ok := strings.CutPrefix(rule, "+."); ok {
+			if domain == suffix || strings.HasSuffix(domain, "."+suffix) {
+				return true
+			}
+		} else if strings.Contains(rule, "*") {
+			if wildcardMatches(rule, domain) {
+				return true
+			}
+		} else if domain == rule {
 			return true
 		}
 	}
@@ -94,30 +87,13 @@ func (set DomainSet) Matches(domain string) bool {
 }
 
 func (set DomainSet) Optimized() DomainSet {
-	exacts := make(map[string]DomainRule)
-	suffixes := make(map[string]DomainRule)
-	wildcards := make(map[string]DomainRule)
-	for _, rule := range set {
-		switch rule.Kind {
-		case DomainExact:
-			exacts[rule.Value] = rule
-		case DomainSuffix:
-			suffixes[rule.Value] = rule
-		case DomainWildcard:
-			wildcards[rule.Value] = rule
-		default:
-			panic(fmt.Sprintf("unknown domain kind %d", rule.Kind))
-		}
+	if len(set) == 0 {
+		return nil
 	}
-
+	exacts, suffixes, wildcards := indexDomains(set)
 	for value := range suffixes {
-		if hasStrictSuffixAncestor(suffixes, value) {
+		if dot := strings.IndexByte(value, '.'); dot >= 0 && hasSuffixAncestor(suffixes, value[dot+1:]) {
 			delete(suffixes, value)
-		}
-	}
-	for value := range exacts {
-		if hasSuffixAncestor(suffixes, value) || anyWildcardMatches(wildcards, value) {
-			delete(exacts, value)
 		}
 	}
 	for value := range wildcards {
@@ -125,18 +101,23 @@ func (set DomainSet) Optimized() DomainSet {
 			delete(wildcards, value)
 		}
 	}
+	for value := range exacts {
+		if hasSuffixAncestor(suffixes, value) || anyWildcardMatches(wildcards, value) {
+			delete(exacts, value)
+		}
+	}
 
 	result := make(DomainSet, 0, len(exacts)+len(suffixes)+len(wildcards))
-	for _, rule := range exacts {
-		result = append(result, rule)
+	for value := range exacts {
+		result = append(result, value)
 	}
-	for _, rule := range suffixes {
-		result = append(result, rule)
+	for value := range suffixes {
+		result = append(result, "+."+value)
 	}
-	for _, rule := range wildcards {
-		result = append(result, rule)
+	for value := range wildcards {
+		result = append(result, value)
 	}
-	sort.Slice(result, func(i, j int) bool { return result[i].Text() < result[j].Text() })
+	slices.Sort(result)
 	return result
 }
 
@@ -144,34 +125,21 @@ func (set DomainSet) Optimized() DomainSet {
 // set. Partial suffix differences cannot be represented by Mihomo's domain
 // rules and remain safe because consumers must evaluate sets in priority order.
 func (set DomainSet) Excluding(earlier DomainSet) DomainSet {
-	suffixes := make(map[string]DomainRule)
-	wildcards := make(map[string]DomainRule)
-	exacts := make(map[string]struct{})
-	for _, rule := range earlier {
-		switch rule.Kind {
-		case DomainExact:
-			exacts[rule.Value] = struct{}{}
-		case DomainSuffix:
-			suffixes[rule.Value] = rule
-		case DomainWildcard:
-			wildcards[rule.Value] = rule
-		default:
-			panic(fmt.Sprintf("unknown domain kind %d", rule.Kind))
-		}
+	if len(set) == 0 || len(earlier) == 0 {
+		return set.Optimized()
 	}
-
+	exacts, suffixes, wildcards := indexDomains(earlier)
 	result := make(DomainSet, 0, len(set))
 	for _, rule := range set {
-		covered := false
-		switch rule.Kind {
-		case DomainExact:
-			_, exact := exacts[rule.Value]
-			covered = exact || hasSuffixAncestor(suffixes, rule.Value) || anyWildcardMatches(wildcards, rule.Value)
-		case DomainSuffix:
-			covered = hasSuffixAncestor(suffixes, rule.Value)
-		case DomainWildcard:
-			_, same := wildcards[rule.Value]
-			covered = same || wildcardCoveredBySuffix(suffixes, rule.Value)
+		var covered bool
+		if suffix, ok := strings.CutPrefix(rule, "+."); ok {
+			covered = hasSuffixAncestor(suffixes, suffix)
+		} else if strings.Contains(rule, "*") {
+			_, same := wildcards[rule]
+			covered = same || wildcardCoveredBySuffix(suffixes, rule)
+		} else {
+			_, exact := exacts[rule]
+			covered = exact || hasSuffixAncestor(suffixes, rule) || anyWildcardMatches(wildcards, rule)
 		}
 		if !covered {
 			result = append(result, rule)
@@ -180,7 +148,32 @@ func (set DomainSet) Excluding(earlier DomainSet) DomainSet {
 	return result.Optimized()
 }
 
-func hasSuffixAncestor(suffixes map[string]DomainRule, value string) bool {
+func validateDomain(value string) (string, error) {
+	value = NormalizeDomain(value)
+	if value == "" || strings.HasPrefix(value, "+.") || strings.ContainsAny(value, " \t\r\n,/") ||
+		strings.HasPrefix(value, ".") || strings.HasSuffix(value, ".") || strings.Contains(value, "..") {
+		return "", fmt.Errorf("invalid domain %q", value)
+	}
+	return value, nil
+}
+
+func indexDomains(set DomainSet) (exacts, suffixes, wildcards map[string]struct{}) {
+	exacts = make(map[string]struct{})
+	suffixes = make(map[string]struct{})
+	wildcards = make(map[string]struct{})
+	for _, rule := range set {
+		if suffix, ok := strings.CutPrefix(rule, "+."); ok {
+			suffixes[suffix] = struct{}{}
+		} else if strings.Contains(rule, "*") {
+			wildcards[rule] = struct{}{}
+		} else {
+			exacts[rule] = struct{}{}
+		}
+	}
+	return exacts, suffixes, wildcards
+}
+
+func hasSuffixAncestor(suffixes map[string]struct{}, value string) bool {
 	for current := value; ; {
 		if _, exists := suffixes[current]; exists {
 			return true
@@ -193,49 +186,34 @@ func hasSuffixAncestor(suffixes map[string]DomainRule, value string) bool {
 	}
 }
 
-func hasStrictSuffixAncestor(suffixes map[string]DomainRule, value string) bool {
-	dot := strings.IndexByte(value, '.')
-	if dot < 0 {
-		return false
-	}
-	return hasSuffixAncestor(suffixes, value[dot+1:])
-}
-
-func anyWildcardMatches(wildcards map[string]DomainRule, value string) bool {
-	for _, rule := range wildcards {
-		if rule.Matches(value) {
+func anyWildcardMatches(wildcards map[string]struct{}, value string) bool {
+	for pattern := range wildcards {
+		if wildcardMatches(pattern, value) {
 			return true
 		}
 	}
 	return false
 }
 
-func wildcardCoveredBySuffix(suffixes map[string]DomainRule, value string) bool {
-	labels := strings.Split(value, ".")
-	lastWildcard := -1
-	for index, label := range labels {
-		if label == "*" {
-			lastWildcard = index
-		}
-	}
-	if lastWildcard == len(labels)-1 {
-		return false
-	}
-	return hasSuffixAncestor(suffixes, strings.Join(labels[lastWildcard+1:], "."))
+func wildcardCoveredBySuffix(suffixes map[string]struct{}, value string) bool {
+	last := strings.LastIndexByte(value, '*')
+	return last >= 0 && last+2 < len(value) && value[last+1] == '.' && hasSuffixAncestor(suffixes, value[last+2:])
 }
 
 func wildcardMatches(pattern, domain string) bool {
-	patternLabels := strings.Split(pattern, ".")
-	domainLabels := strings.Split(domain, ".")
-	if len(patternLabels) != len(domainLabels) {
-		return false
-	}
-	for index := range patternLabels {
-		if patternLabels[index] != "*" && patternLabels[index] != domainLabels[index] {
+	for {
+		pDot, dDot := strings.IndexByte(pattern, '.'), strings.IndexByte(domain, '.')
+		if (pDot < 0) != (dDot < 0) {
 			return false
 		}
+		if pDot < 0 {
+			return pattern == "*" || pattern == domain
+		}
+		if label := pattern[:pDot]; label != "*" && label != domain[:dDot] {
+			return false
+		}
+		pattern, domain = pattern[pDot+1:], domain[dDot+1:]
 	}
-	return true
 }
 
 func normalizeLookupDomain(domain string) string {

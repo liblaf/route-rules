@@ -8,7 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/liblaf/route-rules/internal/app"
+	"github.com/liblaf/route-rules/internal/build"
+	"github.com/liblaf/route-rules/internal/output"
 )
 
 func main() {
@@ -30,6 +31,9 @@ func run(ctx context.Context, args []string) error {
 	if flags.NArg() != 0 {
 		return fmt.Errorf("unexpected arguments: %v", flags.Args())
 	}
+	if *configPath == "" || *outputDir == "" || *mihomoPath == "" {
+		return fmt.Errorf("config path, output directory, and Mihomo path are required")
+	}
 
 	generatedAt := time.Now().UTC().Truncate(time.Second)
 	if *generatedAtText != "" {
@@ -40,10 +44,18 @@ func run(ctx context.Context, args []string) error {
 		generatedAt = parsed.UTC()
 	}
 
-	return app.Run(ctx, app.Options{
-		ConfigPath:  *configPath,
-		OutputDir:   *outputDir,
-		MihomoPath:  *mihomoPath,
-		GeneratedAt: generatedAt,
-	})
+	cfg, err := build.LoadConfig(*configPath)
+	if err != nil {
+		return err
+	}
+	built, err := build.Run(ctx, cfg)
+	if err != nil {
+		return err
+	}
+	manifest, err := output.Write(ctx, *outputDir, cfg, built, *mihomoPath, generatedAt)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(os.Stdout, "generated %d artifacts in %s at %s\n", len(manifest.Artifacts), *outputDir, manifest.GeneratedAt.Format(time.RFC3339))
+	return nil
 }

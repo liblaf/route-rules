@@ -2,8 +2,8 @@ import { createRulesetStore } from "./ruleset-data.mjs";
 import { matchRules, parseQuery } from "./ruleset-matcher.mjs";
 
 const store = createRulesetStore();
-const find = (id) => document.getElementById(id);
-const count = (value) => value.toLocaleString();
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => n.toLocaleString();
 const pageSize = 100;
 let meta;
 let entries = [];
@@ -11,240 +11,233 @@ let filtered = [];
 let page = 0;
 let browseRequest = 0;
 
-function element(tag, text, className) {
+function el(tag, props, ...children) {
   const node = document.createElement(tag);
-  if (text !== undefined) node.textContent = text;
-  if (className) node.className = className;
+  if (typeof props === "string") node.className = props;
+  else if (props) Object.assign(node, props);
+  node.append(...children);
   return node;
 }
 
-function status(id, text, error = false) {
-  const node = find(id);
+function setStatus(id, text, error = false) {
+  const node = $(id);
   node.textContent = text;
   node.classList.toggle("error", error);
 }
 
+function browseLink(name) {
+  const link = el("a", { href: "#browse" }, `Browse ${name}`);
+  link.dataset.ruleset = name;
+  return link;
+}
+
 function renderPage() {
   const start = page * pageSize;
-  const rows = filtered.slice(start, start + pageSize).map((entry) => {
-    const row = element("tr");
-    row.append(element("td", entry.type));
-    const value = element("td");
-    value.append(element("code", entry.value));
-    row.append(value);
-    return row;
-  });
-  find("entry-rows").replaceChildren(...rows);
-  find("entry-empty").hidden = filtered.length !== 0;
-  find("previous-page").disabled = page === 0;
-  find("next-page").disabled = start + pageSize >= filtered.length;
-  status(
+  const rows = filtered
+    .slice(start, start + pageSize)
+    .map((entry) =>
+      el("tr", null, el("td", null, entry.type), el("td", null, el("code", null, entry.value))),
+    );
+  $("entry-rows").replaceChildren(...rows);
+  $("entry-empty").hidden = filtered.length !== 0;
+  $("previous-page").disabled = page === 0;
+  $("next-page").disabled = start + pageSize >= filtered.length;
+  const end = Math.min(start + pageSize, filtered.length);
+  const totalNote = filtered.length !== entries.length ? ` (${fmt(entries.length)} total)` : "";
+  setStatus(
     "entry-count",
     filtered.length
-      ? `${count(start + 1)}–${count(Math.min(start + pageSize, filtered.length))} of ${count(filtered.length)} entries${filtered.length !== entries.length ? ` (${count(entries.length)} total)` : ""}`
-      : `0 of ${count(entries.length)} entries`,
+      ? `${fmt(start + 1)}–${fmt(end)} of ${fmt(filtered.length)} entries${totalNote}`
+      : `0 of ${fmt(entries.length)} entries`,
   );
 }
 
 function filterEntries() {
-  const text = find("entry-filter").value.trim().toLowerCase();
-  const type = find("entry-type").value;
-  filtered = entries.filter(
-    (entry) => (!type || entry.type === type) && entry.value.toLowerCase().includes(text),
-  );
+  const text = $("entry-filter").value.trim().toLowerCase();
+  const type = $("entry-type").value;
+  filtered =
+    !type && !text
+      ? entries
+      : entries.filter(
+          (entry) =>
+            (!type || entry.type === type) && (!text || entry.value.toLowerCase().includes(text)),
+        );
   page = 0;
   renderPage();
 }
 
 async function browse(name) {
   const request = ++browseRequest;
-  find("ruleset-select").value = name;
-  find("browse-content").hidden = true;
-  find("browse-retry").hidden = true;
-  status("browse-status", `Loading ${name}…`);
+  $("ruleset-select").value = name;
+  $("browse-content").hidden = true;
+  $("browse-retry").hidden = true;
+  setStatus("browse-status", `Loading ${name}…`);
   try {
-    const loaded = await store.loadRules(name);
+    const [loaded, artifacts] = await Promise.all([
+      store.loadRules(name),
+      store.textArtifacts(name),
+    ]);
     if (request !== browseRequest) return;
     entries = loaded;
-    const types = [...new Set(entries.map((entry) => entry.type))].sort();
-    find("entry-type").replaceChildren(
+    const types = [...new Set(entries.map((e) => e.type))].sort();
+    $("entry-type").replaceChildren(
       new Option("All rule types", ""),
-      ...types.map((type) => new Option(type, type)),
+      ...types.map((t) => new Option(t, t)),
     );
-    find("entry-filter").value = "";
-    const links = meta.artifacts
-      .filter((artifact) => artifact.ruleset === name && artifact.format === "text")
-      .map((artifact) => {
-        const link = element("a", artifact.path);
-        link.href = store.artifactUrl(artifact);
-        return link;
-      });
-    find("entry-downloads").replaceChildren(...links);
-    status("browse-status", `${count(entries.length)} entries in ${name}.`);
-    find("browse-content").hidden = false;
+    $("entry-filter").value = "";
+    $("entry-downloads").replaceChildren(
+      ...artifacts.map((a) => el("a", { href: store.artifactUrl(a) }, a.path)),
+    );
+    setStatus("browse-status", `${fmt(entries.length)} entries in ${name}.`);
+    $("browse-content").hidden = false;
     filterEntries();
   } catch (error) {
     if (request !== browseRequest) return;
-    status("browse-status", `Unable to load ${name}. ${error.message}`, true);
-    find("browse-retry").hidden = false;
+    setStatus("browse-status", `Unable to load ${name}. ${error.message}`, true);
+    $("browse-retry").hidden = false;
   }
 }
 
-function browseLink(name) {
-  const link = element("a", `Browse ${name}`);
-  link.href = "#browse";
-  link.dataset.ruleset = name;
-  return link;
-}
-
 function renderMatches(query, results) {
-  const matched = results.filter((result) => result.matches.length);
-  const unchecked = results.filter((result) => result.unsupported.length);
-  status(
+  const matched = results.filter((r) => r.matches.length);
+  const unchecked = results.filter((r) => r.unsupported.length);
+  setStatus(
     "match-status",
     `${query.value}: ${matched.length} matching ruleset${matched.length === 1 ? "" : "s"}${unchecked.length ? " among supported rules" : ""}.`,
   );
   const cards = matched.map((result, index) => {
-    const card = element("article", undefined, "match-card");
-    const heading = element("h3", result.name);
-    if (index === 0)
-      heading.append(
-        element("span", unchecked.length ? "First confirmed match" : "First match", "badge"),
-      );
-    card.append(heading, browseLink(result.name));
-    const details = element("details");
-    details.open = true;
-    details.append(
-      element(
-        "summary",
-        `${count(result.matches.length)} matching ${result.matches.length === 1 ? "entry" : "entries"}`,
+    const heading = el(
+      "h3",
+      null,
+      result.name,
+      ...(index === 0
+        ? [el("span", "badge", unchecked.length ? "First confirmed match" : "First match")]
+        : []),
+    );
+    const items = result.matches.map((entry) =>
+      el("li", null, el("span", "rule-type", entry.type), el("code", null, entry.value)),
+    );
+    const summary = `${fmt(result.matches.length)} matching ${result.matches.length === 1 ? "entry" : "entries"}`;
+    return el(
+      "article",
+      "match-card",
+      heading,
+      browseLink(result.name),
+      el(
+        "details",
+        { open: true },
+        el("summary", null, summary),
+        el("ul", "match-entries", ...items),
       ),
     );
-    const list = element("ul", undefined, "match-entries");
-    for (const entry of result.matches) {
-      const item = element("li");
-      item.append(element("span", entry.type, "rule-type"), element("code", entry.value));
-      list.append(item);
-    }
-    details.append(list);
-    card.append(details);
-    return card;
   });
-  if (!matched.length)
+  if (!matched.length) {
     cards.push(
-      element(
+      el(
         "p",
+        "empty-state",
         unchecked.length
           ? "No supported entry matched. Some rules could not be evaluated; see below."
           : `No entries matched. The configured fallback is ${meta.fallback}.`,
-        "empty-state",
       ),
     );
-  if (unchecked.length) {
-    const details = element("details", undefined, "match-card");
-    details.append(element("summary", "Rules that could not be evaluated"));
-    details.append(
-      element(
-        "p",
-        "These rules need additional context or syntax this browser matcher does not support. They may change the first matching ruleset.",
-      ),
-    );
-    const list = element("ul");
-    for (const result of unchecked) {
-      const types = [...new Set(result.unsupported.map((entry) => entry.type))];
-      const item = element(
-        "li",
-        `${result.name}: ${count(result.unsupported.length)} entries (${types.join(", ")}). `,
-      );
-      item.append(browseLink(result.name));
-      list.append(item);
-    }
-    details.append(list);
-    cards.push(details);
   }
-  find("match-results").replaceChildren(...cards);
+  if (unchecked.length) {
+    const items = unchecked.map((r) => {
+      const types = [...new Set(r.unsupported.map((e) => e.type))].join(", ");
+      return el(
+        "li",
+        null,
+        `${r.name}: ${fmt(r.unsupported.length)} entries (${types}). `,
+        browseLink(r.name),
+      );
+    });
+    cards.push(
+      el(
+        "details",
+        "match-card",
+        el("summary", null, "Rules that could not be evaluated"),
+        el(
+          "p",
+          null,
+          "These rules need additional context or syntax this browser matcher does not support. They may change the first matching ruleset.",
+        ),
+        el("ul", null, ...items),
+      ),
+    );
+  }
+  $("match-results").replaceChildren(...cards);
 }
 
 async function testQuery(event) {
   event.preventDefault();
-  if (find("match-submit").disabled) return;
-  find("match-results").replaceChildren();
+  if ($("match-submit").disabled) return;
+  $("match-results").replaceChildren();
   let query;
   try {
-    query = parseQuery(find("match-query").value);
-    find("match-query").removeAttribute("aria-invalid");
+    query = parseQuery($("match-query").value);
+    $("match-query").removeAttribute("aria-invalid");
   } catch (error) {
-    find("match-query").setAttribute("aria-invalid", "true");
-    status("match-status", error.message, true);
+    $("match-query").setAttribute("aria-invalid", "true");
+    setStatus("match-status", error.message, true);
     return;
   }
-  find("match-submit").disabled = true;
-  find("match-form").setAttribute("aria-busy", "true");
-  status("match-status", `Loading rulesets to check ${query.value}…`);
+  $("match-submit").disabled = true;
+  $("match-form").setAttribute("aria-busy", "true");
+  setStatus("match-status", `Loading rulesets to check ${query.value}…`);
   try {
-    const loaded = await Promise.all(
+    const results = await Promise.all(
       meta.priority.map(async (name) => ({
         name,
-        entries: await store.loadRules(name),
+        ...matchRules(await store.loadRulesForQuery(name, query.kind), query),
       })),
     );
-    const results = [];
-    for (const ruleset of loaded) {
-      status("match-status", `Checking ${ruleset.name}…`);
-      await new Promise(requestAnimationFrame);
-      results.push({
-        name: ruleset.name,
-        ...matchRules(ruleset.entries, query),
-      });
-    }
     renderMatches(query, results);
   } catch (error) {
-    status(
+    setStatus(
       "match-status",
       `Could not check every ruleset. ${error.message} Please try again.`,
       true,
     );
   } finally {
-    find("match-submit").disabled = false;
-    find("match-form").removeAttribute("aria-busy");
+    $("match-submit").disabled = false;
+    $("match-form").removeAttribute("aria-busy");
   }
 }
 
 async function initialize() {
-  find("load-retry").hidden = true;
-  find("explorer-status").hidden = false;
-  status("explorer-status", "Loading ruleset information…");
+  $("load-retry").hidden = true;
+  $("explorer-status").hidden = false;
+  setStatus("explorer-status", "Loading ruleset information…");
   try {
     meta = await store.loadMeta();
-    find("ruleset-select").replaceChildren(...meta.priority.map((name) => new Option(name, name)));
-    find("ruleset-select").disabled = false;
-    find("match-query").disabled = false;
-    find("match-submit").disabled = false;
-    status("explorer-status", "");
-    find("explorer-status").hidden = true;
+    $("ruleset-select").replaceChildren(...meta.priority.map((name) => new Option(name, name)));
+    for (const id of ["ruleset-select", "match-query", "match-submit"]) $(id).disabled = false;
+    setStatus("explorer-status", "");
+    $("explorer-status").hidden = true;
     await browse(meta.priority[0]);
   } catch (error) {
-    status("explorer-status", `Unable to load ruleset information. ${error.message}`, true);
-    find("load-retry").hidden = false;
+    setStatus("explorer-status", `Unable to load ruleset information. ${error.message}`, true);
+    $("load-retry").hidden = false;
   }
 }
 
-find("ruleset-select").addEventListener("change", (event) => browse(event.target.value));
-find("browse-retry").addEventListener("click", () => browse(find("ruleset-select").value));
-find("load-retry").addEventListener("click", initialize);
-find("entry-filter").addEventListener("input", filterEntries);
-find("entry-type").addEventListener("change", filterEntries);
-find("previous-page").addEventListener("click", () => {
+$("ruleset-select").addEventListener("change", (e) => browse(e.target.value));
+$("browse-retry").addEventListener("click", () => browse($("ruleset-select").value));
+$("load-retry").addEventListener("click", initialize);
+$("entry-filter").addEventListener("input", filterEntries);
+$("entry-type").addEventListener("change", filterEntries);
+$("previous-page").addEventListener("click", () => {
   page--;
   renderPage();
 });
-find("next-page").addEventListener("click", () => {
+$("next-page").addEventListener("click", () => {
   page++;
   renderPage();
 });
-find("match-form").addEventListener("submit", testQuery);
-document.addEventListener("click", (event) => {
-  const link = event.target.closest("a[data-ruleset]");
+$("match-form").addEventListener("submit", testQuery);
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("a[data-ruleset]");
   if (link && meta) browse(link.dataset.ruleset);
 });
 initialize();

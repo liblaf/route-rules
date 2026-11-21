@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 	"net/netip"
+	"slices"
 	"strings"
 
-	"github.com/liblaf/route-rules/internal/config"
 	"github.com/liblaf/route-rules/internal/rules"
-	"github.com/liblaf/route-rules/internal/source"
 )
 
 type Counts struct {
@@ -17,14 +16,18 @@ type Counts struct {
 	IPCIDR    int `json:"ipcidr"`
 }
 
+func (c Counts) Total() int {
+	return c.Domain + c.Classical + c.IPCIDR
+}
+
 type SourceReport struct {
-	Name             string                 `json:"name"`
-	Kind             string                 `json:"kind"`
-	InputRules       int                    `json:"input_rules"`
-	Accepted         Counts                 `json:"accepted"`
-	Ignored          map[string]int         `json:"ignored,omitempty"`
-	Fetches          []source.FetchMetadata `json:"fetches,omitempty"`
-	OmittedAsCovered int                    `json:"omitted_as_covered,omitempty"`
+	Name             string          `json:"name"`
+	Kind             string          `json:"kind"`
+	InputRules       int             `json:"input_rules"`
+	Accepted         Counts          `json:"accepted"`
+	Ignored          map[string]int  `json:"ignored,omitempty"`
+	Fetches          []FetchMetadata `json:"fetches,omitempty"`
+	OmittedAsCovered int             `json:"omitted_as_covered,omitempty"`
 }
 
 type RuleSet struct {
@@ -39,57 +42,55 @@ type RuleSet struct {
 
 type Result struct {
 	RuleSets []RuleSet
-	byName   map[string]rules.Collection
 }
 
-func Run(ctx context.Context, cfg config.Config) (Result, error) {
-	loader := source.NewLoader(cfg.V2FlyURL)
-	result := Result{byName: make(map[string]rules.Collection, len(cfg.RuleSets))}
+func Run(ctx context.Context, cfg Config) (Result, error) {
+	loader := newSourceLoader(cfg.V2FlyURL)
+	result := Result{RuleSets: make([]RuleSet, 0, len(cfg.RuleSets))}
+	byName := make(map[string]rules.Collection, len(cfg.RuleSets))
 	ignored := make(map[string]struct{}, len(cfg.IgnoreDomains))
 	for _, domain := range cfg.IgnoreDomains {
-		ignored[strings.ToLower(strings.TrimSuffix(domain, "."))] = struct{}{}
+		ignored[rules.NormalizeDomain(domain)] = struct{}{}
 	}
 
 	for _, configured := range cfg.RuleSets {
-		built := RuleSet{Name: configured.Name, Excluded: append([]string(nil), configured.Exclude...)}
+		built := RuleSet{Name: configured.Name, Excluded: slices.Clone(configured.Exclude)}
 		var aggregate rules.Collection
-		for _, configuredSource := range configured.Sources {
-			loaded, err := loader.Load(ctx, cfg.BaseDir, configuredSource)
+		for _, src := range configured.Sources {
+			loaded, report, err := loader.load(ctx, cfg.BaseDir, src)
 			if err != nil {
 				return Result{}, fmt.Errorf("ruleset %q: %w", configured.Name, err)
 			}
-			loaded.Rules = removeIgnoredDomains(loaded.Rules, ignored)
-			beforeOptional := counts(loaded.Rules)
-			if configuredSource.OptionalIfCovered {
-				loaded.Rules = loaded.Rules.Excluding(aggregate)
+			if len(ignored) != 0 {
+				loaded.Domains = slices.DeleteFunc(loaded.Domains, func(rule string) bool {
+					_, exists := ignored[strings.TrimPrefix(rule, "+.")]
+					return exists
+				})
 			}
-			afterOptional := counts(loaded.Rules)
-			built.Sources = append(built.Sources, SourceReport{
-				Name:             configuredSource.Name,
-				Kind:             configuredSource.Kind,
-				InputRules:       loaded.InputRules,
-				Accepted:         afterOptional,
-				Ignored:          loaded.Ignored,
-				Fetches:          loaded.Fetches,
-				OmittedAsCovered: total(beforeOptional) - total(afterOptional),
-			})
-			aggregate.Append(loaded.Rules)
+			beforeOptional := counts(loaded)
+			if src.OptionalIfCovered {
+				loaded = loaded.Excluding(aggregate)
+			}
+			report.Accepted = counts(loaded)
+			report.OmittedAsCovered = beforeOptional.Total() - report.Accepted.Total()
+			built.Sources = append(built.Sources, report)
+			aggregate.Append(loaded)
 		}
 
 		built.BeforeOptimization = counts(aggregate)
 		aggregate = aggregate.Optimized()
 		built.AfterOptimization = counts(aggregate)
 		for _, excludedName := range configured.Exclude {
-			excluded, exists := result.byName[excludedName]
+			excluded, exists := byName[excludedName]
 			if !exists {
-				panic("validated exclusion was not built")
+				return Result{}, fmt.Errorf("ruleset %q excludes unbuilt ruleset %q", configured.Name, excludedName)
 			}
 			aggregate = aggregate.Excluding(excluded)
 		}
 		built.Rules = aggregate
 		built.Final = counts(aggregate)
 		result.RuleSets = append(result.RuleSets, built)
-		result.byName[configured.Name] = aggregate
+		byName[configured.Name] = aggregate
 	}
 
 	if err := verifyAssertions(cfg, result); err != nil {
@@ -98,36 +99,32 @@ func Run(ctx context.Context, cfg config.Config) (Result, error) {
 	return result, nil
 }
 
-func (result Result) Rules(name string) (rules.Collection, bool) {
-	collection, exists := result.byName[name]
-	return collection, exists
-}
-
-func verifyAssertions(cfg config.Config, built Result) error {
-	for _, assertion := range cfg.Assertions {
-		kind := "domain"
-		target := assertion.Domain
-		var address netip.Addr
-		if assertion.IP != "" {
-			kind = "IP"
-			target = assertion.IP
+func verifyAssertions(cfg Config, built Result) error {
+	byName := make(map[string]rules.Collection, len(built.RuleSets))
+	for _, ruleset := range built.RuleSets {
+		byName[ruleset.Name] = ruleset.Rules
+	}
+	for _, a := range cfg.Assertions {
+		kind, target := "domain", a.Domain
+		var addr netip.Addr
+		if a.IP != "" {
+			kind, target = "IP", a.IP
 			var err error
-			address, err = netip.ParseAddr(assertion.IP)
-			if err != nil {
-				panic("validated assertion has an invalid IP address")
+			if addr, err = netip.ParseAddr(a.IP); err != nil {
+				return fmt.Errorf("assertion IP %q: %w", a.IP, err)
 			}
 		}
-		if assertion.DestinationPort != 0 {
-			target = fmt.Sprintf("%s port %d", target, assertion.DestinationPort)
+		if a.DestinationPort != 0 {
+			target = fmt.Sprintf("%s port %d", target, a.DestinationPort)
 		}
 
-		matches := make([]string, 0)
+		var matches []string
 		for _, name := range cfg.Priority {
-			collection, exists := built.byName[name]
+			collection, exists := byName[name]
 			if !exists {
-				panic("priority references an unbuilt ruleset")
+				return fmt.Errorf("priority references unbuilt ruleset %q", name)
 			}
-			if collection.Matches(assertion.Domain, address, assertion.DestinationPort) {
+			if collection.Matches(a.Domain, addr, a.DestinationPort) {
 				matches = append(matches, name)
 			}
 		}
@@ -135,25 +132,14 @@ func verifyAssertions(cfg config.Config, built Result) error {
 		if len(matches) != 0 {
 			actual = matches[0]
 		}
-		if actual != assertion.RuleSet {
-			return fmt.Errorf("%s assertion %q: classified as %q, expected %q (matching sets: %s)", kind, target, actual, assertion.RuleSet, strings.Join(matches, ", "))
+		if actual != a.RuleSet {
+			return fmt.Errorf("%s assertion %q: classified as %q, expected %q (matching sets: %s)", kind, target, actual, a.RuleSet, strings.Join(matches, ", "))
 		}
-		if assertion.Exclusive && (len(matches) != 1 || matches[0] != assertion.RuleSet) {
-			return fmt.Errorf("%s assertion %q: expected exclusive membership in %q (matching sets: %s)", kind, target, assertion.RuleSet, strings.Join(matches, ", "))
+		if a.Exclusive && len(matches) != 1 {
+			return fmt.Errorf("%s assertion %q: expected exclusive membership in %q (matching sets: %s)", kind, target, a.RuleSet, strings.Join(matches, ", "))
 		}
 	}
 	return nil
-}
-
-func removeIgnoredDomains(collection rules.Collection, ignored map[string]struct{}) rules.Collection {
-	filtered := make(rules.DomainSet, 0, len(collection.Domains))
-	for _, rule := range collection.Domains {
-		if _, exists := ignored[rule.Value]; !exists {
-			filtered = append(filtered, rule)
-		}
-	}
-	collection.Domains = filtered
-	return collection
 }
 
 func counts(collection rules.Collection) Counts {
@@ -162,8 +148,4 @@ func counts(collection rules.Collection) Counts {
 		Classical: len(collection.Classical),
 		IPCIDR:    len(collection.Prefixes),
 	}
-}
-
-func total(counts Counts) int {
-	return counts.Domain + counts.Classical + counts.IPCIDR
 }

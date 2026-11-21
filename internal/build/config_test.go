@@ -1,66 +1,38 @@
-package config
+package build
 
 import (
 	"slices"
 	"testing"
 )
 
-func TestValidateSourceAcceptsLocalCIDRFile(t *testing.T) {
-	t.Parallel()
-	if err := validateSource(Source{Kind: "cidr-file", Path: "sources/tailnet.ipcidr.txt"}); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestValidateSourceRejectsEscapingLocalFile(t *testing.T) {
-	t.Parallel()
-	if err := validateSource(Source{Kind: "cidr-file", Path: "../tailnet.ipcidr.txt"}); err == nil {
-		t.Fatal("escaping local path did not fail validation")
-	}
-}
-
-func TestValidateSourceClashFile(t *testing.T) {
+func TestValidateSource(t *testing.T) {
 	t.Parallel()
 	for _, tc := range []struct {
 		name   string
-		source Source
+		source SourceConfig
 		valid  bool
 	}{
-		{"local", Source{Kind: "clash-file", Path: "sources/cloudflared.classical.txt"}, true},
-		{"missing path", Source{Kind: "clash-file"}, false},
-		{"parent", Source{Kind: "clash-file", Path: "../cloudflared.txt"}, false},
-		{"nested parent", Source{Kind: "clash-file", Path: "sources/../../cloudflared.txt"}, false},
-		{"absolute", Source{Kind: "clash-file", Path: "/tmp/cloudflared.txt"}, false},
-		{"remote url", Source{Kind: "clash-file", Path: "sources/cloudflared.txt", URL: "https://example.com/rules"}, false},
-		{"selection", Source{Kind: "clash-file", Path: "sources/cloudflared.txt", AllLists: true}, false},
-		{"require attributes", Source{Kind: "clash-file", Path: "sources/cloudflared.txt", RequireAttributes: []string{"cn"}}, false},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			if err := validateSource(tc.source); (err == nil) != tc.valid {
-				t.Fatalf("validateSource(%+v) = %v, want valid=%t", tc.source, err, tc.valid)
-			}
-		})
-	}
-}
-
-func TestValidateSourceV2FlyAndRequireAttributes(t *testing.T) {
-	t.Parallel()
-	for _, tc := range []struct {
-		name   string
-		source Source
-		valid  bool
-	}{
-		{"named lists", Source{Kind: "v2fly", Lists: []string{"cn"}}, true},
-		{"all lists", Source{Kind: "v2fly", AllLists: true}, true},
-		{"all lists with attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"cn"}}, true},
-		{"missing selection", Source{Kind: "v2fly"}, false},
-		{"lists and all_lists", Source{Kind: "v2fly", Lists: []string{"cn"}, AllLists: true}, false},
-		{"empty attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{""}}, false},
-		{"prefixed attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"@cn"}}, false},
-		{"comma in attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"cn,ads"}}, false},
-		{"whitespace attribute", Source{Kind: "v2fly", AllLists: true, RequireAttributes: []string{" cn "}}, false},
-		{"clash with require_attributes", Source{Kind: "clash", URL: "https://example.com/rules.txt", RequireAttributes: []string{"cn"}}, false},
-		{"iana-local with require_attributes", Source{Kind: "iana-local", URLs: []string{"https://example.com/a.csv"}, RequireAttributes: []string{"cn"}}, false},
+		{"cidr-file/local", SourceConfig{Kind: "cidr-file", Path: "sources/tailnet.ipcidr.txt"}, true},
+		{"cidr-file/parent", SourceConfig{Kind: "cidr-file", Path: "../tailnet.ipcidr.txt"}, false},
+		{"clash-file/local", SourceConfig{Kind: "clash-file", Path: "sources/cloudflared.classical.txt"}, true},
+		{"clash-file/missing path", SourceConfig{Kind: "clash-file"}, false},
+		{"clash-file/parent", SourceConfig{Kind: "clash-file", Path: "../cloudflared.txt"}, false},
+		{"clash-file/nested parent", SourceConfig{Kind: "clash-file", Path: "sources/../../cloudflared.txt"}, false},
+		{"clash-file/absolute", SourceConfig{Kind: "clash-file", Path: "/tmp/cloudflared.txt"}, false},
+		{"clash-file/remote url", SourceConfig{Kind: "clash-file", Path: "sources/cloudflared.txt", URL: "https://example.com/rules"}, false},
+		{"clash-file/selection", SourceConfig{Kind: "clash-file", Path: "sources/cloudflared.txt", AllLists: true}, false},
+		{"clash-file/require attributes", SourceConfig{Kind: "clash-file", Path: "sources/cloudflared.txt", RequireAttributes: []string{"cn"}}, false},
+		{"v2fly/named lists", SourceConfig{Kind: "v2fly", Lists: []string{"cn"}}, true},
+		{"v2fly/all lists", SourceConfig{Kind: "v2fly", AllLists: true}, true},
+		{"v2fly/all lists with attribute", SourceConfig{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"cn"}}, true},
+		{"v2fly/missing selection", SourceConfig{Kind: "v2fly"}, false},
+		{"v2fly/lists and all_lists", SourceConfig{Kind: "v2fly", Lists: []string{"cn"}, AllLists: true}, false},
+		{"v2fly/empty attribute", SourceConfig{Kind: "v2fly", AllLists: true, RequireAttributes: []string{""}}, false},
+		{"v2fly/prefixed attribute", SourceConfig{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"@cn"}}, false},
+		{"v2fly/comma in attribute", SourceConfig{Kind: "v2fly", AllLists: true, RequireAttributes: []string{"cn,ads"}}, false},
+		{"v2fly/whitespace attribute", SourceConfig{Kind: "v2fly", AllLists: true, RequireAttributes: []string{" cn "}}, false},
+		{"clash/require attributes", SourceConfig{Kind: "clash", URL: "https://example.com/rules.txt", RequireAttributes: []string{"cn"}}, false},
+		{"iana-local/require attributes", SourceConfig{Kind: "iana-local", URLs: []string{"https://example.com/a.csv"}, RequireAttributes: []string{"cn"}}, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			if err := validateSource(tc.source); (err == nil) != tc.valid {
@@ -72,7 +44,7 @@ func TestValidateSourceV2FlyAndRequireAttributes(t *testing.T) {
 
 func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 	t.Parallel()
-	cfg, err := Load("../../config/rulesets.json")
+	cfg, err := LoadConfig("../../config/rulesets.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,19 +75,19 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 	if !slices.Equal(directSources, wantDirectSources) {
 		t.Errorf("direct sources: got %v, want merged sources in order %v", directSources, wantDirectSources)
 	}
-	wantLocalSources := map[string][]Source{
+	wantLocalSources := map[string][]SourceConfig{
 		"tailnet": {{Kind: "domain-file", Path: "sources/tailnet.domain.txt"}, {Kind: "cidr-file", Path: "sources/tailnet.ipcidr.txt"}},
 		"direct":  {{Kind: "domain-file", Path: "sources/tailscale.domain.txt"}, {Kind: "domain-file", Path: "overrides/cn.domain.txt", OptionalIfCovered: true}, {Kind: "clash-file", Path: "sources/cloudflared.classical.txt"}, {Kind: "clash-file", Path: "sources/direct.classical.txt"}},
 		"us":      {{Kind: "clash-file", Path: "sources/us.classical.txt"}, {Kind: "domain-file", Path: "sources/anthropic.domain.txt"}, {Kind: "cidr-file", Path: "sources/anthropic.ipcidr.txt"}},
 	}
 	for i, set := range cfg.RuleSets {
-		var local []Source
+		var local []SourceConfig
 		for _, src := range set.Sources {
 			if src.Path != "" {
-				local = append(local, Source{Kind: src.Kind, Path: src.Path, OptionalIfCovered: src.OptionalIfCovered})
+				local = append(local, SourceConfig{Kind: src.Kind, Path: src.Path, OptionalIfCovered: src.OptionalIfCovered})
 			}
 		}
-		if !slices.EqualFunc(local, wantLocalSources[set.Name], func(a, b Source) bool {
+		if !slices.EqualFunc(local, wantLocalSources[set.Name], func(a, b SourceConfig) bool {
 			return a.Kind == b.Kind && a.Path == b.Path && a.OptionalIfCovered == b.OptionalIfCovered
 		}) {
 			t.Errorf("%s local sources: got %v, want %v", set.Name, local, wantLocalSources[set.Name])
@@ -130,8 +102,6 @@ func TestProjectConfigUsesTailnetAndDirectRuleSets(t *testing.T) {
 			t.Errorf("%s exclusions: got %v, want %v", set.Name, set.Exclude, wantExclude)
 		}
 	}
-	// The direct +.liblaf.me override partially overlaps the four exact custom
-	// hosts. Those assertions verify priority; suffixes and IPs are exclusive.
 	wantAssertions := map[string]struct {
 		ruleset   string
 		exclusive bool
