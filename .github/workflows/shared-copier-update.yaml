@@ -25,20 +25,20 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@4268f5472a7143e9a7532d456aad8c8fd565ab2d # v3
+        uses: liblaf/actions/auth@9fd2d15e0a9630dc702d355704d8dfdd3e37cae4 # v3
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install mise
-        uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5
+        uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5
       - name: Install Copier
         run: pipx install --pip-args cookiecutter copier
       - name: Copier update
         run: mise run copier-update --skip-answered --trust --force
       - name: Create PR
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
         with:
           token: ${{ steps.auth.outputs.token }}
           commit-message: "chore(copier): update from template"

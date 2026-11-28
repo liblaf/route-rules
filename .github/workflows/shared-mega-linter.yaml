@@ -33,7 +33,7 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@4268f5472a7143e9a7532d456aad8c8fd565ab2d # v3
+        uses: liblaf/actions/auth@9fd2d15e0a9630dc702d355704d8dfdd3e37cae4 # v3
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - id: lint
         name: MegaLinter
-        uses: liblaf/megalinter-custom-flavor-all@ca273325da5cd66191f002c2eaa57b76dc4de8a2 # v10.1.0
+        uses: liblaf/megalinter-custom-flavor-all@38ca05ec94acf1af706504d99d5e25d26bb5d3c3 # v10.2.0
         env:
           GITHUB_TOKEN: ${{ steps.auth.outputs.token }}
           MEGALINTER_CONFIG: https://raw.githubusercontent.com/liblaf/megalinter-custom-flavor-all/refs/heads/main/.mega-linter.yml
@@ -62,7 +62,7 @@ jobs:
       - id: pr
         if: steps.lint.outputs.has_updated_sources == 1 && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         name: Create PR
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
         with:
           token: ${{ steps.auth.outputs.token }}
           commit-message: "chore(mega-linter): apply linters automatic fixes"
@@ -90,12 +90,12 @@ jobs:
     steps:
       - id: auth
         name: Auth
-        uses: liblaf/actions/auth@4268f5472a7143e9a7532d456aad8c8fd565ab2d # v3
+        uses: liblaf/actions/auth@9fd2d15e0a9630dc702d355704d8dfdd3e37cae4 # v3
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Approve
-        uses: liblaf/actions/approve@4268f5472a7143e9a7532d456aad8c8fd565ab2d # v3
+        uses: liblaf/actions/approve@9fd2d15e0a9630dc702d355704d8dfdd3e37cae4 # v3
         with:
           approve-token: ${{ steps.auth.outputs.token }}
           pull: ${{ needs.mega-linter.outputs.pull-request-url }}
